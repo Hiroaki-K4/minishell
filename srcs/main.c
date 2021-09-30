@@ -1,11 +1,18 @@
-
-
 #include "minishell.h"
 
-int main(int argc, char *argv[])
+
+
+
+
+void	minishell()
 {
-	(void)argc;
+	printf("minishell\n");
+}
+
+int	main(int argc, char *argv[])
+{
 	(void)argv;
-	printf("ok\n");
+	if (argc == 1)
+		minishell()
 	return (0);
 }
