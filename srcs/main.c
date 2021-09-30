@@ -6,7 +6,15 @@
 
 void	minishell()
 {
-	printf("minishell\n");
+	char *line;
+
+	line = NULL;
+	while (1)
+	{
+		printf("minishell");
+		line = readline("> ");
+		printf("line: %s\n", line);
+	}
 }
 
 int	main(int argc, char *argv[])
