@@ -14,7 +14,7 @@ CFLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):$(OBJS)
-		$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
+		$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 clean:
 	rm -f $(OBJS)
