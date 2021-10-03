@@ -11,6 +11,12 @@ void	sigint_handler()
 	// printf("ctl+c\n");
 }
 
+void	sigquit_handler()
+{
+	printf("sigquit_handler\n");
+	printf("\n");
+}
+
 void	minishell()
 {
 	char *line;
@@ -24,13 +30,15 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		line = readline("> ");
-		if (line == NULL)
+		if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
 		{
-			// printf("\n");
+			printf("Error\n");
 			exit(1);
 		}
-		printf("line: %s\n", line);
+		line = readline("> ");
+		if (line == NULL)
+			exit(1);
+		// printf("line: %s\n", line);
 	}
 }
 
