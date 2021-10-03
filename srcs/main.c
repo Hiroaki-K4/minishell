@@ -4,10 +4,11 @@
 
 
 
-void	sigint_handler(int signum)
+void	sigint_handler()
 {
-	printf("%d\n", signum);
-	printf("ctl+c\n");
+	printf("\n");
+	printf("minishell >");
+	// printf("ctl+c\n");
 }
 
 void	minishell()
@@ -29,7 +30,6 @@ void	minishell()
 			printf("\n");
 			exit(1);
 		}
-		signal(SIGINT, sigint_handler);
 		printf("line: %s\n", line);
 	}
 }
