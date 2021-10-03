@@ -4,6 +4,12 @@
 
 
 
+void	sigint_handler(int signum)
+{
+	printf("%d\n", signum);
+	printf("ctl+c\n");
+}
+
 void	minishell()
 {
 	char *line;
@@ -12,7 +18,14 @@ void	minishell()
 	while (1)
 	{
 		printf("minishell");
+		signal(SIGINT, sigint_handler);
 		line = readline("> ");
+		if (line == NULL)
+		{
+			printf("\n");
+			exit(1);
+		}
+		signal(SIGINT, sigint_handler);
 		printf("line: %s\n", line);
 	}
 }
