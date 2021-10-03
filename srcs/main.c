@@ -7,7 +7,7 @@
 void	sigint_handler()
 {
 	printf("\n");
-	printf("minishell >");
+	printf("minishell>");
 	// printf("ctl+c\n");
 }
 
@@ -27,7 +27,7 @@ void	minishell()
 		line = readline("> ");
 		if (line == NULL)
 		{
-			printf("\n");
+			// printf("\n");
 			exit(1);
 		}
 		printf("line: %s\n", line);
