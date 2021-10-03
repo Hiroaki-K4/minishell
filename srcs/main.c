@@ -18,7 +18,11 @@ void	minishell()
 	while (1)
 	{
 		printf("minishell");
-		signal(SIGINT, sigint_handler);
+		if (signal(SIGINT, sigint_handler) == SIG_ERR)
+		{
+			printf("Error\n");
+			exit(1);
+		}
 		line = readline("> ");
 		if (line == NULL)
 		{
