@@ -13,8 +13,9 @@ void	sigint_handler()
 
 void	sigquit_handler()
 {
-	printf("sigquit_handler\n");
-	printf("\n");
+	printf("\b\b  \b\b");
+	// printf("sigquit_handler\n");
+	// printf("\n");
 }
 
 void	minishell()
@@ -30,9 +31,9 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
+		if (signal(SIGQUIT, SIG_IGN) != SIG_ERR)
 		{
-			printf("Error\n");
+			// printf("Error\n");
 			exit(1);
 		}
 		line = readline("> ");
