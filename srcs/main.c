@@ -31,9 +31,9 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		if (signal(SIGQUIT, SIG_IGN) != SIG_ERR)
+		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		{
-			// printf("Error\n");
+			printf("Error\n");
 			exit(1);
 		}
 		line = readline("> ");
