@@ -42,6 +42,7 @@ void	minishell()
 			printf("\n");
 			exit(1);
 		}
+		add_history(line);
 		free(line);
 		// printf("line: %s\n", line);
 	}
