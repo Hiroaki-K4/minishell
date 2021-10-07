@@ -38,7 +38,10 @@ void	minishell()
 		}
 		line = readline("> ");
 		if (line == NULL)
+		{
+			printf("\n");
 			exit(1);
+		}
 		// printf("line: %s\n", line);
 	}
 }
