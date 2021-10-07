@@ -42,6 +42,7 @@ void	minishell()
 			printf("\n");
 			exit(1);
 		}
+		free(line);
 		// printf("line: %s\n", line);
 	}
 }
