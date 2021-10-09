@@ -9,6 +9,7 @@ void	sigint_handler()
 	// printf("\n");
 	// printf("minishell>");
 	// printf("ctl+c\n");
+	return (0);
 }
 
 void	sigquit_handler()
