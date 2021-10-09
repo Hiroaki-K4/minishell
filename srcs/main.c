@@ -6,10 +6,9 @@
 
 void	sigint_handler()
 {
-	// printf("\n");
-	// printf("minishell>");
+	printf("\n");
+	printf("minishell>");
 	// printf("ctl+c\n");
-	return (0);
 }
 
 void	sigquit_handler()
@@ -27,6 +26,12 @@ void	minishell()
 	while (1)
 	{
 		printf("minishell");
+		line = readline("> ");
+		if (line == NULL)
+		{
+			printf("\n");
+			exit(1);
+		}
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -37,12 +42,12 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		line = readline("> ");
-		if (line == NULL)
-		{
-			printf("\n");
-			exit(1);
-		}
+		// line = readline("> ");
+		// if (line == NULL)
+		// {
+		// 	printf("\n");
+		// 	exit(1);
+		// }
 		add_history(line);
 		free(line);
 		// printf("line: %s\n", line);
