@@ -31,7 +31,7 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
+		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		{
 			printf("Error\n");
 			exit(1);
@@ -43,7 +43,6 @@ void	minishell()
 			exit(1);
 		}
 		add_history(line);
-		printf("\n");
 		free(line);
 		// printf("line: %s\n", line);
 	}
