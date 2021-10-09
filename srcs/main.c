@@ -6,9 +6,9 @@
 
 void	sigint_handler()
 {
-	printf("\n");
-	printf("minishell>");
-	printf("ctl+c\n");
+	// printf("\n");
+	// printf("minishell>");
+	// printf("ctl+c\n");
 }
 
 void	sigquit_handler()
@@ -43,6 +43,7 @@ void	minishell()
 			exit(1);
 		}
 		add_history(line);
+		printf("\n");
 		free(line);
 		// printf("line: %s\n", line);
 	}
