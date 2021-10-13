@@ -7,7 +7,7 @@
 void	sigint_handler()
 {
 	printf("\n");
-	printf("minishell> ");
+	// printf("minishell> ");
 	// printf("ctl+c\n");
 }
 
