@@ -23,7 +23,7 @@ void	minishell()
 	char *line;
 
 	line = NULL;
-	while (line = readline("> "))
+	while (1)
 	{
 		// printf("minishell");
 		// line = readline("> ");
@@ -38,7 +38,7 @@ void	minishell()
 			exit(1);
 		}
 		printf("minishell");
-		// line = readline("> ");
+		line = readline();
 		// line = readline("> ");
 		if (line == NULL)
 			exit(1);
