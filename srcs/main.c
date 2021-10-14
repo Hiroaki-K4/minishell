@@ -43,7 +43,8 @@ void	minishell()
 		// line = readline("> ");
 		if (line == NULL)
 			exit(1);
-		add_history(line);
+		else
+			add_history(line);
 		free(line);
 		// printf("line: %s\n", line);
 	}
