@@ -20,14 +20,14 @@ void	sigquit_handler()
 
 void	minishell()
 {
-	char *line;
+	char *command;
 
-	line = NULL;
+	command = NULL;
 	while (1)
 	{
 		// printf("minishell");
 		// line = readline("> ");
-		line = readline("minishell> ");
+		command = readline("minishell> ");
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -41,11 +41,11 @@ void	minishell()
 		// printf("minishell");
 		// line = readline("minishell> ");
 		// line = readline("> ");
-		if (line == NULL)
+		if (command == NULL)
 			exit(1);
 		else
-			add_history(line);
-		free(line);
+			add_history(command);
+		free(command);
 		// printf("line: %s\n", line);
 	}
 }
