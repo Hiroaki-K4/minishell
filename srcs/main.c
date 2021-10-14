@@ -37,8 +37,8 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		printf("minishell");
-		line = readline();
+		// printf("minishell");
+		line = readline("minishell> ");
 		// line = readline("> ");
 		if (line == NULL)
 			exit(1);
