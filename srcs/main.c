@@ -6,8 +6,12 @@
 
 void	sigint_handler()
 {
+	// printf("\n");
+	// printf("minishell> ");
 	printf("\n");
-	printf("minishell> ");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 	// printf("ctl+c\n");
 }
 
