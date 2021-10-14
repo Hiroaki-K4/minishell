@@ -27,6 +27,7 @@ void	minishell()
 	{
 		// printf("minishell");
 		// line = readline("> ");
+		line = readline("minishell> ");
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -38,7 +39,7 @@ void	minishell()
 			exit(1);
 		}
 		// printf("minishell");
-		line = readline("minishell> ");
+		// line = readline("minishell> ");
 		// line = readline("> ");
 		if (line == NULL)
 			exit(1);
