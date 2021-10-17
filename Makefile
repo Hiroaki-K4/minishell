@@ -11,9 +11,9 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-INCLUDE	= -I$(shell brew --prefix readline)/include
+INCLUDE	= -I$(brew --prefix readline)/include
 
-LDFLAGS = -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+LDFLAGS = -L$(brew --prefix readline)/lib -lreadline -lhistory
 
 all: $(NAME)
 
