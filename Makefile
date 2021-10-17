@@ -7,13 +7,13 @@ SRCS = srcs/main.c
 
 OBJS = $(SRCS:.c=.o)
 
-CC = gcc
-
-CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
-
 INCLUDE	= -I. -I$(shell brew --prefix readline)/include
 
 LDFLAGS = -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+
+CC = gcc
+
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
