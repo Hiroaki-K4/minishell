@@ -14,7 +14,7 @@ CFLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):$(OBJS)
-		$(CC) $(CFLAGS) -I$(shell brew --prefix readline)/include -o $(NAME) $(OBJS) -L$(shell brew --prefix readline)/lib -lreadline
+		$(CC) $(CFLAGS) -I$(shell brew --prefix readline)/include -o $(NAME) $(OBJS) -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 clean:
 	rm -f $(OBJS)
