@@ -11,12 +11,12 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
 
 all: $(NAME)
 
 c.o:
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
+	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 # c.o: gcc -I$(brew --prefix readline)/include -L$(brew --prefix readline)/lib -lreadline -lhistory srcs/main.c
 
 $(NAME):$(OBJS)
