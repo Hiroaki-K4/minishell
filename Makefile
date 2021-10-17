@@ -1,8 +1,4 @@
 #Makefile
-NAME = minishell
-
-.PHONY: all, clean, fclean, re
-
 SRCS = srcs/main.c
 
 OBJS = $(SRCS:.c=.o)
@@ -10,6 +6,8 @@ OBJS = $(SRCS:.c=.o)
 INCLUDE	= -I$(shell brew --prefix readline)/include
 
 LDFLAGS = -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+
+NAME = minishell
 
 CC = gcc
 
@@ -31,3 +29,5 @@ fclean: clean
 		rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all, clean, fclean, re
