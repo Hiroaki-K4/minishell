@@ -17,8 +17,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-# c.o: $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
-c.o: gcc -I$(brew --prefix readline)/include -L$(brew --prefix readline)/lib -lreadline -lhistory srcs/main.c
+c.o: $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
+# c.o: gcc -I$(brew --prefix readline)/include -L$(brew --prefix readline)/lib -lreadline -lhistory srcs/main.c
 
 $(NAME):$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
