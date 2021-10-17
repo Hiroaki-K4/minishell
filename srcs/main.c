@@ -24,12 +24,11 @@ void	minishell()
 	char *command;
 
 	command = NULL;
-	while (command = readline("minishell> "))
+	while (1)
 	{
 		// printf("minishell");
 		// line = readline("> ");
-		// command = readline("minishell> ");
-		printf("ok1\n");
+		command = readline("minishell> ");
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -40,16 +39,11 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
-		printf("ok\n");
-		// printf("minishell");
-		// line = readline("minishell> ");
-		// line = readline("> ");
 		if (command == NULL)
 			exit(1);
 		else if (strlen(command) > 0)
 			add_history(command);
 		free(command);
-		// printf("line: %s\n", line);
 	}
 }
 
