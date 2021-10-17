@@ -7,7 +7,7 @@ SRCS = srcs/main.c
 
 OBJS = $(SRCS:.c=.o)
 
-INCLUDE	= $(shell brew --prefix readline)/include
+INCLUDE	= -I$(shell brew --prefix readline)/include
 
 LDFLAGS = -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
@@ -17,7 +17,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-c.o: $(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $(<:.c=.o)
+c.o:
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
 # c.o: gcc -I$(brew --prefix readline)/include -L$(brew --prefix readline)/lib -lreadline -lhistory srcs/main.c
 
 $(NAME):$(OBJS)
