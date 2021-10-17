@@ -9,7 +9,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
 
 INCLUDE	= -I. -I$(shell brew --prefix readline)/include
 
