@@ -46,7 +46,7 @@ void	minishell()
 		// line = readline("> ");
 		if (command == NULL)
 			exit(1);
-		if (strlen(command) > 0)
+		else if (strlen(command) > 0)
 			add_history(command);
 		free(command);
 		// printf("line: %s\n", line);
