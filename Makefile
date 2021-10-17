@@ -11,13 +11,13 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-# INCLUDE	= -I$(shell brew --prefix readline)/include
+INCLUDE	= -I. -I$(shell brew --prefix readline)/include
 
 LDFLAGS = -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 all: $(NAME)
 
-c.o: $(CC) $(CFLAGS) -I$(shell brew --prefix readline)/include -c $< -o $(<:.c=.o)
+c.o: $(CC) $(CFLAGS) $(INCLUDE) -c $< -o $(<:.c=.o)
 
 $(NAME):$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
