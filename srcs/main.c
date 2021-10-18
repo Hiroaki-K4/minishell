@@ -8,13 +8,6 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
-void	sigquit_handler()
-{
-	printf("\b\b  \b\b");
-	// printf("sigquit_handler\n");
-	// printf("\n");
-}
-
 void	minishell()
 {
 	char *command;
@@ -22,20 +15,11 @@ void	minishell()
 	command = NULL;
 	while (1)
 	{
-		// printf("minishell");
-		// line = readline("> ");
-		// command = readline("minishell> ");
-		// printf("len: %ld\n", strlen(command));
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
 			exit(1);
 		}
-		// if (signal(SIGQUIT, sigquit_handler) == SIG_ERR)
-		// {
-		// 	printf("Error\n");
-		// 	exit(1);
-		// }
 		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -43,10 +27,7 @@ void	minishell()
 		}
 		command = readline("minishell> ");
 		if (command == NULL)
-		{
-			// printf("\n");
 			exit(1);
-		}
 		else if (strlen(command) > 0)
 			add_history(command);
 		free(command);
