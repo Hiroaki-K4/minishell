@@ -26,8 +26,8 @@ void	minishell()
 	{
 		// printf("minishell");
 		// line = readline("> ");
-		command = readline("minishell> ");
-		printf("len: %d\n", strlen(command));
+		// command = readline("minishell> ");
+		printf("len: %ld\n", strlen(command));
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -38,6 +38,7 @@ void	minishell()
 			printf("Error\n");
 			exit(1);
 		}
+		command = readline("minishell> ");
 		if (command == NULL)
 		{
 			printf("empty\n");
