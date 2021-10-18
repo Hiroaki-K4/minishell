@@ -2,7 +2,6 @@
 
 void	sigint_handler()
 {
-	printf("sigint\n");
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -27,7 +26,7 @@ void	minishell()
 		// printf("minishell");
 		// line = readline("> ");
 		// command = readline("minishell> ");
-		printf("len: %ld\n", strlen(command));
+		// printf("len: %ld\n", strlen(command));
 		if (signal(SIGINT, sigint_handler) == SIG_ERR)
 		{
 			printf("Error\n");
@@ -39,6 +38,7 @@ void	minishell()
 			exit(1);
 		}
 		command = readline("minishell> ");
+		printf("len: %ld\n", strlen(command));
 		if (command == NULL)
 		{
 			printf("empty\n");
