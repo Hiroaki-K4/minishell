@@ -8,6 +8,11 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
+void	something_process(char *command)
+{
+	(void)command;
+}
+
 void	minishell()
 {
 	char *command;
@@ -29,7 +34,10 @@ void	minishell()
 		if (command == NULL)
 			exit(1);
 		else if (strlen(command) > 0)
+		{
+			something_process(command);
 			add_history(command);
+		}
 		free(command);
 	}
 }
