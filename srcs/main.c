@@ -38,7 +38,6 @@ void	minishell()
 			exit(1);
 		}
 		command = readline("minishell> ");
-		printf("len: %ld\n", strlen(command));
 		if (command == NULL)
 		{
 			printf("empty\n");
