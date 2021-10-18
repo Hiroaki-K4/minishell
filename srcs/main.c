@@ -8,6 +8,10 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
+
+// TODO
+// make launch function
+
 void	something_process(char *command)
 {
 	(void)command;
