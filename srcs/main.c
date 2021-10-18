@@ -39,7 +39,10 @@ void	minishell()
 		}
 		command = readline("minishell> ");
 		if (command == NULL)
+		{
+			printf("\n");
 			exit(1);
+		}
 		else if (strlen(command) > 0)
 			add_history(command);
 		free(command);
