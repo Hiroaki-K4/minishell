@@ -10,7 +10,6 @@ void	sigint_handler()
 
 void	sigquit_handler()
 {
-	printf("sigquit\n");
 	printf("\b\b  \b\b");
 	// printf("sigquit_handler\n");
 	// printf("\n");
@@ -40,7 +39,7 @@ void	minishell()
 		command = readline("minishell> ");
 		if (command == NULL)
 		{
-			printf("\n");
+			// printf("\n");
 			exit(1);
 		}
 		else if (strlen(command) > 0)
