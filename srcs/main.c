@@ -8,9 +8,28 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
-void	something_process(char *command)
+
+// TODO
+// make launch function
+
+void	run_command(char *command)
 {
-	(void)command;
+	pid_t	pid;
+	char *path;
+
+	// (void)command;
+	pid = fork();
+	if (pid < 0)
+	{
+		printf("Error\n");
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = ft_strjoin("/bin/", command);
+		// path = "/bin/";
+		printf("path: %s\n", path);
+	}
 }
 
 void	minishell()
@@ -33,9 +52,9 @@ void	minishell()
 		command = readline("minishell> ");
 		if (command == NULL)
 			exit(1);
-		else if (strlen(command) > 0)
+		else if (ft_strlen(command) > 0)
 		{
-			something_process(command);
+			run_command(command);
 			add_history(command);
 		}
 		free(command);
