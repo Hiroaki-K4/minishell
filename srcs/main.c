@@ -17,6 +17,7 @@ void	run_command(char *command)
 	pid_t	pid;
 	char *path;
 
+	(void)command;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -25,8 +26,9 @@ void	run_command(char *command)
 	}
 	if (pid == 0)
 	{
-		path = strjoin("/bin/", command);
-		printf(path);
+		// path = strjoin("/bin/", command);
+		path = "/bin/";
+		printf("path: %s\n", path);
 	}
 }
 

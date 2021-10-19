@@ -5,7 +5,6 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
-#include <strings.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
