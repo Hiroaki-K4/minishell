@@ -17,7 +17,7 @@ void	run_command(char *command)
 	pid_t	pid;
 	char *path;
 
-	(void)command;
+	// (void)command;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -26,8 +26,8 @@ void	run_command(char *command)
 	}
 	if (pid == 0)
 	{
-		// path = strjoin("/bin/", command);
-		path = "/bin/";
+		path = ft_strjoin("/bin/", command);
+		// path = "/bin/";
 		printf("path: %s\n", path);
 	}
 }
@@ -52,7 +52,7 @@ void	minishell()
 		command = readline("minishell> ");
 		if (command == NULL)
 			exit(1);
-		else if (strlen(command) > 0)
+		else if (ft_strlen(command) > 0)
 		{
 			run_command(command);
 			add_history(command);
