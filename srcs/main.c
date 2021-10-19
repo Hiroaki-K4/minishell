@@ -12,9 +12,22 @@ void	sigint_handler()
 // TODO
 // make launch function
 
-void	something_process(char *command)
+void	run_command(char *command)
 {
-	(void)command;
+	int	pid;
+	char *path;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		printf("Error\n");
+		exit(1);
+	}
+	if (pid == 0)
+	{
+		path = strjoin("/bin/", command);
+		printf(path);
+	}
 }
 
 void	minishell()
@@ -39,7 +52,7 @@ void	minishell()
 			exit(1);
 		else if (strlen(command) > 0)
 		{
-			something_process(command);
+			run_command(command);
 			add_history(command);
 		}
 		free(command);
