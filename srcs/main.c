@@ -14,7 +14,7 @@ void	sigint_handler()
 
 void	run_command(char *command)
 {
-	int	pid;
+	pid_t	pid;
 	char *path;
 
 	pid = fork();
