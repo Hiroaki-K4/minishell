@@ -8,7 +8,17 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
-void	run_command(char *command, char *envp[])
+int		check_builtin(char *command)
+{
+	if (!ft_strncmp(command, "echo", 5))
+		return (1);
+	else if (!ft_strncmp(command, "exit", 5))
+		return (1);
+	return (0);
+}
+
+
+int	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
 	int status;
@@ -16,6 +26,11 @@ void	run_command(char *command, char *envp[])
 	char *argv[] = {NULL, NULL};
 
 	argv[0] = command;
+	if (check_builtin(command) == 1)
+	{
+		printf("builtin\n");
+		return (0);
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -33,6 +48,7 @@ void	run_command(char *command, char *envp[])
 		printf("Error\n");
 		exit(1);
 	}
+	return (0);
 }
 
 void	minishell(char *envp[])
