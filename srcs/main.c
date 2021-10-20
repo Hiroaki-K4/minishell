@@ -27,7 +27,10 @@ void	run_command(char *command, char *envp[])
 
 	argv[0] = command;
 	if (check_builtin(command) == 1)
-		return ("true\n");
+	{
+		printf("builtin\n");
+		return (0);
+	}
 	pid = fork();
 	if (pid < 0)
 	{
