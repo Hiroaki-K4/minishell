@@ -8,11 +8,13 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
-void	run_command(char *command)
+void	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
 	char *path;
+	char *argv[] = {NULL, NULL};
 
+	argv[0] = command;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -22,12 +24,12 @@ void	run_command(char *command)
 	if (pid == 0)
 	{
 		path = ft_strjoin("/bin/", command);
-		// path = "/bin/";
-		printf("path: %s\n", path);
+		execve(path, argv, envp);
+		// printf("path: %s\n", path);
 	}
 }
 
-void	minishell()
+void	minishell(char *envp[])
 {
 	char *command;
 
@@ -49,17 +51,17 @@ void	minishell()
 			exit(1);
 		else if (ft_strlen(command) > 0)
 		{
-			run_command(command);
+			run_command(command, envp);
 			add_history(command);
 		}
 		free(command);
 	}
 }
 
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	(void)argv;
 	if (argc == 1)
-		minishell();
+		minishell(envp);
 	return (0);
 }
