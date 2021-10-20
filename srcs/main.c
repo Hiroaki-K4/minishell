@@ -10,9 +10,9 @@ void	sigint_handler()
 
 bool	check_builtin(char *command)
 {
-	if (!ft_strncmp(command, "echo"), 5)
+	if (!ft_strncmp(command, "echo", 5))
 		return (true);
-	else if (!ft_strncmp(command, "exit"), 5)
+	else if (!ft_strncmp(command, "exit", 5))
 		return (true);
 	return (false);
 }
