@@ -11,7 +11,7 @@ void	sigint_handler()
 void	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
-	int status
+	int status;
 	char *path;
 	char *argv[] = {NULL, NULL};
 
