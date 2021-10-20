@@ -18,7 +18,7 @@ int		check_builtin(char *command)
 }
 
 
-void	run_command(char *command, char *envp[])
+int	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
 	int status;
@@ -48,6 +48,7 @@ void	run_command(char *command, char *envp[])
 		printf("Error\n");
 		exit(1);
 	}
+	return (0);
 }
 
 void	minishell(char *envp[])
