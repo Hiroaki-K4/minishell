@@ -8,16 +8,14 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
-
-// TODO
-// make launch function
-
-void	run_command(char *command)
+void	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
+	int status;
 	char *path;
+	char *argv[] = {NULL, NULL};
 
-	// (void)command;
+	argv[0] = command;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -27,12 +25,17 @@ void	run_command(char *command)
 	if (pid == 0)
 	{
 		path = ft_strjoin("/bin/", command);
-		// path = "/bin/";
-		printf("path: %s\n", path);
+		if (execve(path, argv, envp) == -1)
+			exit(1);
+	}
+	if (waitpid(pid, &status, 0) < 0)
+	{
+		printf("Error\n");
+		exit(1);
 	}
 }
 
-void	minishell()
+void	minishell(char *envp[])
 {
 	char *command;
 
@@ -54,17 +57,17 @@ void	minishell()
 			exit(1);
 		else if (ft_strlen(command) > 0)
 		{
-			run_command(command);
+			run_command(command, envp);
 			add_history(command);
 		}
 		free(command);
 	}
 }
 
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	(void)argv;
 	if (argc == 1)
-		minishell();
+		minishell(envp);
 	return (0);
 }
