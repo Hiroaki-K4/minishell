@@ -13,7 +13,6 @@ void	run_command(char *command)
 	pid_t	pid;
 	char *path;
 
-	// (void)command;
 	pid = fork();
 	if (pid < 0)
 	{
