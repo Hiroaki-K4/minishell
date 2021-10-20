@@ -24,8 +24,8 @@ void	run_command(char *command, char *envp[])
 	if (pid == 0)
 	{
 		path = ft_strjoin("/bin/", command);
-		execve(path, argv, envp);
-		// printf("path: %s\n", path);
+		if (execve(path, argv, envp) == -1)
+			printf("Error\n");
 	}
 }
 
