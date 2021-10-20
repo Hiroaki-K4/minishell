@@ -8,6 +8,16 @@ void	sigint_handler()
 	rl_redisplay();
 }
 
+bool	check_builtin(char *command)
+{
+	if (!ft_strncmp(command, "echo"), 5)
+		return (true);
+	else if (!ft_strncmp(command, "exit"), 5)
+		return (true);
+	return (false);
+}
+
+
 void	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
@@ -16,6 +26,8 @@ void	run_command(char *command, char *envp[])
 	char *argv[] = {NULL, NULL};
 
 	argv[0] = command;
+	if (check_builtin(command))
+		return ("true\n");
 	pid = fork();
 	if (pid < 0)
 	{
