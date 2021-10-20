@@ -11,6 +11,7 @@ void	sigint_handler()
 void	run_command(char *command, char *envp[])
 {
 	pid_t	pid;
+	int status
 	char *path;
 	char *argv[] = {NULL, NULL};
 
@@ -29,6 +30,11 @@ void	run_command(char *command, char *envp[])
 			printf("Error\n");
 			exit(1);
 		}
+	}
+	if (waitpid(pid, &status, 0) < 0)
+	{
+		printf("Error\n");
+		exit(1);
 	}
 }
 
