@@ -13,7 +13,7 @@ int		check_builtin(char *command)
 	if (!ft_strncmp(command, "echo", 5))
 		return (1);
 	else if (!ft_strncmp(command, "exit", 5))
-		return (1);
+		exit(0);
 	return (0);
 }
 
