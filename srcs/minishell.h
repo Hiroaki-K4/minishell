@@ -10,4 +10,6 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+int	lexer(char *command);
+
 #endif

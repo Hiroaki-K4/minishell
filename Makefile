@@ -1,5 +1,5 @@
 #Makefile
-SRCS = srcs/main.c
+SRCS = srcs/main.c srcs/lexer.c
 
 OBJS = $(SRCS:.c=.o)
 
