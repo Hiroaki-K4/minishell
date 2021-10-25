@@ -13,7 +13,7 @@
 typedef struct s_command
 {
 	void			*context;
-	int				attr	
+	int				attr;
 	struct s_list	*next;
 }	t_command;
 
