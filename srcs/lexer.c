@@ -19,12 +19,12 @@ char	*delete_space(char *command)
 	return (trimed2);
 }
 
-int	lexer(char *command)
+int	lexer(char *line)
 {
-	char *tmp;
+	char *trimed;
 
-	tmp = delete_space(command);
-	free(command);
+	trimed = delete_space(line);
+	free(line);
 	printf("lexer: %s\n", tmp);
 	return (0);
 }
