@@ -25,6 +25,6 @@ int	lexer(char *line)
 
 	trimed = delete_space(line);
 	free(line);
-	printf("lexer: %s\n", tmp);
+	printf("lexer: %s\n", trimed);
 	return (0);
 }
