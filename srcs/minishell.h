@@ -10,4 +10,13 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+typedef struct s_command
+{
+	void			*context;
+	int				attr;
+	struct s_list	*next;
+}	t_command;
+
+int	lexer(char *command);
+
 #endif

@@ -73,6 +73,7 @@ void	minishell(char *envp[])
 			exit(1);
 		else if (ft_strlen(command) > 0)
 		{
+			lexer(command);
 			run_command(command, envp);
 			add_history(command);
 		}
