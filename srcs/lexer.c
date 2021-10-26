@@ -41,7 +41,6 @@ int	lexer(char *line)
 	init_command_list(&command_list);
 	tokenize(trimed, &command_list);
 	printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
-	free(line);
 	printf("lexer: %s\n", trimed);
 	return (0);
 }
