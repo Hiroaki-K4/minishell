@@ -22,8 +22,19 @@ void	init_command_list(t_command *command_list)
 int	store_token(char *trimed, t_command *command_list, int pos, int i)
 {
 	(void)trimed;
-	(void)command_list;
 	printf("pos: %d i: %d\n", pos, i);
+	if (command_list->next == NULL)
+	{
+		command_list->context = ft_substr(trimed, pos, i - pos);
+	}
+	else
+	{
+		while (command_list->next != NULL)
+		{
+
+		}
+	}
+
 	printf("substr: %s\n", ft_substr(trimed, 0, 10));
 	return (i + 1);
 }
