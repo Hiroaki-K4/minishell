@@ -19,18 +19,27 @@ void	init_command_list(t_command *command_list)
 	command_list->next = NULL;
 }
 
+int	store_token(char *trimed, t_command *command_list, int pos, int i)
+{
+	(void)trimed;
+	(void)command_list;
+	printf("pos: %d i: %d\n", pos, i);
+	return (i + 1)
+}
+
 void	tokenize(char *trimed, t_command *command_list)
 {
 	int	i;
-	// int	pos;
+	int	pos;
 
 	(void)command_list;
 	printf("trimed: %s\n", trimed);
 	i = 0;
-	// pos = 0;
+	pos = 0;
 	while (trimed[i])
 	{
-		// if
+		if (trimed[i] == '|')
+			pos = store_token(trimed, command_list, pos, i);
 		printf("%c\n", trimed[i]);
 		i++;
 	}
