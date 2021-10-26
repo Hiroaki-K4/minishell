@@ -22,7 +22,7 @@ void	init_command_list(t_command *command_list)
 void	tokenize(char *trimed, t_command *command_list)
 {
 	int	i;
-	int	pos;
+	// int	pos;
 
 	(void)command_list;
 	printf("trimed: %s\n", trimed);
