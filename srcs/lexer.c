@@ -30,7 +30,7 @@ void	tokenize(char *trimed, t_command *command_list)
 	pos = 0;
 	while (trimed[i])
 	{
-		if
+		// if
 		printf("%c\n", trimed[i]);
 		i++;
 	}
