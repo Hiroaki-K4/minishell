@@ -24,7 +24,7 @@ int	store_token(char *trimed, t_command *command_list, int pos, int i)
 	(void)trimed;
 	(void)command_list;
 	printf("pos: %d i: %d\n", pos, i);
-	printf("substr: %s", ft_substr(trimed, 0, 10));
+	printf("substr: %s\n", ft_substr(trimed, 0, 10));
 	return (i + 1);
 }
 
