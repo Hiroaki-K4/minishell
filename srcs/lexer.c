@@ -19,11 +19,21 @@ char	*delete_space(char *command)
 	return (trimed2);
 }
 
+void	init_command_list(t_command *command_list)
+{
+	command_list->context = "";
+	command_list->attr = START;
+	command_list->next = NULL;
+}
+
 int	lexer(char *line)
 {
 	char *trimed;
+	t_command	command_list;
 
 	trimed = delete_space(line);
+	init_command_list(&command_list);
+	printf("context: %s attr: %d\n", command_list.context, command_list.attr);
 	free(line);
 	printf("lexer: %s\n", trimed);
 	return (0);

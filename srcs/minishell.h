@@ -10,6 +10,8 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+# define START 0
+
 typedef struct s_command
 {
 	void			*context;
