@@ -26,6 +26,12 @@ void	init_command_list(t_command *command_list)
 	command_list->next = NULL;
 }
 
+void	tokenize(char *trimed, t_command *command_list)
+{
+	(void)command_list;
+	printf("trimed: %s\n", trimed);
+}
+
 int	lexer(char *line)
 {
 	char *trimed;
@@ -33,6 +39,7 @@ int	lexer(char *line)
 
 	trimed = delete_space(line);
 	init_command_list(&command_list);
+	tokenize(trimed, &command_list);
 	printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
 	free(line);
 	printf("lexer: %s\n", trimed);
