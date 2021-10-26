@@ -27,7 +27,7 @@ void	tokenize(char *trimed, t_command *command_list)
 	(void)command_list;
 	printf("trimed: %s\n", trimed);
 	i = 0;
-	pos = 0;
+	// pos = 0;
 	while (trimed[i])
 	{
 		// if
