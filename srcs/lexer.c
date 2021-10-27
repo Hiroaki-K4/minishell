@@ -21,7 +21,6 @@ void	init_command_list(t_command *command_list)
 
 int	store_token(char *trimed, t_command *command_list, int pos, int i)
 {
-	(void)trimed;
 	printf("pos: %d i: %d\n", pos, i);
 	if (command_list->next == NULL)
 	{
