@@ -42,8 +42,6 @@ void	tokenize(char *trimed, t_command *command_list)
 	int	i;
 	int	pos;
 
-	(void)command_list;
-	printf("trimed: %s\n", trimed);
 	i = 0;
 	pos = 0;
 	while (trimed[i])
@@ -52,7 +50,7 @@ void	tokenize(char *trimed, t_command *command_list)
 			pos = store_token(trimed, command_list, pos, i);
 		else
 			pos = store_token(trimed, command_list, pos, i);
-		printf("%c\n", trimed[i]);
+		// printf("%c\n", trimed[i]);
 		i++;
 	}
 }
