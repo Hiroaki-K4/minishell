@@ -21,6 +21,8 @@ void	init_command_list(t_command *command_list)
 
 int	store_token(char *trimed, t_command *command_list, int pos, int i)
 {
+	t_command	*tmp;
+
 	if (command_list->next == NULL)
 	{
 		printf("pos: %d i: %d\n", pos, i);
@@ -31,8 +33,14 @@ int	store_token(char *trimed, t_command *command_list, int pos, int i)
 	{
 		while (command_list->next != NULL)
 		{
-
+			// tmp = command_list->next;
 		}
+	}
+	tmp = command_list;
+	while (tmp->next != NULL)
+	{
+		tmp = tmp->next;
+		printf("context: %s\n", (char *)command_list->context);
 	}
 	return (i + 1);
 }
