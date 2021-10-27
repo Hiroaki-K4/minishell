@@ -23,25 +23,16 @@ int	store_token(char *trimed, t_command *command_list, int pos, int i)
 {
 	t_command	*tmp;
 
-	if (command_list->next == NULL)
-	{
-		printf("pos: %d i: %d\n", pos, i);
-		command_list->context = ft_substr(trimed, pos, i + 1 - pos);
-		printf("context: %s\n", (char *)command_list->context);
-	}
-	else
-	{
-		while (command_list->next != NULL)
-		{
-			// tmp = command_list->next;
-		}
-	}
 	tmp = command_list;
 	while (tmp->next != NULL)
-	{
 		tmp = tmp->next;
-		printf("context: %s\n", (char *)command_list->context);
-	}
+	tmp->context = ft_substr(trimed, pos, i + 1 - pos);
+	// if (command_list->next == NULL)
+	// {
+	// 	printf("pos: %d i: %d\n", pos, i);
+	// 	command_list->context = ft_substr(trimed, pos, i + 1 - pos);
+	// 	printf("context: %s\n", (char *)command_list->context);
+	// }
 	return (i + 1);
 }
 

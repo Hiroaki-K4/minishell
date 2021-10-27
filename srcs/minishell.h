@@ -16,7 +16,7 @@ typedef struct s_command
 {
 	void			*context;
 	int				attr;
-	struct s_list	*next;
+	struct s_command	*next;
 }	t_command;
 
 int	lexer(char *command);
