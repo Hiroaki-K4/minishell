@@ -27,6 +27,7 @@ int	store_token(char *trimed, t_command *command_list, int pos, int i)
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->context = ft_substr(trimed, pos, i + 1 - pos);
+	tmp->next = NULL;
 	// if (command_list->next == NULL)
 	// {
 	// 	printf("pos: %d i: %d\n", pos, i);
