@@ -38,7 +38,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i, int deli
 			return (-1);
 		last = get_last_list(*command_list);
 		new->context = ft_substr(trimed, pos, i + 1 - pos);
-		printf("new: %s\n", new->context);
+		printf("new: %s\n", (char *)new->context);
 		new->next = NULL;
 		last->next = new;
 		return (i + 1);
@@ -59,7 +59,7 @@ void	tokenize(char *trimed, t_command *command_list)
 			pos = store_token(trimed, &command_list, pos, i, 1);
 		else
 			pos = store_token(trimed, &command_list, pos, i, 0);
-		printf("pos: %d\n", pos);
+		// printf("pos: %d\n", pos);
 		i++;
 	}
 	while (command_list->next != NULL)
