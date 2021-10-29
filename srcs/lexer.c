@@ -38,6 +38,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i, int deli
 			return (-1);
 		last = get_last_list(*command_list);
 		new->context = ft_substr(trimed, pos, i + 1 - pos);
+		printf("new: %s\n", new->context);
 		new->next = NULL;
 		last->next = new;
 		return (i + 1);
