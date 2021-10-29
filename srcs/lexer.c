@@ -65,6 +65,11 @@ void	tokenize(char *trimed, t_command *command_list)
 		// printf("%c\n", trimed[i]);
 		i++;
 	}
+	while (command_list->next != NULL)
+	{
+		printf("context: %s\n", (char *)command_list->context);
+		command_list = command_list->next;
+	}
 }
 
 int	lexer(char *line)
