@@ -65,7 +65,7 @@ void	tokenize(char *trimed, t_command *command_list)
 		// printf("pos: %d\n", pos);
 		i++;
 	}
-	while (command_list->next != NULL)
+	while (command_list != NULL)
 	{
 		printf("context: %s\n", (char *)command_list->context);
 		command_list = command_list->next;
