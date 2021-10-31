@@ -44,11 +44,12 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 		printf("pos: %d len: %d\n", pos, i - pos);
 		if (trimed[i + 1] == '\0')
 			new->context = ft_substr(trimed, pos, i + 1 - pos);
+			split->context = ft_substr(trimed, i + 1, 1);
 		else
 			new->context = ft_substr(trimed, pos, i - pos);
+			split->context = ft_substr(trimed, i, 1);
 		printf("new: %s\n", (char *)new->context);
 		new->next = split;
-		split->context = ft_substr(trimed, i, 1);
 		split->next = NULL;
 		last->next = new;
 		return (i + 1);
