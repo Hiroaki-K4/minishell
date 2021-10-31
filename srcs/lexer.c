@@ -26,12 +26,12 @@ t_command	*get_last_list(t_command *list)
 	return (list);
 }
 
-int	store_token(char *trimed, t_command **command_list, int pos, int i, int delimiter)
+int	store_token(char *trimed, t_command **command_list, int pos, int i)
 {
 	t_command	*new;
 	t_command	*last;
 
-	if (delimiter == 1)
+	if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
 	{
 		new = (t_command *)malloc(sizeof(t_command));
 		if (!new)
@@ -56,10 +56,11 @@ void	tokenize(char *trimed, t_command *command_list)
 	pos = 0;
 	while (trimed[i])
 	{
-		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
-			pos = store_token(trimed, &command_list, pos, i, 1);
-		else
-			pos = store_token(trimed, &command_list, pos, i, 0);
+		// if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
+		// 	pos = store_token(trimed, &command_list, pos, i, 1);
+		// else
+		// 	pos = store_token(trimed, &command_list, pos, i, 0);
+		pos = store_token(trimed, &command_list, pos, i);
 		i++;
 	}
 	while (command_list != NULL)
