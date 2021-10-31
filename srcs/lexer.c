@@ -19,24 +19,32 @@ void	init_command_list(t_command *command_list)
 	command_list->next = NULL;
 }
 
-int	store_token(char *trimed, t_command *command_list, int pos, int i)
+t_command	*get_last_list(t_command *list)
 {
-	(void)trimed;
-	printf("pos: %d i: %d\n", pos, i);
-	if (command_list->next == NULL)
-	{
-		command_list->context = ft_substr(trimed, pos, i - pos);
-	}
-	else
-	{
-		while (command_list->next != NULL)
-		{
+	while (list->next != NULL)
+		list = list->next;
+	return (list);
+}
 
-		}
-	}
+int	store_token(char *trimed, t_command **command_list, int pos, int i, int delimiter)
+{
+	t_command	*new;
+	t_command	*last;
 
-	printf("substr: %s\n", ft_substr(trimed, 0, 10));
-	return (i + 1);
+	if (delimiter == 1)
+	{
+		new = (t_command *)malloc(sizeof(t_command));
+		if (!new)
+			return (-1);
+		last = get_last_list(*command_list);
+		printf("pos: %d i-pos: %d\n", pos, i - pos);
+		new->context = ft_substr(trimed, pos, i - pos);
+		printf("new: %s\n", (char *)new->context);
+		new->next = NULL;
+		last->next = new;
+		return (i + 1);
+	}
+	return (pos);
 }
 
 void	tokenize(char *trimed, t_command *command_list)
@@ -44,18 +52,20 @@ void	tokenize(char *trimed, t_command *command_list)
 	int	i;
 	int	pos;
 
-	(void)command_list;
-	printf("trimed: %s\n", trimed);
 	i = 0;
 	pos = 0;
 	while (trimed[i])
 	{
-		if (trimed[i] == '|')
-			pos = store_token(trimed, command_list, pos, i);
+		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
+			pos = store_token(trimed, &command_list, pos, i, 1);
 		else
-			pos = store_token(trimed, command_list, pos, i);
-		printf("%c\n", trimed[i]);
+			pos = store_token(trimed, &command_list, pos, i, 0);
 		i++;
+	}
+	while (command_list != NULL)
+	{
+		printf("context: %s\n", (char *)command_list->context);
+		command_list = command_list->next;
 	}
 }
 
