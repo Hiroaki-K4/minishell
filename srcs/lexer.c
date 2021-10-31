@@ -56,7 +56,8 @@ void	tokenize(char *trimed, t_command *command_list)
 	pos = 0;
 	while (trimed[i])
 	{
-		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
+		// if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
+		if (trimed[i] == '|' || trimed[i] == ' ')
 			pos = store_token(trimed, &command_list, pos, i, 1);
 		else
 			pos = store_token(trimed, &command_list, pos, i, 0);
