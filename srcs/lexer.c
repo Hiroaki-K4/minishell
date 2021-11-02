@@ -50,7 +50,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 		else
 		{
 			new->context = ft_substr(trimed, pos, i - pos);
-			new->attr = STR
+			new->attr = STR;
 			split->context = ft_substr(trimed, i, 1);
 		}
 		printf("new: %s\n", (char *)new->context);
