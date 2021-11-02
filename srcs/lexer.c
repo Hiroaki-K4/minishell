@@ -67,7 +67,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			else if (trimed[i] == '<')
 				split->attr = REDIRECTIN;
 			else if (trimed[i] == '>')
-				split->attr = REDIRECTOUT;
+				split->attr = 2;
 		}
 		split->next = NULL;
 		if (i - pos == 0)
