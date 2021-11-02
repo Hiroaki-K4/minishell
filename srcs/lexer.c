@@ -60,7 +60,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 					free(split);
 					return (i + 1);
 				}
-				split->attr = SPACE
+				split->attr = SPACES
 			}
 		}
 		printf("new: %s\n", (char *)new->context);
