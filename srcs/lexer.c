@@ -52,7 +52,6 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			new->context = ft_substr(trimed, pos, i - pos);
 			new->attr = STR;
 			split->context = ft_substr(trimed, i, 1);
-			// if (trimed[i] == ' ' && i > 0)
 			if (trimed[i] == ' ')
 			{
 				if (trimed[i - 1] == ' ')
@@ -61,6 +60,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 					free(split);
 					return (i + 1);
 				}
+				split->attr = SPACE
 			}
 		}
 		printf("new: %s\n", (char *)new->context);

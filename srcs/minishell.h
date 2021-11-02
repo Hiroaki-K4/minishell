@@ -12,6 +12,7 @@
 
 # define START 0
 # define STR 1
+# define SPACE 2
 
 typedef struct s_command
 {
