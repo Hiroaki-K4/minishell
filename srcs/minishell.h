@@ -16,7 +16,8 @@
 # define PIPE 3
 # define REDIRECT_IN 4
 # define REDIRECT_OUT 5
-
+# define SQUOTE 6
+# define DQUOTE 6
 
 typedef struct s_command
 {
