@@ -65,9 +65,9 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			else if (trimed[i] == '|')
 				split->attr = PIPE;
 			else if (trimed[i] == '<')
-				split->attr = 2;
+				split->attr = REDIRECTIN;
 			else if (trimed[i] == '>')
-				split->attr = 2;
+				split->attr = REDIRECTOUT;
 		}
 		split->next = NULL;
 		if (i - pos == 0)
