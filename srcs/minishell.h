@@ -14,8 +14,8 @@
 # define STR 1
 # define SPACES 2
 # define PIPE 3
-# define REDIRECTIN 4;
-# define REDIRECTOUT 5;
+# define REDIRECT_IN 4
+# define REDIRECT_OUT 5
 
 
 typedef struct s_command
