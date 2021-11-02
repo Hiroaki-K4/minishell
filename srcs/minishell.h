@@ -13,6 +13,7 @@
 # define START 0
 # define STR 1
 # define SPACES 2
+# define PIPE 3
 
 typedef struct s_command
 {

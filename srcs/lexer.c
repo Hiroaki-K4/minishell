@@ -62,11 +62,20 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 				}
 				split->attr = SPACES;
 			}
+			else if (trimed[i] == '|')
+				split->attr = PIPE;
 		}
-		printf("new: %s\n", (char *)new->context);
-		new->next = split;
 		split->next = NULL;
-		last->next = new;
+		if (i - pos == 0)
+		{
+			free(new);
+			last->next = split;
+		}
+		else
+		{
+			new->next = split;
+			last->next = new;
+		}
 		return (i + 1);
 	}
 	return (pos);
