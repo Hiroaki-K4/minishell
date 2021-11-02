@@ -55,7 +55,11 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			if (trimed[i] == ' ' && i > 0)
 			{
 				if (trimed[i - 1] == ' ')
-					printf("space\n");
+				{
+					free(new);
+					free(split);
+					return (i + 1);
+				}
 			}
 		}
 		printf("new: %s\n", (char *)new->context);
