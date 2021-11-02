@@ -26,22 +26,64 @@ t_command	*get_last_list(t_command *list)
 	return (list);
 }
 
-int	store_token(char *trimed, t_command **command_list, int pos, int i, int delimiter)
+int	store_token(char *trimed, t_command **command_list, int pos, int i)
 {
 	t_command	*new;
+	t_command	*split;
 	t_command	*last;
 
-	if (delimiter == 1)
+	if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 	{
 		new = (t_command *)malloc(sizeof(t_command));
 		if (!new)
 			return (-1);
+		split = (t_command *)malloc(sizeof(t_command));
+		if (!split)
+			return (-1);
 		last = get_last_list(*command_list);
-		printf("pos: %d i-pos: %d\n", pos, i - pos);
-		new->context = ft_substr(trimed, pos, i - pos);
-		printf("new: %s\n", (char *)new->context);
-		new->next = NULL;
-		last->next = new;
+		printf("pos: %d len: %d\n", pos, i - pos);
+		if (trimed[i + 1] == '\0')
+		{
+			new->context = ft_substr(trimed, pos, i + 1 - pos);
+			split->context = ft_substr(trimed, i + 1, 1);
+		}
+		else
+		{
+			new->context = ft_substr(trimed, pos, i - pos);
+			new->attr = STR;
+			split->context = ft_substr(trimed, i, 1);
+			if (trimed[i] == ' ')
+			{
+				if (trimed[i - 1] == ' ')
+				{
+					free(new);
+					free(split);
+					return (i + 1);
+				}
+				split->attr = SPACES;
+			}
+			else if (trimed[i] == '|')
+				split->attr = PIPE;
+			else if (trimed[i] == '<')
+				split->attr = REDIRECT_IN;
+			else if (trimed[i] == '>')
+				split->attr = REDIRECT_OUT;
+			else if (trimed[i] == '\'')
+				split->attr = SQUOTE;
+			else if (trimed[i] == '\"')
+				split->attr = DQUOTE;
+		}
+		split->next = NULL;
+		if (i - pos == 0)
+		{
+			free(new);
+			last->next = split;
+		}
+		else
+		{
+			new->next = split;
+			last->next = new;
+		}
 		return (i + 1);
 	}
 	return (pos);
@@ -56,15 +98,12 @@ void	tokenize(char *trimed, t_command *command_list)
 	pos = 0;
 	while (trimed[i])
 	{
-		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
-			pos = store_token(trimed, &command_list, pos, i, 1);
-		else
-			pos = store_token(trimed, &command_list, pos, i, 0);
+		pos = store_token(trimed, &command_list, pos, i);
 		i++;
 	}
 	while (command_list != NULL)
 	{
-		printf("context: %s\n", (char *)command_list->context);
+		printf("context: %s attr: %d\n", (char *)command_list->context, command_list->attr);
 		command_list = command_list->next;
 	}
 }
@@ -77,7 +116,7 @@ int	lexer(char *line)
 	trimed = delete_space(line);
 	init_command_list(&command_list);
 	tokenize(trimed, &command_list);
-	printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
-	printf("lexer: %s\n", trimed);
+	// printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
+	// printf("lexer: %s\n", trimed);
 	return (0);
 }

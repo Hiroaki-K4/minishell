@@ -11,6 +11,13 @@
 # include "../libft/libft.h"
 
 # define START 0
+# define STR 1
+# define SPACES 2
+# define PIPE 3
+# define REDIRECT_IN 4
+# define REDIRECT_OUT 5
+# define SQUOTE 6
+# define DQUOTE 7
 
 typedef struct s_command
 {
