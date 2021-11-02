@@ -66,8 +66,8 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 				split->attr = PIPE;
 			else if (trimed[i] == '<')
 				split->attr = REDIRECT_IN;
-			// else if (trimed[i] == '>')
-			// 	split->attr = REDIRECT_OUT;
+			else if (trimed[i] == '>')
+				split->attr = REDIRECT_OUT;
 		}
 		split->next = NULL;
 		if (i - pos == 0)
