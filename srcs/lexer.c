@@ -50,6 +50,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 		else
 		{
 			new->context = ft_substr(trimed, pos, i - pos);
+			new->attr = STR
 			split->context = ft_substr(trimed, i, 1);
 		}
 		printf("new: %s\n", (char *)new->context);
@@ -75,7 +76,7 @@ void	tokenize(char *trimed, t_command *command_list)
 	}
 	while (command_list != NULL)
 	{
-		printf("context: %s\n", (char *)command_list->context);
+		printf("context: %s attr: %d\n", (char *)command_list->context, command_list->attr);
 		command_list = command_list->next;
 	}
 }

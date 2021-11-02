@@ -11,6 +11,7 @@
 # include "../libft/libft.h"
 
 # define START 0
+# define STR 1
 
 typedef struct s_command
 {
