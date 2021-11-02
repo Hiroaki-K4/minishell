@@ -32,7 +32,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 	t_command	*split;
 	t_command	*last;
 
-	if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i + 1] == '\0')
+	if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i + 1] == '\0')
 	{
 		new = (t_command *)malloc(sizeof(t_command));
 		if (!new)
@@ -64,6 +64,10 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			}
 			else if (trimed[i] == '|')
 				split->attr = PIPE;
+			else if (trimed[i] == '<')
+				split->attr = REDIRECT_IN;
+			else if (trimed[i] == '>')
+				split->attr = REDIRECT_OUT;
 		}
 		split->next = NULL;
 		if (i - pos == 0)
