@@ -31,9 +31,11 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 	t_command	*new;
 	t_command	*split;
 	t_command	*last;
+	int			new_pos;
 
 	if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 	{
+		new_pos = i + 1;
 		new = (t_command *)malloc(sizeof(t_command));
 		if (!new)
 			return (-1);
@@ -41,7 +43,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 		if (!split)
 			return (-1);
 		last = get_last_list(*command_list);
-		printf("pos: %d len: %d\n", pos, i - pos);
+		// printf("pos: %d len: %d\n", pos, i - pos);
 		if (trimed[i + 1] == '\0')
 		{
 			new->context = ft_substr(trimed, pos, i + 1 - pos);
@@ -52,9 +54,15 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			new->context = ft_substr(trimed, pos, i - pos);
 			new->attr = STR;
 			if (trimed[i] == '<' && trimed[i + 1] == '<')
+			{
+				new_pos = i + 2;
 				split->context = ft_substr(trimed, i, 2);
+			}
 			else if (trimed[i] == '>' && trimed[i + 1] == '>')
+			{
+				new_pos = i + 2;
 				split->context = ft_substr(trimed, i, 2);
+			}
 			else
 				split->context = ft_substr(trimed, i, 1);
 			if (trimed[i] == ' ')
@@ -93,7 +101,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			new->next = split;
 			last->next = new;
 		}
-		return (i + 1);
+		return (new_pos);
 	}
 	return (pos);
 }
