@@ -35,7 +35,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 
 	if (trimed[*i] == '|' || trimed[*i] == ' ' || trimed[*i] == '<' || trimed[*i] == '>' || trimed[*i] == '\'' || trimed[*i] == '\"' || trimed[*(i + 1)] == '\0')
 	{
-		new_pos = i + 1;
+		new_pos = *i + 1;
 		new = (t_command *)malloc(sizeof(t_command));
 		if (!new)
 			return (-1);
