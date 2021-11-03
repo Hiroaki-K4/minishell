@@ -101,6 +101,8 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 			new->next = split;
 			last->next = new;
 		}
+		if ((trimed[*i] == '<' && trimed[*i + 1] == '<') || (trimed[*i] == '>' && trimed[*i + 1] == '>'))
+			(*i)++;
 		return (new_pos);
 	}
 	return (pos);
