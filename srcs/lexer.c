@@ -51,7 +51,12 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 		{
 			new->context = ft_substr(trimed, pos, i - pos);
 			new->attr = STR;
-			split->context = ft_substr(trimed, i, 1);
+			if (trimed[i] == '<' && trimed[i] == '<<')
+				split->context = ft_substr(trimed, i, 2);
+			else if (trimed[i] == '>' && trimed[i] == '>>')
+				split->context = ft_substr(trimed, i, 2);
+			else
+				split->context = ft_substr(trimed, i, 1);
 			if (trimed[i] == ' ')
 			{
 				if (trimed[i - 1] == ' ')
@@ -64,6 +69,10 @@ int	store_token(char *trimed, t_command **command_list, int pos, int i)
 			}
 			else if (trimed[i] == '|')
 				split->attr = PIPE;
+			else if (trimed[i] == '<' && trimed[i + 1] == '<')
+				split->attr = REDIRECT_MULTI;
+			else if (trimed[i] == '>' && trimed[i + 1] == '>')
+				split->attr = REDIRECT_APPEND;
 			else if (trimed[i] == '<')
 				split->attr = REDIRECT_IN;
 			else if (trimed[i] == '>')
