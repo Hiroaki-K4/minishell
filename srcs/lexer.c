@@ -43,22 +43,22 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 		if (!split)
 			return (-1);
 		last = get_last_list(*command_list);
-		printf("pos: %d len: %d word: %c\n", pos, i - pos, trimed[*i]);
+		printf("pos: %d len: %d word: %c\n", pos, *i - pos, trimed[*i]);
 		if (trimed[*(i + 1)] == '\0')
 		{
 			new->context = ft_substr(trimed, pos, *(i + 1) - pos);
-			split->context = ft_substr(trimed, i + 1, 1);
+			split->context = ft_substr(trimed, *(i + 1), 1);
 		}
 		else
 		{
-			new->context = ft_substr(trimed, pos, i - pos);
+			new->context = ft_substr(trimed, pos, *i - pos);
 			new->attr = STR;
-			if (trimed[i] == '<' && trimed[i + 1] == '<')
+			if (trimed[*i] == '<' && trimed[*(i + 1)] == '<')
 			{
-				new_pos = i + 1;
-				split->context = ft_substr(trimed, i, 2);
+				new_pos = *i + 1;
+				split->context = ft_substr(trimed, *i, 2);
 			}
-			else if (trimed[i] == '>' && trimed[i + 1] == '>')
+			else if (trimed[*i] == '>' && trimed[*(i + 1)] == '>')
 			{
 				new_pos = i + 1;
 				split->context = ft_substr(trimed, i, 2);
