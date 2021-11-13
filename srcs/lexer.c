@@ -110,5 +110,6 @@ int	lexer(char *line)
 	trimed = delete_space(line);
 	init_command_list(&command_list);
 	tokenize(trimed, &command_list);
+	printf("ok\n");
 	return (0);
 }
