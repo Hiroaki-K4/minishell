@@ -45,7 +45,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 		last = get_last_list(*command_list);
 		printf("pos: %d len: %d word: %c\n", pos, *i - pos, trimed[*i]);
 		printf("0: %d 1: %d 2: %d\n", *i, *(i + 1), *i + 1);
-		if (trimed[*(i + 1)] == '\0')
+		if (trimed[*i + 1] == '\0')
 		{
 			new->context = ft_substr(trimed, pos, *i + 1 - pos);
 			split->context = ft_substr(trimed, *i + 1, 1);
