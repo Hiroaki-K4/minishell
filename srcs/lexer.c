@@ -30,7 +30,6 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 {
 	t_command	*new;
 	t_command	*split;
-	// t_command	*last;
 	int			new_pos;
 
 	new_pos = *i + 1;
@@ -40,8 +39,6 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	split = (t_command *)malloc(sizeof(t_command));
 	if (!split)
 		return (-1);
-	// last = get_last_list(*command_list);
-	printf("pos: %d len: %d word: %c\n", pos, *i - pos, trimed[*i]);
 	if (trimed[*i + 1] == '\0')
 	{
 		new->context = ft_substr(trimed, pos, *i + 1 - pos);
@@ -86,6 +83,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	split->next = NULL;
 	if (i - pos == 0)
 	{
+		print("i - pos: %d str: %s\n", i - pos, trimed[*i]);
 		free(new);
 		last->next = split;
 	}
