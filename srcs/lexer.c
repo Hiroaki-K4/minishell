@@ -57,7 +57,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		if (trimed[*i] == ' ')
 		{
-			printf("*i: %d\n", i - 1);
+			// printf("*i: %d\n", *i - 1);
 			if (trimed[*i - 1] == ' ')
 			{
 				free(new);
@@ -65,7 +65,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 				return (*i + 1);
 			}
 			split->attr = SPACES;
-			printf("space\n");
+			// printf("space\n");
 		}
 		else if (trimed[*i] == '|')
 			split->attr = PIPE;
@@ -106,6 +106,7 @@ void	tokenize(char *trimed, t_command *command_list)
 	pos = 0;
 	while (trimed[i])
 	{
+		printf("start: %d\n", i);
 		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 		{
 			last = get_last_list(command_list);
