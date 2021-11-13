@@ -69,16 +69,16 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
 	}
-	if (*i - pos == 0)
-	{
-		free(new);
-		last->next = split;
-	}
-	else
-	{
+	// if (*i - pos == 0)
+	// {
+	// 	free(new);
+	// 	last->next = split;
+	// }
+	// else
+	// {
 		new->next = split;
 		last->next = new;
-	}
+	// }
 	return (new_pos);
 }
 
