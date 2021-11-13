@@ -77,22 +77,6 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		else
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
-		// if (trimed[*i] == ' ')
-		// 	split->attr = SPACES;
-		// else if (trimed[*i] == '|')
-		// 	split->attr = PIPE;
-		// else if (trimed[*i] == '<' && trimed[*i + 1] == '<')
-		// 	split->attr = REDIRECT_MULTI;
-		// else if (trimed[*i] == '>' && trimed[*i + 1] == '>')
-		// 	split->attr = REDIRECT_APPEND;
-		// else if (trimed[*i] == '<')
-		// 	split->attr = REDIRECT_IN;
-		// else if (trimed[*i] == '>')
-		// 	split->attr = REDIRECT_OUT;
-		// else if (trimed[*i] == '\'')
-		// 	split->attr = SQUOTE;
-		// else if (trimed[*i] == '\"')
-		// 	split->attr = DQUOTE;
 	}
 	split->next = NULL;
 	if (*i - pos == 0)
