@@ -26,11 +26,11 @@ t_command	*get_last_list(t_command *list)
 	return (list);
 }
 
-int	store_token(char *trimed, t_command **command_list, int pos, int *i)
+int	store_token(char *trimed, t_command *last, int pos, int *i)
 {
 	t_command	*new;
 	t_command	*split;
-	t_command	*last;
+	// t_command	*last;
 	int			new_pos;
 
 	new_pos = *i + 1;
@@ -40,7 +40,7 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 	split = (t_command *)malloc(sizeof(t_command));
 	if (!split)
 		return (-1);
-	last = get_last_list(*command_list);
+	// last = get_last_list(*command_list);
 	printf("pos: %d len: %d word: %c\n", pos, *i - pos, trimed[*i]);
 	if (trimed[*i + 1] == '\0')
 	{
@@ -94,8 +94,6 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 		new->next = split;
 		last->next = new;
 	}
-	// if ((trimed[*i] == '<' && trimed[*i + 1] == '<') || (trimed[*i] == '>' && trimed[*i + 1] == '>'))
-	// 	(*i)++;
 	return (new_pos);
 }
 
@@ -103,6 +101,7 @@ void	tokenize(char *trimed, t_command *command_list)
 {
 	int	i;
 	int	pos;
+	t_command	*last;
 
 	i = 0;
 	pos = 0;
@@ -110,7 +109,8 @@ void	tokenize(char *trimed, t_command *command_list)
 	{
 		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 		{
-			pos = store_token(trimed, &command_list, pos, &i);
+			last = get_last_list(*command_list);
+			pos = store_token(trimed, last, pos, &i);
 			if ((trimed[i] == '<' && trimed[i + 1] == '<') || (trimed[i] == '>' && trimed[i + 1] == '>'))
 				i++;
 		}
