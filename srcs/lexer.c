@@ -57,6 +57,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		if (trimed[*i] == ' ')
 		{
+			printf("*i: %d\n", i - 1);
 			if (trimed[*i - 1] == ' ')
 			{
 				free(new);
