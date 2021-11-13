@@ -109,10 +109,15 @@ void	tokenize(char *trimed, t_command *command_list)
 		printf("start: %d\n", i);
 		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 		{
-			last = get_last_list(command_list);
-			pos = store_token(trimed, last, pos, &i);
-			if ((trimed[i] == '<' && trimed[i + 1] == '<') || (trimed[i] == '>' && trimed[i + 1] == '>'))
-				i++;
+			if (trimed[i] == ' ' && trimed[i - 1] == ' ')
+				pos = i + 1;
+			else
+			{
+				last = get_last_list(command_list);
+				pos = store_token(trimed, last, pos, &i);
+				if ((trimed[i] == '<' && trimed[i + 1] == '<') || (trimed[i] == '>' && trimed[i + 1] == '>'))
+					i++;
+			}
 		}
 		i++;
 	}
