@@ -21,7 +21,3 @@ jobs:
       run: make fclean
     - name: make re
       run: make re
-    - name: run minishell
-      run: ./minishell
-    - name: exit
-      run: exit
