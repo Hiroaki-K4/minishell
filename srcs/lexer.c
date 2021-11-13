@@ -58,11 +58,6 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 				new_pos = *i + 2;
 				split->context = ft_substr(trimed, *i, 2);
 			}
-			// else if (trimed[*i] == '>' && trimed[*i + 1] == '>')
-			// {
-				// new_pos = *i + 2;
-				// split->context = ft_substr(trimed, *i, 2);
-			// }
 			else
 				split->context = ft_substr(trimed, *i, 1);
 			if (trimed[*i] == ' ')
