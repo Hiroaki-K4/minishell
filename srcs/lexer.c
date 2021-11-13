@@ -40,7 +40,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	t_command	*split;
 	int			new_pos;
 
-	printf("i: %d str: %s\n", *i, &trimed[*i]);
+	printf("i: %d pos: %d str: %s\n", *i, pos, &trimed[*i]);
 	new_pos = *i + 1;
 	new = (t_command *)malloc(sizeof(t_command));
 	if (!new)
