@@ -40,7 +40,6 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	t_command	*split;
 	int			new_pos;
 
-	printf("i: %d pos: %d str: %s\n", *i, pos, &trimed[*i]);
 	new_pos = *i + 1;
 	new = (t_command *)malloc(sizeof(t_command));
 	if (!new)
@@ -50,9 +49,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		return (-1);
 	if (trimed[*i + 1] == '\0')
 	{
-		printf("end: %s\n", &trimed[pos]);
 		new->context = ft_substr(trimed, pos, *i + 1 - pos);
-		printf("new: %s\n", (char *)new->context);
 		split->context = ft_substr(trimed, *i + 1, 1);
 		split->attr = END;
 	}
@@ -69,16 +66,8 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
 	}
-	// if (*i - pos == 0)
-	// {
-	// 	free(new);
-	// 	last->next = split;
-	// }
-	// else
-	// {
-		new->next = split;
-		last->next = new;
-	// }
+	new->next = split;
+	last->next = new;
 	return (new_pos);
 }
 
