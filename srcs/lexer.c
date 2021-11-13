@@ -55,12 +55,12 @@ int	store_token(char *trimed, t_command **command_list, int pos, int *i)
 			new->attr = STR;
 			if (trimed[*i] == '<' && trimed[*i + 1] == '<')
 			{
-				new_pos = *i + 1;
+				new_pos = *i + 2;
 				split->context = ft_substr(trimed, *i, 2);
 			}
 			else if (trimed[*i] == '>' && trimed[*i + 1] == '>')
 			{
-				new_pos = *i + 1;
+				new_pos = *i + 2;
 				split->context = ft_substr(trimed, *i, 2);
 			}
 			else
