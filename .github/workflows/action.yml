@@ -23,3 +23,5 @@ jobs:
       run: make re
     - name: run minishell
       run: ./minishell
+    - name: exit
+      run: exit
