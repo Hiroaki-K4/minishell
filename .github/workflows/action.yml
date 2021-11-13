@@ -2,7 +2,7 @@ name: MINISHELL CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
     branches: [ main, develop ]
 
@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-#     - name: configure
-#       run: ./configure
     - name: make
       run: make
     - name: make clean
@@ -23,5 +21,3 @@ jobs:
       run: make fclean
     - name: make re
       run: make re
-    - name: run minishell
-      run: ./minishell
