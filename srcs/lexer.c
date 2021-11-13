@@ -56,17 +56,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		else
 			split->context = ft_substr(trimed, *i, 1);
 		if (trimed[*i] == ' ')
-		{
-			// printf("*i: %d\n", *i - 1);
-			// if (trimed[*i - 1] == ' ')
-			// {
-			// 	free(new);
-			// 	free(split);
-			// 	return (*i + 1);
-			// }
 			split->attr = SPACES;
-			// printf("space\n");
-		}
 		else if (trimed[*i] == '|')
 			split->attr = PIPE;
 		else if (trimed[*i] == '<' && trimed[*i + 1] == '<')
