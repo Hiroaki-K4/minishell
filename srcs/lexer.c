@@ -52,7 +52,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	{
 		printf("end: %s\n", &trimed[pos]);
 		new->context = ft_substr(trimed, pos, *i + 1 - pos);
-		printf("new: %s\n", new->context);
+		printf("new: %s\n", (char *)new->context);
 		split->context = ft_substr(trimed, *i + 1, 1);
 		split->attr = END;
 	}
