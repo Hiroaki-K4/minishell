@@ -44,7 +44,7 @@ t_command	*decide_attr(t_command *split, char word)
 		split->attr = SQUOTE;
 	else if (word == '\"')
 		split->attr = DQUOTE;
-	return (split)
+	return (split);
 }
 
 int	store_token(char *trimed, t_command *last, int pos, int *i)
