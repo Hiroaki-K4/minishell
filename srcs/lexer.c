@@ -81,9 +81,9 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->attr = DQUOTE;
 	}
 	split->next = NULL;
-	if (i - pos == 0)
+	if (*i - pos == 0)
 	{
-		printf("i - pos: %d str: %c\n", i - pos, trimed[*i]);
+		printf("i - pos: %d str: %c\n", *i - pos, trimed[*i]);
 		free(new);
 		last->next = split;
 	}
