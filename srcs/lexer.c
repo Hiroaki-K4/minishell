@@ -65,6 +65,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	{
 		new->context = ft_substr(trimed, pos, *i + 1 - pos);
 		split->context = ft_substr(trimed, *i + 1, 1);
+		split->attr = END;
 	}
 	else
 	{
@@ -79,7 +80,6 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
 	}
-	// split->next = NULL;
 	if (*i - pos == 0)
 	{
 		free(new);
@@ -103,7 +103,6 @@ void	tokenize(char *trimed, t_command *command_list)
 	pos = 0;
 	while (trimed[i])
 	{
-		printf("start: %d\n", i);
 		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 		{
 			if (trimed[i] == ' ' && trimed[i - 1] == ' ')
