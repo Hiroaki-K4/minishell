@@ -50,7 +50,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		return (-1);
 	if (trimed[*i + 1] == '\0')
 	{
-		printf("end\n");
+		printf("end: %s\n", &trimed[pos]);
 		new->context = ft_substr(trimed, pos, *i + 1 - pos);
 		split->context = ft_substr(trimed, *i + 1, 1);
 		split->attr = END;
