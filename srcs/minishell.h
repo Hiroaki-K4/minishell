@@ -20,6 +20,7 @@
 # define REDIRECT_APPEND 7
 # define SQUOTE 8
 # define DQUOTE 9
+# define END 10
 
 typedef struct s_command
 {
