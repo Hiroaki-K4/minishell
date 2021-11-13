@@ -100,7 +100,7 @@ void	tokenize(char *trimed, t_command *command_list)
 
 	i = 0;
 	pos = 0;
-	while (trimed[i++])
+	while (trimed[i])
 	{
 		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
 		{
@@ -114,7 +114,7 @@ void	tokenize(char *trimed, t_command *command_list)
 					i++;
 			}
 		}
-		// i++;
+		i++;
 	}
 	while (command_list != NULL)
 	{
