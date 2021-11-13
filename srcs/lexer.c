@@ -64,6 +64,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 				return (*i + 1);
 			}
 			split->attr = SPACES;
+			printf("space\n");
 		}
 		else if (trimed[*i] == '|')
 			split->attr = PIPE;
