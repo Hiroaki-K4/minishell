@@ -29,6 +29,8 @@ typedef struct s_command
 	struct s_command	*next;
 }	t_command;
 
-int	lexer(char *command);
+int			lexer(char *command);
+void		init_command_list(t_command *command_list);
+t_command	*get_last_list(t_command *list);
 
 #endif
