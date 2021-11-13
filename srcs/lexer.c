@@ -26,7 +26,7 @@ t_command	*get_last_list(t_command *list)
 	return (list);
 }
 
-t_command	*decide_attr(t_command *split, char *word)
+t_command	*decide_attr(t_command *split, char word)
 {
 	if (word == ' ')
 		split->attr = SPACES;
