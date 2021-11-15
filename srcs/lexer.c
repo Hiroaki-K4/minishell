@@ -57,7 +57,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	else
 	{
 		new->context = ft_substr(trimed, pos, *i - pos);
-		printf("*i - pos: %d\n", *i - pos);
+		// printf("*i - pos: %d\n", *i - pos);
 		new->attr = STR;
 		if ((trimed[*i] == '<' && trimed[*i + 1] == '<') || (trimed[*i] == '>' && trimed[*i + 1] == '>'))
 		{
@@ -68,7 +68,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
 	}
-	if (ft_strncmp((char *)new->context, " ", 1) != 0 && new->attr == STR)
+	if (new->context == '\0' && new->attr == STR)
 	{
 		printf("error: %s and %s\n", (char *)new->context, " ");
 		free(new);
