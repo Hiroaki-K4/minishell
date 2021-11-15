@@ -77,8 +77,6 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		new->next = split;
 		last->next = new;
 	}
-	// printf("new_context: %s\n", (char *)new->context);
-	// (void)last;
 	return (new_pos);
 }
 
