@@ -67,17 +67,18 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
 	}
-	// if ((char)new->context == ' ' && new->attr == STR)
-	// {
-	// 	free(new);
-	// 	last->next = split;
-	// }
-	// else
-	// {
-	// 	new->next = split;
-	// 	last->next = new;
-	// }
-	printf("new_context: %s\n", (char *)new->context);
+	if ((char *)new->context == " " && new->attr == STR)
+	{
+		free(new);
+		last->next = split;
+	}
+	else
+	{
+		new->next = split;
+		last->next = new;
+	}
+	// printf("new_context: %s\n", (char *)new->context);
+	// (void)last;
 	return (new_pos);
 }
 
