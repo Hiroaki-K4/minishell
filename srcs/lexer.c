@@ -67,9 +67,9 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 			split->context = ft_substr(trimed, *i, 1);
 		split = decide_attr(split, trimed[*i]);
 	}
-	if (ft_strncmp((char *)new->context, " ", 1) != 0 && new->attr == STR)
+	if (ft_strncmp((char *)new->context, " ", 1) == 0 && new->attr == STR)
 	{
-		printf("error\n");
+		printf("error: %s and %s\n", (char *)new->context, " ");
 		free(new);
 		last->next = split;
 	}
