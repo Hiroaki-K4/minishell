@@ -57,6 +57,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	else
 	{
 		new->context = ft_substr(trimed, pos, *i - pos);
+		printf("*i - pos: %d\n", *i - pos);
 		new->attr = STR;
 		if ((trimed[*i] == '<' && trimed[*i + 1] == '<') || (trimed[*i] == '>' && trimed[*i + 1] == '>'))
 		{
