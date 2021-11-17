@@ -53,6 +53,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		new->attr = STR;
 		split->context = ft_substr(trimed, *i + 1, 1);
 		split->attr = END;
+		split->next = NULL;
 	}
 	else
 	{
