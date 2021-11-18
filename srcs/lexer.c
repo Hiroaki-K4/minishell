@@ -97,7 +97,7 @@ void	tokenize(char *trimed, t_command **command_list)
 				pos = i + 1;
 			else
 			{
-				last = get_last_list(command_list);
+				last = get_last_list(*command_list);
 				pos = store_token(trimed, last, pos, &i);
 				if ((trimed[i] == '<' && trimed[i + 1] == '<') || (trimed[i] == '>' && trimed[i + 1] == '>'))
 					i++;
