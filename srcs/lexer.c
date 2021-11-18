@@ -117,8 +117,8 @@ int	lexer(char *line)
 	tokenize(trimed, &command_list);
 	while (command_list != NULL)
 	{
-		printf("context: %s attr: %d\n", (char *)command_list->context, command_list->attr);
-		command_list = command_list->next;
+		printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
+		command_list = command_list.next;
 	}
 	return (0);
 }
