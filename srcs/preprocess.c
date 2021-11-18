@@ -107,6 +107,12 @@ void	tokenize(char *trimed, t_command **command_list)
 	}
 }
 
+void	parser(t_command **command_list)
+{
+	(void)command_list;
+	printf("parser\n");
+}
+
 int	preprocess(char *line)
 {
 	char *trimed;
@@ -115,6 +121,7 @@ int	preprocess(char *line)
 	trimed = delete_space(line);
 	init_command_list(&command_list);
 	tokenize(trimed, &command_list);
+	parser(&command_list);
 	while (command_list != NULL)
 	{
 		printf("context: %s attr: %d\n", (char *)command_list->context, command_list->attr);
