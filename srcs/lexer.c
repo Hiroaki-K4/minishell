@@ -118,7 +118,7 @@ int	lexer(char *line)
 	while (command_list.next != NULL)
 	{
 		printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
-		command_list = command_list.next;
+		&command_list = command_list.next;
 	}
 	return (0);
 }
