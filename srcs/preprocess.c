@@ -107,7 +107,7 @@ void	tokenize(char *trimed, t_command **command_list)
 	}
 }
 
-int	lexer(char *line)
+int	preprocess(char *line)
 {
 	char *trimed;
 	t_command	*command_list;
