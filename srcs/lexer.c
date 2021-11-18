@@ -115,10 +115,10 @@ int	lexer(char *line)
 	trimed = delete_space(line);
 	init_command_list(&command_list);
 	tokenize(trimed, &command_list);
-	while (command_list.next != NULL)
+	while (&command_list != NULL)
 	{
 		printf("context: %s attr: %d\n", (char *)command_list.context, command_list.attr);
-		*command_list = command_list.next;
+		command_list = command_list.next;
 	}
 	return (0);
 }
