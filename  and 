@@ -54,3 +54,6 @@ make[1]: Leaving directory '/home/hiroaki-k4/my_project/42/minishell/libft'
 rm -f srcs/main.o srcs/preprocess.o srcs/operate_list.o
 rm -f libft/libft.a
 rm -f minishell
+[develop 86dbb0d] Fix decide_attr function for
+ 2 files changed, 67 insertions(+), 11 deletions(-)
+ create mode 100644  and 
