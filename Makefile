@@ -11,7 +11,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -g -Wall -Wextra -Werror $(INCLUDE)
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
 
 LIBFT = libft
 

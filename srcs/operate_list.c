@@ -2,7 +2,7 @@
 
 void	init_command_list(t_command **command_list)
 {
-	(*command_list)->context = ft_strdup("");
+	(*command_list)->context = "";
 	(*command_list)->attr = START;
 	(*command_list)->next = NULL;
 }
