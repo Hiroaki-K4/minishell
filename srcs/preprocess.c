@@ -12,26 +12,28 @@ char	*delete_space(char *command)
 	return (trimed2);
 }
 
-t_command	*decide_attr(t_command *split, char word)
+t_command	*decide_attr(t_command *token, char word)
 {
 	if (word == ' ')
-		split->attr = SPACES;
+		token->attr = SPACES;
 	else if (word == '|')
-		split->attr = PIPE;
+		token->attr = PIPE;
 	else if (word == '<' && word == '<')
-		split->attr = REDIRECT_MULTI;
+		token->attr = REDIRECT_MULTI;
 	else if (word == '>' && word == '>')
-		split->attr = REDIRECT_APPEND;
+		token->attr = REDIRECT_APPEND;
 	else if (word == '<')
-		split->attr = REDIRECT_IN;
+		token->attr = REDIRECT_IN;
 	else if (word == '>')
-		split->attr = REDIRECT_OUT;
+		token->attr = REDIRECT_OUT;
 	else if (word == '\'')
-		split->attr = SQUOTE;
+		token->attr = SQUOTE;
 	else if (word == '\"')
-		split->attr = DQUOTE;
-	split->next = NULL;
-	return (split);
+		token->attr = DQUOTE;
+	else
+		token->attr = STR;
+	token->next = NULL;
+	return (token);
 }
 
 int	store_token(char *trimed, t_command *last, int pos, int *i)
