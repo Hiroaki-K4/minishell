@@ -13,11 +13,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: make
-      run: make
-    - name: make clean
-      run: make clean
-    - name: make fclean
-      run: make fclean
-    - name: make re
-      run: make re
+    - name: test
+      run: bash test.sh
