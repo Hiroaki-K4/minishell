@@ -124,6 +124,8 @@ int	preprocess(char *line)
 	if (!(command_list = (t_command *)malloc(sizeof(t_command))))
 		return (-1);
 	command_list = init_command_list();
+	if (!command_list)
+		return (-1);
 	tokenize(trimed, &command_list);
 	parser(&command_list);
 	while (command_list != NULL)

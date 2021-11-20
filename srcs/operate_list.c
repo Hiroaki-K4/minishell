@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// void	init_command_list(t_command **command_list)
 t_command	*init_command_list()
 {
 	t_command	*command_list;
