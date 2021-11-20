@@ -112,7 +112,7 @@ void	tokenize(char *trimed, t_command **command_list)
 void	parser(t_command **command_list)
 {
 	(void)command_list;
-	printf("parser\n");
+	// printf("parser\n");
 }
 
 int	preprocess(char *line)
@@ -121,7 +121,9 @@ int	preprocess(char *line)
 	t_command	*command_list;
 
 	trimed = delete_space(line);
-	init_command_list(&command_list);
+	if (!(command_list = (t_command *)malloc(sizeof(t_command))))
+		return (-1);
+	command_list = init_command_list();
 	tokenize(trimed, &command_list);
 	parser(&command_list);
 	while (command_list != NULL)
