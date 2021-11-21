@@ -24,7 +24,7 @@
 
 typedef struct s_command
 {
-	void			*context;
+	char			*content;
 	int				attr;
 	struct s_command	*next;
 }	t_command;
