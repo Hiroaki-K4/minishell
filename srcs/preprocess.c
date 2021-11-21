@@ -12,23 +12,23 @@ char	*delete_space(char *command)
 	return (trimed2);
 }
 
-t_command	*decide_attr(t_command *token, char word)
+t_command	*decide_attr(t_command *token, char *trimed, int *i)
 {
-	if (word == ' ')
+	if (trimed[*i] == ' ')
 		token->attr = SPACES;
-	else if (word == '|')
+	else if (trimed[*i] == '|')
 		token->attr = PIPE;
-	else if (word == '<' && word == '<')
+	else if (trimed[*i] == '<' && trimed[*i + 1] == '<')
 		token->attr = REDIRECT_MULTI;
-	else if (word == '>' && word == '>')
+	else if (trimed[*i] == '>' && trimed[*i + 1] == '>')
 		token->attr = REDIRECT_APPEND;
-	else if (word == '<')
+	else if (trimed[*i] == '<')
 		token->attr = REDIRECT_IN;
-	else if (word == '>')
+	else if (trimed[*i] == '>')
 		token->attr = REDIRECT_OUT;
-	else if (word == '\'')
+	else if (trimed[*i] == '\'')
 		token->attr = SQUOTE;
-	else if (word == '\"')
+	else if (trimed[*i] == '\"')
 		token->attr = DQUOTE;
 	else
 		token->attr = STR;
@@ -52,7 +52,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 	if (trimed[*i + 1] == '\0')
 	{
 		new->context = ft_substr(trimed, pos, *i + 1 - pos);
-		new = decide_attr(new, trimed[*i]);
+		new = decide_attr(new, trimed, i);
 		split->context = ft_substr(trimed, *i + 1, 1);
 		split->attr = END;
 		split->next = NULL;
@@ -68,7 +68,7 @@ int	store_token(char *trimed, t_command *last, int pos, int *i)
 		}
 		else
 			split->context = ft_substr(trimed, *i, 1);
-		split = decide_attr(split, trimed[*i]);
+		split = decide_attr(split, trimed, i);
 	}
 	if (ft_strncmp((char *)new->context, "\0", 1) == 0 && new->attr == STR)
 	{
@@ -112,7 +112,7 @@ void	tokenize(char *trimed, t_command **command_list)
 void	parser(t_command **command_list)
 {
 	(void)command_list;
-	printf("parser\n");
+	// printf("parser\n");
 }
 
 int	preprocess(char *line)
@@ -121,7 +121,9 @@ int	preprocess(char *line)
 	t_command	*command_list;
 
 	trimed = delete_space(line);
-	init_command_list(&command_list);
+	command_list = init_command_list();
+	if (!command_list)
+		return (-1);
 	tokenize(trimed, &command_list);
 	parser(&command_list);
 	while (command_list != NULL)
