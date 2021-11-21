@@ -36,9 +36,16 @@ t_command	*decide_attr(t_command *token, char *trimed, int *i)
 	return (token);
 }
 
-int	store_token(char *trimed, t_list *last, int pos, int *i)
+void	clear_list(void *content)
+{
+	(void)content;
+}
+
+int	store_token(char *trimed, t_list **command_list, int pos, int *i)
 {
 	int			new_pos;
+	t_list		*new_list;
+	t_list		*split_list;
 	t_command	*new;
 	t_command	*split;
 
@@ -73,12 +80,15 @@ int	store_token(char *trimed, t_list *last, int pos, int *i)
 	if (ft_strncmp((char *)new->content, "\0", 1) == 0 && new->attr == STR)
 	{
 		free(new);
-		last->next = split;
+		new_list = ft_lstnew(split);
+		ft_lstadd_back(command_list, new_list);
 	}
 	else
 	{
-		new->next = split;
-		last->next = new;
+		new_list = ft_lstnew(new);
+		ft_lstadd_back(command_list, new_list);
+		split_list = ft_lstnew(split);
+		ft_lstadd_back(command_list, split_list);
 	}
 	return (new_pos);
 }
@@ -87,7 +97,6 @@ void	tokenize(char *trimed, t_list **command_list)
 {
 	int		i;
 	int		pos;
-	t_list	*last;
 
 	i = 0;
 	pos = 0;
@@ -99,9 +108,7 @@ void	tokenize(char *trimed, t_list **command_list)
 				pos = i + 1;
 			else
 			{
-				// last = get_last_list(*command_list);
-				last = ft_lstlast(*command_list);
-				pos = store_token(trimed, last, pos, &i);
+				pos = store_token(trimed, command_list, pos, &i);
 				if ((trimed[i] == '<' && trimed[i + 1] == '<') || (trimed[i] == '>' && trimed[i + 1] == '>'))
 					i++;
 			}
@@ -110,10 +117,17 @@ void	tokenize(char *trimed, t_list **command_list)
 	}
 }
 
-void	parser(t_command **command_list)
+void	parser(t_list **command_list)
 {
 	(void)command_list;
-	// printf("parser\n");
+}
+
+void	output_result(void *content)
+{
+	t_command *command;
+
+	command = content;
+	printf("content: %s attr: %d\n", (char *)command->content, command->attr);
 }
 
 int	preprocess(char *line)
@@ -129,10 +143,6 @@ int	preprocess(char *line)
 		return (-1);
 	tokenize(trimed, &command_list);
 	parser(&command_list);
-	while (command_list != NULL)
-	{
-		printf("content: %s attr: %d\n", (char *)command_list->content, command_list->attr);
-		command_list = command_list->next;
-	}
+	ft_lstiter(command_list, output_result);
 	return (0);
 }
