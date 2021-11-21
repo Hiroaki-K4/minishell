@@ -121,7 +121,7 @@ void	output_result(void *content)
 {
 	t_command *command;
 
-	command = content;
+	command = (t_command *)content;
 	printf("content: %s attr: %d\n", (char *)command->content, command->attr);
 }
 
@@ -132,7 +132,7 @@ int	preprocess(char *line)
 	t_command	*content;
 
 	trimed = delete_space(line);
-	content = init_command_list();
+	content = init_content();
 	command_list = ft_lstnew(content);
 	if (!command_list)
 		return (-1);
