@@ -36,11 +36,6 @@ t_command	*decide_attr(t_command *token, char *trimed, int *i)
 	return (token);
 }
 
-void	clear_list(void *content)
-{
-	(void)content;
-}
-
 int	store_token(char *trimed, t_list **command_list, int pos, int *i)
 {
 	int			new_pos;
