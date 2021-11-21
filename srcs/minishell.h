@@ -24,13 +24,13 @@
 
 typedef struct s_command
 {
-	void			*context;
+	char			*content;
 	int				attr;
 	struct s_command	*next;
 }	t_command;
 
 int			preprocess(char *command);
-t_command	*init_command_list();
+t_command	*init_content();
 t_command	*get_last_list(t_command *list);
 
 #endif

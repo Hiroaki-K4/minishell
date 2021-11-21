@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-t_command	*init_command_list()
+t_command	*init_content()
 {
-	t_command	*command_list;
+	t_command	*content;
 
-	if (!(command_list = (t_command *)malloc(sizeof(t_command))))
+	if (!(content = (t_command *)malloc(sizeof(t_command))))
 		return (NULL);
-	command_list->context = "";
-	command_list->attr = START;
-	command_list->next = NULL;
-	return (command_list);
+	content->content = "";
+	content->attr = START;
+	content->next = NULL;
+	return (content);
 }
 
 t_command	*get_last_list(t_command *list)
