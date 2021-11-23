@@ -17,7 +17,6 @@ int		check_builtin(char *command)
 	return (0);
 }
 
-
 int	run_command(char *command, char *envp[])
 {
 	pid_t	pid;

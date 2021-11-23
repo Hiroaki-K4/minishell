@@ -11,10 +11,3 @@ t_command	*init_content()
 	content->next = NULL;
 	return (content);
 }
-
-t_command	*get_last_list(t_command *list)
-{
-	while (list->next != NULL)
-		list = list->next;
-	return (list);
-}

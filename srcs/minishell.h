@@ -30,7 +30,7 @@ typedef struct s_command
 }	t_command;
 
 int			preprocess(char *command);
+int			store_token(char *trimed, t_list **command_list, int pos, int *i);
 t_command	*init_content();
-t_command	*get_last_list(t_command *list);
 
 #endif
