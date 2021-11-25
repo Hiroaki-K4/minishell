@@ -1,5 +1,8 @@
 SRC_DIR := ./srcs
-SRC := main.c preprocess.c operate_list.c
+SRC := main.c \
+	   preprocess.c \
+	   tokenize.c \
+	   operate_list.c
 SRCS := $(addprefix $(SRC_DIR)/,$(notdir $(SRC)))
 
 OBJ_DIR := ./.objects

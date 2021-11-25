@@ -10,6 +10,11 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+# define TRUE 1
+# define FALSE 0
+# define SUCCESS 0
+# define FAIL 1
+
 # define START 0
 # define STR 1
 # define SPACES 2
@@ -24,13 +29,14 @@
 
 typedef struct s_command
 {
-	char			*content;
-	int				attr;
+	char				*content;
+	int					attr;
 	struct s_command	*next;
 }	t_command;
 
+void		tokenize(char *line, t_list **command_list);
 int			preprocess(char *command);
-t_command	*init_content();
+t_command	*init_content(void);
 t_command	*get_last_list(t_command *list);
 
 #endif

@@ -1,10 +1,11 @@
 #include "minishell.h"
 
-t_command	*init_content()
+t_command	*init_content(void)
 {
 	t_command	*content;
 
-	if (!(content = (t_command *)malloc(sizeof(t_command))))
+	content = (t_command *)malloc(sizeof(t_command));
+	if (content == NULL)
 		return (NULL);
 	content->content = "";
 	content->attr = START;
