@@ -1,36 +1,37 @@
-#Makefile
-SRCS = srcs/main.c srcs/lexer.c srcs/operate_list.c
+SRC_DIR := ./srcs
+SRC = main.c lexer.c operate_list.c
+SRCS := $(addprefix $(SRC_DIR)/,$(notdir $(SRC)))
 
-OBJS = $(SRCS:.c=.o)
+OBJ_DIR := ./.objects
+OBJS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.o)))
 
-INCLUDE	= -I$(shell brew --prefix readline)/include
-
+INCLUDE = -I$(shell brew --prefix readline)/include
 LDFLAGS = libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 NAME = minishell
 
 CC = gcc
-
-CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
+CFLAGS = -g -Wall -Wextra -Werror $(INCLUDE)
 
 LIBFT = libft
 
 all: $(NAME)
 
-c.o:
-	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@-mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME):$(OBJS)
-		make -C $(LIBFT)
-		$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+	make -C $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
 clean:
 	make clean -C $(LIBFT)
 	rm -f $(OBJS)
 
 fclean: clean
-		rm -f libft/libft.a
-		rm -f $(NAME)
+	rm -f libft/libft.a
+	rm -f $(NAME)
 
 re: fclean all
 
