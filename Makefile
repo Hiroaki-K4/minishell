@@ -27,7 +27,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT)
-	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 clean:
 	@make clean -C $(LIBFT)
