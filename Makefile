@@ -1,37 +1,42 @@
-#Makefile
-SRCS = srcs/main.c srcs/preprocess.c srcs/operate_list.c
+SRC_DIR := ./srcs
+SRC := main.c preprocess.c operate_list.c
+SRCS := $(addprefix $(SRC_DIR)/,$(notdir $(SRC)))
 
-OBJS = $(SRCS:.c=.o)
+OBJ_DIR := ./.objects
+OBJS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.o)))
 
-INCLUDE	= -I$(shell brew --prefix readline)/include
+DEPS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.d)))
 
+INCLUDE = -I$(shell brew --prefix readline)/include
 LDFLAGS = libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
-NAME = minishell
+NAME := minishell
 
-CC = gcc
+CC := gcc
+CFLAGS := -g -Wall -Wextra -Werror -MMD -MP
 
-CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
-
-LIBFT = libft
+LIBFT := libft
 
 all: $(NAME)
 
-c.o:
-	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@-mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-$(NAME):$(OBJS)
-		make -C $(LIBFT)
-		$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS)
+	make -C $(LIBFT)
+	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	make clean -C $(LIBFT)
-	rm -f $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-		rm -f libft/libft.a
-		rm -f $(NAME)
+	$(RM) libft/libft.a
+	$(RM) $(NAME)
 
 re: fclean all
+
+-include $(DEPS)
 
 .PHONY: all, clean, fclean, re
