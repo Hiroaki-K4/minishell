@@ -1,3 +1,4 @@
+*.d
 *.o
 minishell
 libft.a
