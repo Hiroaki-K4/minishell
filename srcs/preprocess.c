@@ -21,7 +21,7 @@ int	preprocess(char *line)
 
 	content = init_content();
 	command_list = ft_lstnew(content);
-	if (command_list == NULL || content->content == NULL)
+	if (command_list == NULL || command_list->content == NULL)
 		return (FAIL);
 	trimed = ft_strtrim(line, " \t");
 	tokenize(trimed, &command_list);

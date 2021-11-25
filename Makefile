@@ -27,11 +27,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS)
-	make -C $(LIBFT)
+	@make -C $(LIBFT)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
 
 clean:
-	make clean -C $(LIBFT)
+	@make clean -C $(LIBFT)
 	$(RM) $(OBJS)
 
 fclean: clean

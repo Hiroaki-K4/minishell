@@ -11,7 +11,7 @@ int	is_quotes(char c)
 	return (c == '\'' || c == '\"');
 }
 
-int	is_separate_character(char c)
+int	is_separating_character(char c)
 {
 	return (is_metacharacter(c) || is_quotes(c));
 }
@@ -40,7 +40,7 @@ t_command	*decide_attr(t_command *token, char *trimed, int *i)
 	return (token);
 }
 
-int	store_token(char *trimed, t_list **command_list, int pos, int *i)
+int	store_token(char *line, t_list **command_list, int pos, int *i)
 {
 	int			new_pos;
 	t_list		*new_list;
@@ -50,32 +50,32 @@ int	store_token(char *trimed, t_list **command_list, int pos, int *i)
 
 	new_pos = *i + 1;
 	new = (t_command *)malloc(sizeof(t_command));
-	if (!new)
-		return (-1);
+	if (new == NULL)
+		return (FAIL);
 	split = (t_command *)malloc(sizeof(t_command));
-	if (!split)
-		return (-1);
-	if (trimed[*i + 1] == '\0')
+	if (split == NULL)
+		return (FAIL);
+	if (line[*i + 1] == '\0')
 	{
-		new->content = ft_substr(trimed, pos, *i + 1 - pos);
-		new = decide_attr(new, trimed, i);
-		split->content = ft_substr(trimed, *i + 1, 1);
+		new->content = ft_substr(line, pos, *i + 1 - pos);
+		new = decide_attr(new, line, i);
+		split->content = ft_substr(line, *i + 1, 1);
 		split->attr = END;
 		split->next = NULL;
 	}
 	else
 	{
-		new->content = ft_substr(trimed, pos, *i - pos);
+		new->content = ft_substr(line, pos, *i - pos);
 		new->attr = STR;
-		if ((trimed[*i] == '<' && trimed[*i + 1] == '<')
-			|| (trimed[*i] == '>' && trimed[*i + 1] == '>'))
+		if ((line[*i] == '<' && line[*i + 1] == '<')
+			|| (line[*i] == '>' && line[*i + 1] == '>'))
 		{
 			new_pos = *i + 2;
-			split->content = ft_substr(trimed, *i, 2);
+			split->content = ft_substr(line, *i, 2);
 		}
 		else
-			split->content = ft_substr(trimed, *i, 1);
-		split = decide_attr(split, trimed, i);
+			split->content = ft_substr(line, *i, 1);
+		split = decide_attr(split, line, i);
 	}
 	if (ft_strncmp((char *)new->content, "\0", 1) == 0 && new->attr == STR)
 	{

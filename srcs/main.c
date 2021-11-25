@@ -99,5 +99,5 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	if (argc == 1)
 		minishell(envp);
-	return (0);
+	return (EXIT_SUCCESS);
 }
