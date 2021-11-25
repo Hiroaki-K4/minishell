@@ -17,12 +17,8 @@ int	preprocess(char *line)
 {
 	char		*trimed;
 	t_list		*command_list;
-	t_command	*content;
 
-	content = init_content();
-	command_list = ft_lstnew(content);
-	if (command_list == NULL || command_list->content == NULL)
-		return (FAIL);
+	command_list = NULL;
 	trimed = ft_strtrim(line, " \t");
 	tokenize(trimed, &command_list);
 	parse(&command_list);

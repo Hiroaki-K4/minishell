@@ -13,24 +13,27 @@
 # define TRUE 1
 # define FALSE 0
 # define SUCCESS 0
-# define FAIL 1
+# define FAIL -1
 
-# define START 0
-# define STR 1
-# define SPACES 2
-# define PIPE 3
-# define REDIRECT_IN 4
-# define REDIRECT_OUT 5
-# define REDIRECT_MULTI 6
-# define REDIRECT_APPEND 7
-# define SQUOTE 8
-# define DQUOTE 9
-# define END 10
+typedef enum e_token_kind
+{
+	TK_WORD,
+	TK_SPACE,
+	TK_PIPE,
+	TK_REDIRECT_IN,
+	TK_REDIRECT_OUT,
+	TK_REDIRECT_MULTI,
+	TK_REDIRECT_APPEND,
+	TK_PARENTHESIS,
+	TK_SINGLE_QUOTE,
+	TK_DOUBLE_QUOTE,
+	TK_SEMICOLON
+}	t_token_kind;
 
 typedef struct s_command
 {
-	char				*content;
 	int					attr;
+	char				*content;
 	struct s_command	*next;
 }	t_command;
 

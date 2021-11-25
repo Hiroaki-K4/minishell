@@ -3,7 +3,8 @@
 int	is_metacharacter(char c)
 {
 	return (c == ' ' || c == '\n' || c == '\t'
-		|| c == '|' || c == '<' || c == '>');
+		|| c == '|' || c == '<' || c == '>'
+		|| c == '(' || c == ')' || c == ';');
 }
 
 int	is_quotes(char c)
@@ -16,104 +17,99 @@ int	is_separating_character(char c)
 	return (is_metacharacter(c) || is_quotes(c));
 }
 
-t_command	*decide_attr(t_command *token, char *trimed, int *i)
+t_token_kind	decide_attr(char *line, int pos)
 {
-	if (trimed[*i] == ' ')
-		token->attr = SPACES;
-	else if (trimed[*i] == '|')
-		token->attr = PIPE;
-	else if (trimed[*i] == '<' && trimed[*i + 1] == '<')
-		token->attr = REDIRECT_MULTI;
-	else if (trimed[*i] == '>' && trimed[*i + 1] == '>')
-		token->attr = REDIRECT_APPEND;
-	else if (trimed[*i] == '<')
-		token->attr = REDIRECT_IN;
-	else if (trimed[*i] == '>')
-		token->attr = REDIRECT_OUT;
-	else if (trimed[*i] == '\'')
-		token->attr = SQUOTE;
-	else if (trimed[*i] == '\"')
-		token->attr = DQUOTE;
+	t_token_kind	token_kind;
+
+	if (line[pos] == ' ')
+		token_kind = TK_SPACE;
+	else if (line[pos] == '|')
+		token_kind = TK_PIPE;
+	else if (line[pos] == '<' && line[pos + 1] == '<')
+		token_kind = TK_REDIRECT_MULTI;
+	else if (line[pos] == '>' && line[pos + 1] == '>')
+		token_kind = TK_REDIRECT_APPEND;
+	else if (line[pos] == '<')
+		token_kind = TK_REDIRECT_IN;
+	else if (line[pos] == '>')
+		token_kind = TK_REDIRECT_OUT;
+	else if (line[pos] == '\'')
+		token_kind = TK_SINGLE_QUOTE;
+	else if (line[pos] == '\"')
+		token_kind = TK_DOUBLE_QUOTE;
+	else if (line[pos] == ';')
+		token_kind = TK_SEMICOLON;
 	else
-		token->attr = STR;
-	token->next = NULL;
-	return (token);
+		token_kind = TK_WORD;
+	return (token_kind);
 }
 
-int	store_token(char *line, t_list **command_list, int pos, int *i)
+int	store_operator(char *line, t_list **token_list, size_t pos)
 {
-	int			new_pos;
-	t_list		*new_list;
-	t_list		*split_list;
-	t_command	*new;
-	t_command	*split;
+	size_t		i;
+	t_list		*new_node;
+	t_command	*new_token;
 
-	new_pos = *i + 1;
-	new = (t_command *)malloc(sizeof(t_command));
-	if (new == NULL)
+	i = 1;
+	new_token = (t_command *)malloc(sizeof(t_command));
+	if (new_token == NULL)
 		return (FAIL);
-	split = (t_command *)malloc(sizeof(t_command));
-	if (split == NULL)
+	if ((line[pos] == '<' && line[pos + i] == '<')
+		|| (line[pos] == '>' && line[pos + i] == '>'))
+		new_token->content = ft_substr(line, pos, i + 1);
+	else
+		new_token->content = ft_substr(line, pos, i);
+	new_token->attr = decide_attr(line, pos);
+	new_token->next = NULL;
+	new_node = ft_lstnew(new_token);
+	if (new_node == NULL)
 		return (FAIL);
-	if (line[*i + 1] == '\0')
-	{
-		new->content = ft_substr(line, pos, *i + 1 - pos);
-		new = decide_attr(new, line, i);
-		split->content = ft_substr(line, *i + 1, 1);
-		split->attr = END;
-		split->next = NULL;
-	}
-	else
-	{
-		new->content = ft_substr(line, pos, *i - pos);
-		new->attr = STR;
-		if ((line[*i] == '<' && line[*i + 1] == '<')
-			|| (line[*i] == '>' && line[*i + 1] == '>'))
-		{
-			new_pos = *i + 2;
-			split->content = ft_substr(line, *i, 2);
-		}
-		else
-			split->content = ft_substr(line, *i, 1);
-		split = decide_attr(split, line, i);
-	}
-	if (ft_strncmp((char *)new->content, "\0", 1) == 0 && new->attr == STR)
-	{
-		free(new);
-		new_list = ft_lstnew(split);
-		ft_lstadd_back(command_list, new_list);
-	}
-	else
-	{
-		new_list = ft_lstnew(new);
-		ft_lstadd_back(command_list, new_list);
-		split_list = ft_lstnew(split);
-		ft_lstadd_back(command_list, split_list);
-	}
-	return (new_pos);
+	ft_lstadd_back(token_list, new_node);
+	return (pos + i);
 }
 
-void	tokenize(char *line, t_list **command_list)
+int store_word(char *line, t_list **token_list, size_t pos)
 {
-	int		i;
-	int		pos;
+	size_t		i;
+	t_list		*new_node;
+	t_command	*new_token;
 
 	i = 0;
-	pos = 0;
-	while (line[i])
+	new_token = (t_command *)malloc(sizeof(t_command));
+	if (new_token == NULL)
+		return (FAIL);
+	while (line[pos + i])
 	{
-		if (is_metacharacter(line[i]) || line[i + 1] == '\0')
-		{
-			if (line[i] == ' ' && line[i - 1] == ' ')
-				pos = i + 1;
-			else
-			{
-				pos = store_token(line, command_list, pos, &i);
-				if ((line[i] == '<' && line[i + 1] == '<')
-					|| (line[i] == '>' && line[i + 1] == '>'))
-					i++;
-			}
-		}
+		if (is_metacharacter(line[pos + i]))
+			break ;
 		i++;
+	}
+	new_token->content = ft_substr(line, pos, i);
+	new_token->attr = decide_attr(line, pos);
+	new_token->next = NULL;
+	new_node = ft_lstnew(new_token);
+	if (new_node == NULL)
+		return (FAIL);
+	ft_lstadd_back(token_list, new_node);
+	return (pos + i);
+}
+
+void	tokenize(char *line, t_list **token_list)
+{
+	int		pos;
+
+	pos = 0;
+	while (line[pos])
+	{
+		if (is_separating_character(line[pos]))
+		{
+			if ((line[pos] != ' ' && line[pos] != '\t' && line[pos] != '\n'))
+				pos = store_operator(line, token_list, pos);
+		}
+		else
+		{
+			pos = store_word(line, token_list, pos);
+		}
+		pos++;
 	}
 }
