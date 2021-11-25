@@ -1,8 +1,7 @@
 SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
-	   tokenize.c \
-	   operate_list.c
+	   tokenize.c
 SRCS := $(addprefix $(SRC_DIR)/,$(notdir $(SRC)))
 
 OBJ_DIR := ./.objects
@@ -10,8 +9,8 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.o)))
 
 DEPS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.d)))
 
-INCLUDE = -I$(shell brew --prefix readline)/include
-LDFLAGS = libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+INCLUDE := -I$(shell brew --prefix readline)/include
+LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 NAME := minishell
 
@@ -28,11 +27,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT)
-	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 clean:
 	@make clean -C $(LIBFT)
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
 	$(RM) libft/libft.a
