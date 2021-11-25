@@ -1,0 +1,17 @@
+name: MINISHELL CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, develop, issue#* ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: test
+      run: bash test.sh

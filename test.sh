@@ -1,5 +1,6 @@
 #!/bin/bash
 
+make
+make clean
 make re
-./minishell
 make fclean
