@@ -37,9 +37,7 @@ typedef struct s_command
 	struct s_command	*next;
 }	t_command;
 
-void		tokenize(char *line, t_list **command_list);
-int			preprocess(char *command);
-t_command	*init_content(void);
-t_command	*get_last_list(t_command *list);
+void		tokenize(char *line, t_list **token_list);
+int			preprocess(char *input);
 
 #endif
