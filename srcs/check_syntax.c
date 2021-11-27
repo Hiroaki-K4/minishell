@@ -23,8 +23,10 @@ int	check_syntax(t_list *token_list)
 		content = (t_command *)token_list->content;
 		next_content = (t_command *)token_list->next->content;
 		if ((first_flag == TRUE && is_pipe_or_semicolon(content->attr))
-			|| (is_pipe_or_semicolon(content->attr) && is_pipe_or_semicolon(next_content->attr))
-			|| (is_redirect(content->attr) && is_pipe_or_semicolon(next_content->attr))
+			|| (is_pipe_or_semicolon(content->attr)
+				&& is_pipe_or_semicolon(next_content->attr))
+			|| (is_redirect(content->attr)
+				&& is_pipe_or_semicolon(next_content->attr))
 			|| (is_redirect(content->attr) && is_redirect(next_content->attr)))
 			return (FAIL);
 		if (first_flag == TRUE)
