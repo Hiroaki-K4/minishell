@@ -68,7 +68,7 @@ int	store_operator(char *line, t_list **token_list, size_t pos)
 	return (pos + i);
 }
 
-int store_word(char *line, t_list **token_list, size_t pos)
+int	store_word(char *line, t_list **token_list, size_t pos)
 {
 	size_t		i;
 	t_list		*new_node;

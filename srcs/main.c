@@ -86,7 +86,8 @@ void	minishell(char *envp[])
 			exit(FAIL);
 		else if (ft_strlen(input) > 0)
 		{
-			preprocess(input);
+			if (preprocess(input) == FAIL)
+				continue ;
 			run_command(input, envp);
 			add_history(input);
 		}
