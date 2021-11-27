@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 11:13:39 by hkubo             #+#    #+#             */
-/*   Updated: 2020/11/29 11:32:35 by hkubo            ###   ########.fr       */
+/*   Updated: 2021/11/27 21:21:39 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
+	new->prev = NULL;
 	new->next = *lst;
 	*lst = new;
 }
