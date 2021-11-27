@@ -1,14 +1,22 @@
 #include "minishell.h"
 
-void	sigint_handler()
+void	sigint_handler(int sig)
 {
-	printf("\n");
+	printf("sig: %d\n", sig);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }
 
-int		check_builtin(char *command)
+void	sigquit_handler(int sig)
+{
+	printf("sig: %d\n", sig);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+int	check_builtin(char *command)
 {
 	if (!ft_strncmp(command, "echo", 5))
 		return (1);
@@ -19,10 +27,10 @@ int		check_builtin(char *command)
 
 int	run_command(char *command, char *envp[])
 {
+	int		status;
 	pid_t	pid;
-	int status;
-	char *path;
-	char *argv[] = {NULL, NULL};
+	char	*path;
+	char	*argv[] = {NULL, NULL};
 
 	argv[0] = command;
 	if (check_builtin(command) == 1)
@@ -52,31 +60,37 @@ int	run_command(char *command, char *envp[])
 
 void	minishell(char *envp[])
 {
-	char *command;
+	char				*input;
+	struct sigaction	sa_sigint;
+	struct sigaction	sa_sigquit;
 
-	command = NULL;
-	while (1)
+	input = NULL;
+	ft_bzero(&sa_sigint, sizeof(sa_sigint));
+	ft_bzero(&sa_sigquit, sizeof(sa_sigquit));
+	sa_sigint.sa_handler = sigint_handler;
+	sa_sigquit.sa_handler = sigquit_handler;
+	while (TRUE)
 	{
-		if (signal(SIGINT, sigint_handler) == SIG_ERR)
+		if (sigaction(SIGINT, &sa_sigint, NULL) < 0)
 		{
 			printf("Error\n");
-			exit(1);
+			exit(FAIL);
 		}
-		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		if (sigaction(SIGQUIT, &sa_sigquit, NULL) < 0)
 		{
 			printf("Error\n");
-			exit(1);
+			exit(FAIL);
 		}
-		command = readline("minishell> ");
-		if (command == NULL)
-			exit(1);
-		else if (ft_strlen(command) > 0)
+		input = readline("minishell> ");
+		if (input == NULL)
+			exit(FAIL);
+		else if (ft_strlen(input) > 0)
 		{
-			preprocess(command);
-			run_command(command, envp);
-			add_history(command);
+			preprocess(input);
+			run_command(input, envp);
+			add_history(input);
 		}
-		free(command);
+		free(input);
 	}
 }
 
@@ -85,5 +99,5 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	if (argc == 1)
 		minishell(envp);
-	return (0);
+	return (EXIT_SUCCESS);
 }

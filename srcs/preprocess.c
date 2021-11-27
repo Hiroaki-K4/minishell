@@ -1,38 +1,16 @@
 #include "minishell.h"
 
-char	*delete_space(char *command)
+void	parse(t_list **command_list)
 {
-	char	*trimed1;
-	char	*trimed2;
-
-	trimed1 = ft_strtrim(command, " ");
-	trimed2 = ft_strtrim(trimed1, "\t");
-	free(trimed1);
-	return (trimed2);
+	(void)command_list;
 }
 
-void	tokenize(char *trimed, t_list **command_list)
+void	output_result(void *content)
 {
-	int		i;
-	int		pos;
+	t_command	*command;
 
-	i = 0;
-	pos = 0;
-	while (trimed[i])
-	{
-		if (trimed[i] == '|' || trimed[i] == ' ' || trimed[i] == '<' || trimed[i] == '>' || trimed[i] == '\'' || trimed[i] == '\"' || trimed[i + 1] == '\0')
-		{
-			if (trimed[i] == ' ' && trimed[i - 1] == ' ')
-				pos = i + 1;
-			else
-			{
-				pos = store_token(trimed, command_list, pos, &i);
-				if ((trimed[i] == '<' && trimed[i + 1] == '<') || (trimed[i] == '>' && trimed[i + 1] == '>'))
-					i++;
-			}
-		}
-		i++;
-	}
+	command = (t_command *)content;
+	printf("content: %s attr: %d\n", (char *)command->content, command->attr);
 }
 
 int		check_syntax(t_list *command_list)
@@ -60,34 +38,15 @@ int		check_syntax(t_list *command_list)
 	return (0);
 }
 
-void	parser(t_list **command_list)
-{
-	(void)command_list;
-}
-
-void	output_result(void *content)
-{
-	t_command *command;
-
-	command = (t_command *)content;
-	printf("content: %s attr: %d\n", (char *)command->content, command->attr);
-}
-
 int	preprocess(char *line)
 {
 	char		*trimed;
 	t_list		*command_list;
-	t_command	*content;
 
-	trimed = delete_space(line);
-	content = init_content();
-	command_list = ft_lstnew(content);
-	if (!command_list)
-		return (-1);
+	command_list = NULL;
+	trimed = ft_strtrim(line, " \t");
 	tokenize(trimed, &command_list);
-	if (check_syntax(command_list) == -1)
-		return (-1);
-	parser(&command_list);
+	parse(&command_list);
 	ft_lstiter(command_list, output_result);
-	return (0);
+	return (SUCCESS);
 }
