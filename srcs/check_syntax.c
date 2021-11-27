@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	is_meta(int attr)
+int	is_pipe_or_semicolon(int attr)
 {
 	return (attr == TK_PIPE || attr == TK_SEMICOLON);
 }
@@ -22,13 +22,10 @@ int	check_syntax(t_list *token_list)
 	{
 		content = (t_command *)token_list->content;
 		next_content = (t_command *)token_list->next->content;
-		if (first_flag == TRUE && is_meta(content->attr))
-			return (FAIL);
-		else if (is_meta(content->attr) && is_meta(next_content->attr))
-			return (FAIL);
-		else if (is_redirect(content->attr) && is_meta(next_content->attr))
-			return (FAIL);
-		else if (is_redirect(content->attr) && is_redirect(next_content->attr))
+		if ((first_flag == TRUE && is_pipe_or_semicolon(content->attr))
+			|| (is_pipe_or_semicolon(content->attr) && is_pipe_or_semicolon(next_content->attr))
+			|| (is_redirect(content->attr) && is_pipe_or_semicolon(next_content->attr))
+			|| (is_redirect(content->attr) && is_redirect(next_content->attr)))
 			return (FAIL);
 		if (first_flag == TRUE)
 			first_flag = FALSE;
