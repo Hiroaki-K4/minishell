@@ -21,7 +21,7 @@ int	preprocess(char *line)
 	command_list = NULL;
 	trimed = ft_strtrim(line, " \t");
 	tokenize(trimed, &command_list);
-	if (check_syntax(command_list) == -1)
+	if (check_syntax(command_list) == FAIL)
 		return (FAIL);
 	parse(&command_list);
 	ft_lstiter(command_list, output_result);
