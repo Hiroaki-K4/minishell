@@ -16,6 +16,9 @@ int	check_syntax(t_list *token_list)
 	t_command	*content;
 	t_command	*next_content;
 
+	content = (t_command *)token_list->content;
+	if (token_list->prev == NULL && is_pipe_or_semicolon(content->attr))
+		return (FAIL);
 	while (token_list->next != NULL)
 	{
 		content = (t_command *)token_list->content;
@@ -29,8 +32,7 @@ int	check_syntax(t_list *token_list)
 		token_list = token_list->next;
 	}
 	content = (t_command *)token_list->content;
-	if ((token_list->prev == NULL && is_pipe_or_semicolon(content->attr))
-		|| (is_redirect(content->attr)))
+	if (is_redirect(content->attr))
 		return (FAIL);
 	return (SUCCESS);
 }
