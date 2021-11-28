@@ -18,5 +18,9 @@ check_result
 
 # Test Tokenizer
 make
-echo "aaa" | ./minishell
+while read line
+do
+	eval ${line}
+	echo "\n"
+done < test/test_case/test_tokenizer.txt
 make fclean
