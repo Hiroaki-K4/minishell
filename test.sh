@@ -1,30 +1,34 @@
 #!/bin/bash
 
+COLOR_RESET="\033[m"
+COLOR_RED="\033[31m"
+COLOR_GREEN="\033[32m"
+
 check_result() {
 	if [ $? -ne 0 ]; then
-		printf '\033[31m%s\033[m\n' '[ERROR]'
+		printf "${COLOR_RED}%s %s${COLOR_RESET}\n" "$@" ' [ERROR]'
 		exit 1
 	fi
-	printf '\033[32m%s\033[m\n' '[OK]'
+	printf "${COLOR_GREEN}%s %s${COLOR_RESET}\n" "$@" ' [OK]'
 }
 
 # Test make command
-make
-check_result "Make command"
-make clean
-check_result
-make re
-check_result
-make fclean
-check_result
+make > /dev/null
+check_result "make"
+make clean > /dev/null
+check_result "make clean"
+make re > /dev/null
+check_result "make re"
+make fclean > /dev/null
+check_result "make fclean"
 
 # Test Tokenizer
-make
+make > /dev/null
 while read line
 do
 	eval ${line} >> result.txt
 done < test/test_case/test_tokenizer.txt
 diff result.txt test/answer/test_tokenizer.txt
-check_result
+check_result "tokenizer"
 rm result.txt
-make fclean
+make fclean > /dev/null
