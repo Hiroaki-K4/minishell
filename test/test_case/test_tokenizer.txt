@@ -1,3 +1,6 @@
-echo "aaa" | ./minishell
-echo "bbb" | ./minishell
-echo "ccc" | ./minishell
+echo 'a | b' | ./minishell
+echo "a > b" | ./minishell
+echo "a < b" | ./minishell
+echo "a >> b" | ./minishell
+echo "a << b" | ./minishell
+echo "a ; b" | ./minishell
