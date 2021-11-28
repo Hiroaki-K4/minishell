@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 10:17:07 by hkubo             #+#    #+#             */
-/*   Updated: 2021/06/05 17:09:24 by hkubo            ###   ########.fr       */
+/*   Updated: 2021/11/27 21:23:18 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_list	*ft_lstnew(void *content)
 	if (!new_list)
 		return (NULL);
 	new_list->content = content;
+	new_list->prev = NULL;
 	new_list->next = NULL;
 	return (new_list);
 }

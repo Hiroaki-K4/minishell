@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 13:30:34 by hkubo             #+#    #+#             */
-/*   Updated: 2020/11/29 14:05:22 by hkubo            ###   ########.fr       */
+/*   Updated: 2021/11/27 21:20:37 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		return ;
 	}
 	last_lst = ft_lstlast(*lst);
+	new->prev = last_lst;
 	last_lst->next = new;
 }

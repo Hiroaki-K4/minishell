@@ -13,24 +13,22 @@ int	is_redirect(int attr)
 
 int	check_syntax(t_list *token_list)
 {
-	int			first_flag;
 	t_command	*content;
 	t_command	*next_content;
 
-	first_flag = TRUE;
+	content = (t_command *)token_list->content;
+	if (token_list->prev == NULL && is_pipe_or_semicolon(content->attr))
+		return (FAIL);
 	while (token_list->next != NULL)
 	{
 		content = (t_command *)token_list->content;
 		next_content = (t_command *)token_list->next->content;
-		if ((first_flag == TRUE && is_pipe_or_semicolon(content->attr))
-			|| (is_pipe_or_semicolon(content->attr)
+		if ((is_pipe_or_semicolon(content->attr)
 				&& is_pipe_or_semicolon(next_content->attr))
 			|| (is_redirect(content->attr)
 				&& is_pipe_or_semicolon(next_content->attr))
 			|| (is_redirect(content->attr) && is_redirect(next_content->attr)))
 			return (FAIL);
-		if (first_flag == TRUE)
-			first_flag = FALSE;
 		token_list = token_list->next;
 	}
 	content = (t_command *)token_list->content;
