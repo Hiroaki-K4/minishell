@@ -1,0 +1,6 @@
+echo 'a | b' | ./minishell
+echo "a > b" | ./minishell
+echo "a < b" | ./minishell
+echo "a >> b" | ./minishell
+echo "a << b" | ./minishell
+echo "a ; b" | ./minishell
