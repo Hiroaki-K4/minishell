@@ -33,10 +33,10 @@ diff test/result/test_tokenizer.txt test/answer/test_tokenizer.txt
 check_result "tokenizer"
 
 # Test Syntax checker
-rm -f test/result/test_syntax_checker.txt
-while read line
-do
-	eval ${line} >> test/result/test_syntax_checker.txt
-done < test/test_case/test_syntax_checker.txt
+# rm -f test/result/test_syntax_checker.txt
+# while read line
+# do
+# 	eval ${line} >> test/result/test_syntax_checker.txt
+# done < test/test_case/test_syntax_checker.txt
 # diff test/result/test_syntax_checker.txt test/answer/test_syntax_checker.txt
 # check_result "syntax checker"
