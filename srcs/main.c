@@ -64,6 +64,7 @@ void	minishell(char *envp[])
 	struct sigaction	sa_sigint;
 	struct sigaction	sa_sigquit;
 
+	(void)envp;
 	input = NULL;
 	ft_bzero(&sa_sigint, sizeof(sa_sigint));
 	ft_bzero(&sa_sigquit, sizeof(sa_sigquit));
@@ -88,7 +89,7 @@ void	minishell(char *envp[])
 		{
 			if (preprocess(input) == FAIL)
 				continue ;
-			run_command(input, envp);
+			// run_command(input, envp);
 			add_history(input);
 		}
 		free(input);
