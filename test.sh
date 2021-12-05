@@ -23,11 +23,11 @@ make fclean > /dev/null
 check_result "make fclean"
 
 # Test Tokenizer
-rm -f result.txt
+rm -f test/result/test_tokenizer.txt
 make > /dev/null
 while read line
 do
-	eval ${line} >> result.txt
+	eval ${line} >> test/result/test_tokenizer.txt
 done < test/test_case/test_tokenizer.txt
-diff result.txt test/answer/test_tokenizer.txt
+diff test/result/test_tokenizer.txt test/answer/test_tokenizer.txt
 check_result "tokenizer"
