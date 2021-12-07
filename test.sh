@@ -24,6 +24,7 @@ check_result "make fclean"
 
 # Test Tokenizer
 rm -f test/result/test_tokenizer.txt
+mkdir test/result
 make > /dev/null
 while read line
 do
