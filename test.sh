@@ -28,6 +28,7 @@ mkdir test/result
 make > /dev/null
 while read line
 do
+	eval ${line}
 	eval ${line} >> test/result/test_tokenizer.txt
 done < test/test_case/test_tokenizer.txt
 diff test/result/test_tokenizer.txt test/answer/test_tokenizer.txt
@@ -37,6 +38,7 @@ check_result "tokenizer"
 rm -f test/result/test_syntax_checker.txt
 while read line
 do
+	eval ${line}
 	eval ${line} >> test/result/test_syntax_checker.txt
 done < test/test_case/test_syntax_checker.txt
 diff test/result/test_syntax_checker.txt test/answer/test_syntax_checker.txt
