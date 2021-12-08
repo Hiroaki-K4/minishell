@@ -96,10 +96,10 @@ int	store_word(char *line, t_list **token_list, size_t pos)
 
 void	tokenize(char *line, t_list **token_list)
 {
-	int		pos;
+	size_t	pos;
 
 	pos = 0;
-	while (line[pos])
+	while (line[pos] && pos < ft_strlen(line))
 	{
 		if (is_separating_character(line[pos]))
 		{
