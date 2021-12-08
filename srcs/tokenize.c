@@ -99,7 +99,7 @@ void	tokenize(char *line, t_list **token_list)
 	int		pos;
 
 	pos = 0;
-	while (line[pos])
+	while (line[pos] && pos < (int)ft_strlen(line))
 	{
 		if (is_separating_character(line[pos]))
 		{
