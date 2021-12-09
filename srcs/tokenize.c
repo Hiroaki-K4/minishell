@@ -58,7 +58,10 @@ int	store_operator(char *line, t_list **token_list, size_t pos)
 		|| (line[pos] == '>' && line[pos + i] == '>'))
 		new_token->content = ft_substr(line, pos, i + 1);
 	else
+	{
 		new_token->content = ft_substr(line, pos, i);
+		i = 0;
+	}
 	new_token->attr = decide_attr(line, pos);
 	new_token->next = NULL;
 	new_node = ft_lstnew(new_token);

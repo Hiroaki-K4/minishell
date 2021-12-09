@@ -22,4 +22,12 @@ minishell> minishell> a ; b
 content: a attr: 0
 content: ; attr: 10
 content: b attr: 0
+minishell> minishell> echo "abc"
+content: echo attr: 0
+content: " attr: 9
+content: abc" attr: 0
+minishell> minishell> echo 'abc'
+content: echo attr: 0
+content: ' attr: 8
+content: abc' attr: 0
 minishell> 
