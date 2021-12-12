@@ -1,21 +1,5 @@
 #include "minishell.h"
 
-void	sigint_handler(int sig)
-{
-	printf("sig: %d\n", sig);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-void	sigquit_handler(int sig)
-{
-	printf("sig: %d\n", sig);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
 int	check_builtin(char *command)
 {
 	if (!ft_strncmp(command, "echo", 5))
@@ -30,8 +14,9 @@ int	run_command(char *command, char *envp[])
 	int		status;
 	pid_t	pid;
 	char	*path;
-	char	*argv[] = {NULL, NULL};
+	char	**argv;
 
+	argv = NULL;
 	argv[0] = command;
 	if (check_builtin(command) == 1)
 	{
@@ -58,6 +43,15 @@ int	run_command(char *command, char *envp[])
 	return (0);
 }
 
+void	init_sigaction(struct sigaction	*sa_sigint,
+	struct sigaction *sa_sigquit)
+{
+	ft_bzero(sa_sigint, sizeof(*sa_sigint));
+	ft_bzero(sa_sigquit, sizeof(*sa_sigquit));
+	sa_sigint->sa_handler = sigint_handler;
+	sa_sigquit->sa_handler = sigquit_handler;
+}
+
 void	minishell(char *envp[])
 {
 	char				*input;
@@ -66,10 +60,7 @@ void	minishell(char *envp[])
 
 	(void)envp;
 	input = NULL;
-	ft_bzero(&sa_sigint, sizeof(sa_sigint));
-	ft_bzero(&sa_sigquit, sizeof(sa_sigquit));
-	sa_sigint.sa_handler = sigint_handler;
-	sa_sigquit.sa_handler = sigquit_handler;
+	init_sigaction(&sa_sigint, &sa_sigquit);
 	while (TRUE)
 	{
 		if (sigaction(SIGINT, &sa_sigint, NULL) < 0)

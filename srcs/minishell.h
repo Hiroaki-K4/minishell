@@ -37,11 +37,16 @@ typedef struct s_command
 	struct s_command	*next;
 }	t_command;
 
-void		tokenize(char *line, t_list **token_list);
-int			preprocess(char *input);
-int			check_syntax(t_list *token_list);
-int			is_metacharacter(char c);
-int			is_quotes(char c);
-int			is_separating_character(char c);
+int				preprocess(char *input);
+int				check_syntax(t_list *token_list);
+int				is_metacharacter(char c);
+int				is_quotes(char c);
+int				is_separating_character(char c);
+int				ft_lstadd_node(t_list **token_list, t_command *new_token);
+void			tokenize(char *line, t_list **token_list);
+void			sigint_handler(int sig);
+void			sigquit_handler(int sig);
+t_token_kind	decide_attr(char *line, int pos);
+t_command		*make_token(t_command *token, char *line, size_t pos, int i);
 
 #endif
