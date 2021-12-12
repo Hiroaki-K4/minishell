@@ -25,7 +25,7 @@ t_token_kind	decide_attr(char *line, int pos)
 
 t_command	*make_token(t_command *token, char *line, size_t pos, int i)
 {
-	token->content = ft_substr(line, pos, i + 1);
+	token->content = ft_substr(line, pos, i);
 	if (token->attr != TK_SINGLE_QUOTED && token->attr != TK_DOUBLE_QUOTED)
 		token->attr = decide_attr(line, pos);
 	token->next = NULL;
@@ -43,7 +43,7 @@ t_command	*check_quote(char *line, size_t pos, size_t *i,
 		token->attr = TK_DOUBLE_QUOTED;
 	else
 		token->attr = TK_WORD;
-	token = make_token(token, line, pos, *i);
+	token = make_token(token, line, pos, *i + 1);
 	return (token);
 }
 
