@@ -2,7 +2,8 @@
 
 void	sigint_handler(int sig)
 {
-	printf("sig: %d\n", sig);
+	(void)sig;
+	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
@@ -10,7 +11,7 @@ void	sigint_handler(int sig)
 
 void	sigquit_handler(int sig)
 {
-	printf("sig: %d\n", sig);
+	(void)sig;
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
