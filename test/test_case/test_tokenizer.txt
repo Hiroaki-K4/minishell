@@ -5,4 +5,8 @@ echo "a >> b" | ./minishell
 echo "a << b" | ./minishell
 echo "a ; b" | ./minishell
 echo 'echo "abc"' | ./minishell
+echo 'echo "abc' | ./minishell
+echo 'echo abc"' | ./minishell
 echo "echo 'abc'" | ./minishell
+echo "echo 'abc" | ./minishell
+echo "echo abc'" | ./minishell

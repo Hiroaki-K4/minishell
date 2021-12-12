@@ -25,8 +25,8 @@ typedef enum e_token_kind
 	TK_REDIRECT_MULTI,
 	TK_REDIRECT_APPEND,
 	TK_PARENTHESIS,
-	TK_SINGLE_QUOTE,
-	TK_DOUBLE_QUOTE,
+	TK_SINGLE_QUOTED,
+	TK_DOUBLE_QUOTED,
 	TK_SEMICOLON
 }	t_token_kind;
 
@@ -40,5 +40,8 @@ typedef struct s_command
 void		tokenize(char *line, t_list **token_list);
 int			preprocess(char *input);
 int			check_syntax(t_list *token_list);
+int			is_metacharacter(char c);
+int			is_quotes(char c);
+int			is_separating_character(char c);
 
 #endif
