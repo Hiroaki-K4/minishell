@@ -18,7 +18,7 @@ int	preprocess(char *line)
 	tokenize(trimed, &command_list);
 	if (check_syntax(command_list) == FAIL)
 		return (FAIL);
-	parse(&command_list);
 	ft_lstiter(command_list, output_result);
+	parse(&command_list);
 	return (SUCCESS);
 }
