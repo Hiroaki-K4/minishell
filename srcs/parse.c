@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/13 22:24:42 by ychida           ###   ########.fr       */
+/*   Updated: 2021/12/13 22:59:49 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,11 @@ void	print_ast(t_node *node)
 	}
 }
 
-void	parse(t_list **command_list)
+t_node	*parse(t_list **command_list)
 {
 	t_node	*node;
 
 	node = parse_semicolon(command_list);
 	// print_ast(node);
+	return (node);
 }

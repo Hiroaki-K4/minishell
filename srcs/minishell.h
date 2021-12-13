@@ -67,7 +67,7 @@ void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
 t_token_kind	decide_attr(char *line, int pos);
 t_command		*make_token(t_command *token, char *line, size_t pos, int i);
-void			parse(t_list **command_list);
+t_node			*parse(t_list **command_list);
 void			output_result(void *content);
 
 #endif
