@@ -40,4 +40,4 @@ do
 	eval ${line} | tee -a test/result/test_syntax_checker.txt
 done < test/test_case/test_syntax_checker.txt
 diff test/result/test_syntax_checker.txt test/answer/test_syntax_checker.txt
-check_result "syntax checker"
+check_result "syntax"

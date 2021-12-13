@@ -2,7 +2,10 @@ SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
 	   tokenize.c \
-	   check_syntax.c
+	   check_syntax.c \
+	   check_char.c \
+	   operate_list.c \
+	   signal_handler.c
 SRCS := $(addprefix $(SRC_DIR)/,$(notdir $(SRC)))
 
 OBJ_DIR := ./.objects
