@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -14,6 +15,9 @@
 # define FALSE 0
 # define SUCCESS 0
 # define FAIL -1
+
+typedef struct s_command	t_command;
+typedef struct s_node		t_node;
 
 typedef enum e_token_kind
 {
@@ -30,12 +34,27 @@ typedef enum e_token_kind
 	TK_SEMICOLON
 }	t_token_kind;
 
-typedef struct s_command
+typedef enum e_node_kind
 {
-	int					attr;
-	char				*content;
-	struct s_command	*next;
-}	t_command;
+	ND_COMMAND,
+	ND_SEMICOLON,
+	ND_PIPE,
+}	t_node_kind;
+
+struct s_command
+{
+	char			*content;
+	t_command		*next;
+	t_token_kind	attr;
+};
+
+struct s_node
+{
+	t_node_kind		attr;
+	t_node			*lhs;
+	t_node			*rhs;
+	t_list			*commands;
+};
 
 int				preprocess(char *input);
 int				check_syntax(t_list *token_list);
@@ -48,5 +67,7 @@ void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
 t_token_kind	decide_attr(char *line, int pos);
 t_command		*make_token(t_command *token, char *line, size_t pos, int i);
+void			parse(t_list **command_list);
+void			output_result(void *content);
 
 #endif

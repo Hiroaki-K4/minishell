@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-void	parse(t_list **command_list)
-{
-	(void)command_list;
-}
-
 void	output_result(void *content)
 {
 	t_command	*command;
