@@ -1,8 +1,9 @@
 SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
-	   parse.c \
 	   tokenize.c \
+	   parse.c \
+	   execute.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
@@ -14,7 +15,7 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.o)))
 
 DEPS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.d)))
 
-INCLUDE := -I$(shell brew --prefix readline)/include
+INCLUDE := -I./includes -I$(shell brew --prefix readline)/include
 LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 NAME := minishell

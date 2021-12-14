@@ -8,7 +8,7 @@ void	output_result(void *content)
 	printf("content: %s attr: %d\n", (char *)token->content, token->attr);
 }
 
-int	preprocess(char *line)
+t_node	*preprocess(char *line)
 {
 	char		*trimed;
 	t_list		*token_list;
@@ -17,8 +17,7 @@ int	preprocess(char *line)
 	trimed = ft_strtrim(line, " \t");
 	tokenize(trimed, &token_list);
 	if (check_syntax(token_list) == FAIL)
-		return (FAIL);
+		return (NULL);
 	ft_lstiter(token_list, output_result);
-	parse(&token_list);
-	return (SUCCESS);
+	return (parse(&token_list));
 }

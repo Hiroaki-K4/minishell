@@ -52,18 +52,28 @@ typedef struct s_node
 	t_list			*tokens;
 }	t_node;
 
-int				preprocess(char *input);
-int				check_syntax(t_list *token_list);
+void			output_result(void *content);
+
+void			init_sigaction(struct sigaction *si, struct sigaction *sq);
+void			sigint_handler(int sig);
+void			sigquit_handler(int sig);
+
 int				is_metacharacter(char c);
 int				is_quotes(char c);
 int				is_separating_character(char c);
-int				ft_lstadd_node(t_list **token_list, t_token *new_token);
-void			tokenize(char *line, t_list **token_list);
-void			sigint_handler(int sig);
-void			sigquit_handler(int sig);
-t_token_kind	decide_attr(char *line, int pos);
+
 t_token			*make_token(t_token *token, char *line, size_t pos, int i);
+int				ft_lstadd_node(t_list **token_list, t_token *new_token);
+
+t_node			*preprocess(char *input);
+
+t_token_kind	decide_attr(char *line, int pos);
+void			tokenize(char *line, t_list **token_list);
+
+int				check_syntax(t_list *token_list);
+
 t_node			*parse(t_list **token_list);
-void			output_result(void *content);
+
+int				execute(t_node *ast, char *envp[]);
 
 #endif
