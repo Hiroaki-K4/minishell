@@ -33,7 +33,7 @@ int	run_command(char *command, char *envp[])
 	{
 		path = ft_strjoin("/bin/", command);
 		if (execve(path, argv, envp) == -1)
-			exit(1);
+			exit(errno);
 	}
 	if (waitpid(pid, &status, 0) < 0)
 	{

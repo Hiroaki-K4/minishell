@@ -1,6 +1,7 @@
 SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
+	   parse.c \
 	   tokenize.c \
 	   check_syntax.c \
 	   check_char.c \
@@ -43,6 +44,9 @@ fclean: clean
 
 re: fclean all
 
+test: all
+	@bash test.sh
+
 -include $(DEPS)
 
-.PHONY: all, clean, fclean, re
+.PHONY: all clean fclean re test
