@@ -76,4 +76,6 @@ t_node			*parse(t_list **token_list);
 
 int				execute(t_node *ast, char *envp[]);
 
+char			*search(char *path, char **envp);
+
 #endif

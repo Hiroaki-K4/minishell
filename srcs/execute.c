@@ -30,9 +30,9 @@ char	**construct_argv(t_list *commands)
 
 int	execute_command(t_node *ast, char *envp[])
 {
-	int		status;
 	char	*path;
 	char	**argv;
+	int		status;
 	pid_t	pid;
 
 	argv = construct_argv(ast->commands);
@@ -49,8 +49,7 @@ int	execute_command(t_node *ast, char *envp[])
 	}
 	else if (pid == 0)
 	{
-		path = ft_strjoin("/bin/",
-				((t_command *)(ast->commands->content))->content);
+		path = search(argv[0], envp);
 		if (execve(path, argv, envp) == -1)
 			exit(errno);
 	}

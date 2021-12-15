@@ -4,6 +4,7 @@ SRC := main.c \
 	   tokenize.c \
 	   parse.c \
 	   execute.c \
+	   search.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
