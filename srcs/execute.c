@@ -9,12 +9,22 @@ int	is_builtin(char *command)
 	return (FALSE);
 }
 
-char	**reconstruct_argv(t_list *commands)
+char	**construct_argv(t_list *commands)
 {
+	size_t	idx;
 	char	**argv;
 
+	idx = 0;
 	argv = (char **)malloc(sizeof(char *) * 1);
-	argv[0] = ((t_command *)(commands->content))->content;
+	if (argv == NULL)
+		return (NULL);
+	while (commands)
+	{
+		argv[idx] = (((t_command *)(commands->content))->content);
+		commands = commands->next;
+		idx++;
+	}
+	argv[idx] = NULL;
 	return (argv);
 }
 
@@ -25,7 +35,7 @@ int	execute_command(t_node *ast, char *envp[])
 	char	**argv;
 	pid_t	pid;
 
-	argv = reconstruct_argv(ast->commands);
+	argv = construct_argv(ast->commands);
 	if (is_builtin(((t_command *)(ast->commands->content))->content))
 	{
 		printf("builtin\n");
