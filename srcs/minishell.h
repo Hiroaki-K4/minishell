@@ -16,9 +16,6 @@
 # define SUCCESS 0
 # define FAIL -1
 
-typedef struct s_command	t_command;
-typedef struct s_node		t_node;
-
 typedef enum e_token_kind
 {
 	TK_WORD,
@@ -41,20 +38,20 @@ typedef enum e_node_kind
 	ND_PIPE,
 }	t_node_kind;
 
-struct s_command
+typedef struct s_command
 {
-	char			*content;
-	t_command		*next;
-	t_token_kind	attr;
-};
+	char				*content;
+	struct s_command	*next;
+	t_token_kind		attr;
+}	t_command;
 
-struct s_node
+typedef struct s_node
 {
 	t_node_kind		attr;
-	t_node			*lhs;
-	t_node			*rhs;
+	struct s_node	*lhs;
+	struct s_node	*rhs;
 	t_list			*commands;
-};
+}	t_node;
 
 int				preprocess(char *input);
 int				check_syntax(t_list *token_list);
