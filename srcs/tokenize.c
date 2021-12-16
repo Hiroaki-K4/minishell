@@ -23,8 +23,7 @@ t_token_kind	decide_attr(char *line, int pos)
 	return (token_kind);
 }
 
-t_command	*check_quote(char *line, size_t pos, size_t *i,
-	t_command *token)
+t_token	*check_quote(char *line, size_t pos, size_t *i, t_token *token)
 {
 	while (line[pos + *i] != line[pos] && line[pos + *i])
 		(*i)++;
@@ -40,11 +39,11 @@ t_command	*check_quote(char *line, size_t pos, size_t *i,
 
 int	store_operator(char *line, t_list **token_list, size_t pos)
 {
-	size_t		i;
-	t_command	*new_token;
+	size_t	i;
+	t_token	*new_token;
 
 	i = 1;
-	new_token = (t_command *)malloc(sizeof(t_command));
+	new_token = (t_token *)malloc(sizeof(t_token));
 	if (new_token == NULL)
 		return (FAIL);
 	if (line[pos] == '\'' || line[pos] == '\"')
@@ -69,11 +68,11 @@ int	store_operator(char *line, t_list **token_list, size_t pos)
 
 int	store_word(char *line, t_list **token_list, size_t pos)
 {
-	size_t		i;
-	t_command	*new_token;
+	size_t	i;
+	t_token	*new_token;
 
 	i = 0;
-	new_token = (t_command *)malloc(sizeof(t_command));
+	new_token = (t_token *)malloc(sizeof(t_token));
 	if (new_token == NULL)
 		return (FAIL);
 	while (line[pos + i])

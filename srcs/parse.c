@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/13 22:59:49 by ychida           ###   ########.fr       */
+/*   Updated: 2021/12/16 23:02:48 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	consume_token(t_list **command_list, t_token_kind kind)
 {
 	if (!(*command_list))
 		return (FALSE);
-	if (((t_command *)(*command_list)->content)->attr == kind)
+	if (((t_token *)(*command_list)->content)->attr == kind)
 	{
 		*command_list = (*command_list)->next;
 		return (TRUE);

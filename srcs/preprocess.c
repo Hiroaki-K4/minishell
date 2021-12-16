@@ -2,23 +2,23 @@
 
 void	output_result(void *content)
 {
-	t_command	*command;
+	t_token	*token;
 
-	command = (t_command *)content;
-	printf("content: %s attr: %d\n", (char *)command->content, command->attr);
+	token = (t_token *)content;
+	printf("content: %s attr: %d\n", (char *)token->content, token->attr);
 }
 
 int	preprocess(char *line)
 {
 	char		*trimed;
-	t_list		*command_list;
+	t_list		*token_list;
 
-	command_list = NULL;
+	token_list = NULL;
 	trimed = ft_strtrim(line, " \t");
-	tokenize(trimed, &command_list);
-	if (check_syntax(command_list) == FAIL)
+	tokenize(trimed, &token_list);
+	if (check_syntax(token_list) == FAIL)
 		return (FAIL);
-	ft_lstiter(command_list, output_result);
-	parse(&command_list);
+	ft_lstiter(token_list, output_result);
+	parse(&token_list);
 	return (SUCCESS);
 }
