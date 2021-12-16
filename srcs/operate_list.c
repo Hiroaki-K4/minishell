@@ -5,7 +5,6 @@ t_command	*make_token(t_command *token, char *line, size_t pos, int i)
 	token->content = ft_substr(line, pos, i);
 	if (token->attr != TK_SINGLE_QUOTED && token->attr != TK_DOUBLE_QUOTED)
 		token->attr = decide_attr(line, pos);
-	token->next = NULL;
 	return (token);
 }
 

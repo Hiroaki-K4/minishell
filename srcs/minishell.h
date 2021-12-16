@@ -41,7 +41,6 @@ typedef enum e_node_kind
 typedef struct s_command
 {
 	char				*content;
-	struct s_command	*next;
 	t_token_kind		attr;
 }	t_command;
 
