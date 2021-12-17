@@ -1,15 +1,14 @@
 #include "minishell.h"
 
-t_command	*make_token(t_command *token, char *line, size_t pos, int i)
+t_token	*make_token(t_token *token, char *line, size_t pos, int i)
 {
 	token->content = ft_substr(line, pos, i);
 	if (token->attr != TK_SINGLE_QUOTED && token->attr != TK_DOUBLE_QUOTED)
 		token->attr = decide_attr(line, pos);
-	token->next = NULL;
 	return (token);
 }
 
-int	ft_lstadd_node(t_list **token_list, t_command *new_token)
+int	ft_lstadd_node(t_list **token_list, t_token *new_token)
 {
 	t_list	*new_node;
 
