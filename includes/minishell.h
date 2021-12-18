@@ -18,17 +18,16 @@
 
 typedef enum e_token_kind
 {
-	TK_WORD,
-	TK_SPACE,
+	TK_WORD = 0,
+	TK_IO_NUMBER,
 	TK_PIPE,
 	TK_REDIRECT_IN,
 	TK_REDIRECT_OUT,
 	TK_REDIRECT_MULTI,
 	TK_REDIRECT_APPEND,
-	TK_PARENTHESIS,
-	TK_SINGLE_QUOTED,
+	TK_SINGLE_QUOTED = 8,
 	TK_DOUBLE_QUOTED,
-	TK_SEMICOLON
+	TK_SEMICOLON,
 }	t_token_kind;
 
 typedef enum e_node_kind
@@ -62,12 +61,12 @@ int				is_metacharacter(char c);
 int				is_quotes(char c);
 int				is_separating_character(char c);
 
-t_token			*make_token(t_token *token, char *line, size_t pos, int i);
+t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
 
 t_node			*preprocess(char *input);
 
-t_token_kind	decide_attr(char *line, int pos);
+t_token_kind	decide_attr(char *line, int pos, size_t *i);
 void			tokenize(char *line, t_list **token_list);
 
 int				check_syntax(t_list *token_list);

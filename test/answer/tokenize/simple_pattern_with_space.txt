@@ -18,4 +18,12 @@ minishell> minishell> a << b
 content: a attr: 0
 content: << attr: 5
 content: b attr: 0
+minishell> minishell> a 1> b 2> c
+content: a attr: 0
+content: 1 attr: 1
+content: > attr: 4
+content: b attr: 0
+content: 2 attr: 1
+content: > attr: 4
+content: c attr: 0
 minishell> 
