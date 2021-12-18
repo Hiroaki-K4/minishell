@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-int	is_builtin(char *command)
+int	is_builtin_command(char *token)
 {
-	if (!ft_strncmp(command, "echo", 5))
+	if (!ft_strncmp(token, "echo", 5))
 		return (TRUE);
-	else if (!ft_strncmp(command, "exit", 5))
+	else if (!ft_strncmp(token, "exit", 5))
 		exit(EXIT_SUCCESS);
 	return (FALSE);
 }
 
-char	**construct_argv(t_list *commands)
+char	**construct_argv(t_list *tokens)
 {
 	size_t	idx;
 	char	**argv;
@@ -18,10 +18,10 @@ char	**construct_argv(t_list *commands)
 	argv = (char **)malloc(sizeof(char *) * 1);
 	if (argv == NULL)
 		return (NULL);
-	while (commands)
+	while (tokens)
 	{
-		argv[idx] = (((t_command *)(commands->content))->content);
-		commands = commands->next;
+		argv[idx] = (((t_token *)(tokens->content))->content);
+		tokens = tokens->next;
 		idx++;
 	}
 	argv[idx] = NULL;
@@ -35,8 +35,8 @@ int	execute_command(t_node *ast, char *envp[])
 	int		status;
 	pid_t	pid;
 
-	argv = construct_argv(ast->commands);
-	if (is_builtin(((t_command *)(ast->commands->content))->content))
+	argv = construct_argv(ast->tokens);
+	if (is_builtin_command(((t_token *)(ast->tokens->content))->content))
 	{
 		printf("builtin\n");
 		return (SUCCESS);
