@@ -10,7 +10,7 @@ int	is_builtin_command(char *token, char **argv)
 	i = 0;
 	while (builtins[i])
 	{
-		if (!ft_strncmp(token, builtins[i], ft_strlen(builtins[i])))
+		if (!ft_strncmp(token, builtins[i], ft_strlen(builtins[i]) + 1))
 		{
 			ret = builtin_funcs[i](argv);
 			return (TRUE);
@@ -26,7 +26,7 @@ char	**construct_argv(t_list *tokens)
 	char	**argv;
 
 	idx = 0;
-	argv = (char **)malloc(sizeof(char *) * 1);
+	argv = (char **)malloc(sizeof(char *) * (ft_lstsize(tokens) + 1));
 	if (argv == NULL)
 		return (NULL);
 	while (tokens)
@@ -39,7 +39,7 @@ char	**construct_argv(t_list *tokens)
 	return (argv);
 }
 
-int	execute_command(t_node *ast, char *envp[])
+int	execute_commands(t_node *ast, char *envp[])
 {
 	char	*path;
 	char	**argv;
@@ -59,7 +59,10 @@ int	execute_command(t_node *ast, char *envp[])
 	{
 		path = search(argv[0], envp);
 		if (execve(path, argv, envp) == -1)
+		{
+			printf("minishell: %s: command not found\n", argv[0]);
 			exit(errno);
+		}
 	}
 	else if (waitpid(pid, &status, 0) < 0)
 	{
@@ -71,23 +74,75 @@ int	execute_command(t_node *ast, char *envp[])
 
 int	execute_pipe(t_node *ast, char *envp[])
 {
-	(void)ast;
-	(void)envp;
-	return (SUCCESS);
-}
+	char	*path;
+	char	**argv;
+	int		status;
+	pid_t	lhs_pid;
+	pid_t	rhs_pid;
+	int		fildes[2];
 
-int	execute_semicolon(t_node *ast, char *envp[])
-{
-	(void)ast;
-	(void)envp;
+	if (ast->lhs->attr == ND_PIPE)
+		execute_pipe(ast->lhs, envp);
+	else if (ast->lhs->attr == ND_COMMAND)
+	{
+		if (pipe(fildes) == FAIL)
+			exit(errno);
+		argv = construct_argv(ast->lhs->tokens);
+		if (is_builtin_command(((t_token *)(ast->lhs->tokens->content))->content, argv))
+			return (SUCCESS);
+		lhs_pid = fork();
+		if (lhs_pid < 0)
+		{
+			printf("Error\n");
+			exit(EXIT_FAILURE);
+		}
+		else if (lhs_pid == 0)
+		{
+			close(fildes[0]);
+			dup2(fildes[1], 1);
+			path = search(argv[0], envp);
+			if (execve(path, argv, envp) == -1)
+			{
+				printf("minishell: %s: command not found\n", argv[0]);
+				exit(errno);
+			}
+		}
+		else
+		{
+			if (is_builtin_command(((t_token *)(ast->rhs->tokens->content))->content, argv))
+				return (SUCCESS);
+			close(fildes[1]);
+			rhs_pid = fork();
+			if (rhs_pid < 0)
+			{
+				printf("Error\n");
+				exit(EXIT_FAILURE);
+			}
+			else if (rhs_pid == 0)
+			{
+				dup2(fildes[0], 0);
+				argv = construct_argv(ast->rhs->tokens);
+				path = search(argv[0], envp);
+				if (execve(path, argv, envp) == -1)
+				{
+					printf("minishell: %s: command not found\n", argv[0]);
+					exit(errno);
+				}
+			}
+			close(fildes[0]);
+			if (waitpid(rhs_pid, &status, 0) < 0)
+			{
+				printf("Error\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+	}
 	return (SUCCESS);
 }
 
 int	execute(t_node *ast, char *envp[])
 {
-	if (ast->attr == ND_SEMICOLON)
-		return (execute_semicolon(ast, envp));
-	else if (ast->attr == ND_PIPE)
+	if (ast->attr == ND_PIPE)
 		return (execute_pipe(ast, envp));
-	return (execute_command(ast, envp));
+	return (execute_commands(ast, envp));
 }
