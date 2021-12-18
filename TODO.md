@@ -1,3 +1,10 @@
+## all
+- check memory leaks
+- norminette
+
+## tokenize
+- print error when unspecified special characters found
+
 ## parse
 - syntax check
 - 文法の整備
