@@ -1,0 +1,4 @@
+echo "a;b" | ./minishell
+echo "a ; b" | ./minishell
+echo "\" | ./minishell
+echo " \ " | ./minishell

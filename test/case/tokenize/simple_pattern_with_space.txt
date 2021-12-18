@@ -1,0 +1,6 @@
+# simple pattern with space
+echo 'a | b' | ./minishell
+echo "a > b" | ./minishell
+echo "a < b" | ./minishell
+echo "a >> b" | ./minishell
+echo "a << b" | ./minishell

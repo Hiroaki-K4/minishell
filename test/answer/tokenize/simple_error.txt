@@ -1,0 +1,12 @@
+minishell> a;b
+minishell: syntax error: unspecified special character
+minishell>
+minishell> a ; b
+minishell: syntax error: unspecified special character
+minishell>
+minishell> \
+minishell: syntax error: unspecified special character
+minishell>
+minishell>  \
+minishell: syntax error: unspecified special character
+minishell> 
