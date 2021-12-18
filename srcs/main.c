@@ -19,13 +19,14 @@ void	minishell(char *envp[])
 		}
 		input = readline("minishell> ");
 		if (input == NULL)
-			exit(FAIL);
+			exit(SUCCESS);  // TODO: when exitting, echo "exit"
 		else if (ft_strlen(input) > 0)
 		{
 			ast = preprocess(input);
 			if (ast == NULL)
 				continue ;
-			execute(ast, envp);
+			(void)envp;
+			// execute(ast, envp);
 			add_history(input);
 		}
 		free(input);

@@ -23,8 +23,8 @@ typedef enum e_token_kind
 	TK_PIPE,
 	TK_REDIRECT_IN,
 	TK_REDIRECT_OUT,
-	TK_REDIRECT_MULTI,
-	TK_REDIRECT_APPEND,
+	TK_REDIRECT_DLESS,
+	TK_REDIRECT_DGREAT,
 	TK_SINGLE_QUOTED = 8,
 	TK_DOUBLE_QUOTED,
 	TK_SEMICOLON,
@@ -33,8 +33,8 @@ typedef enum e_token_kind
 typedef enum e_node_kind
 {
 	ND_COMMAND,
-	ND_SEMICOLON,
 	ND_PIPE,
+	ND_SEMICOLON,
 }	t_node_kind;
 
 typedef struct s_token

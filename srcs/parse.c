@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/17 09:31:16 by hkubo            ###   ########.fr       */
+/*   Updated: 2021/12/18 15:10:00 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,13 @@ t_node	*parse_command(t_list **token_list)
 	return (node);
 }
 
-t_node	*parse_pipe(t_list **token_list)
+t_node	*parse_pipe_sequence(t_list **token_list)
 {
 	t_node	*node;
 
 	node = parse_command(token_list);
 	if (consume_token(token_list, TK_PIPE))
-		node = new_node(node, parse_command(token_list), ND_PIPE);
-	return (node);
-}
-
-t_node	*parse_semicolon(t_list **token_list)
-{
-	t_node	*node;
-
-	node = parse_pipe(token_list);
-	if (consume_token(token_list, TK_SEMICOLON))
-		node = new_node(node, parse_pipe(token_list), ND_SEMICOLON);
+		return (new_node(node, parse_pipe_sequence(token_list), ND_PIPE));
 	return (node);
 }
 
@@ -93,7 +83,7 @@ t_node	*parse(t_list **token_list)
 {
 	t_node	*node;
 
-	node = parse_semicolon(token_list);
+	node = parse_pipe_sequence(token_list);
 	// print_ast(node);
 	return (node);
 }

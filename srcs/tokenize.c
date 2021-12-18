@@ -38,12 +38,12 @@ t_token_kind	decide_attr(char *line, int pos, size_t *i)
 	else if ((line[pos] == '<' && line[pos + 1] == '<'))
 	{
 		*i += 2;
-		token_kind = TK_REDIRECT_MULTI;
+		token_kind = TK_REDIRECT_DLESS;
 	}
 	else if (line[pos] == '>' && line[pos + 1] == '>')
 	{
 		*i += 2;
-		token_kind = TK_REDIRECT_APPEND;
+		token_kind = TK_REDIRECT_DGREAT;
 	}
 	else if (line[pos] == '<')
 	{
