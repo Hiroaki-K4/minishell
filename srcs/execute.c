@@ -1,11 +1,22 @@
 #include "minishell.h"
 
-int	is_builtin_command(char *token)
+int	is_builtin_command(char *token, char **argv)
 {
-	if (!ft_strncmp(token, "echo", 5))
-		return (TRUE);
-	else if (!ft_strncmp(token, "exit", 5))
-		exit(EXIT_SUCCESS);
+	int		ret;
+	size_t	i;
+	char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
+	int (*builtin_funcs[])(char **) = {ft_echo, ft_cd, ft_pwd, ft_export, ft_unset, ft_env, ft_exit};
+
+	i = 0;
+	while (builtins[i])
+	{
+		if (!ft_strncmp(token, builtins[i], ft_strlen(builtins[i])))
+		{
+			ret = builtin_funcs[i](argv);
+			return (TRUE);
+		}
+		i++;
+	}
 	return (FALSE);
 }
 
@@ -36,11 +47,8 @@ int	execute_command(t_node *ast, char *envp[])
 	pid_t	pid;
 
 	argv = construct_argv(ast->tokens);
-	if (is_builtin_command(((t_token *)(ast->tokens->content))->content))
-	{
-		printf("builtin\n");
+	if (is_builtin_command(((t_token *)(ast->tokens->content))->content, argv))
 		return (SUCCESS);
-	}
 	pid = fork();
 	if (pid < 0)
 	{

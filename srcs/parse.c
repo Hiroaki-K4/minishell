@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/18 15:10:00 by ychida           ###   ########.fr       */
+/*   Updated: 2021/12/18 16:22:40 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,13 @@ t_node	*parse_command(t_list **token_list)
 	head = *token_list;
 	node = new_node(NULL, NULL, ND_COMMAND);
 	while (consume_token(token_list, TK_WORD)
+		|| consume_token(token_list, TK_SINGLE_QUOTED)
+		|| consume_token(token_list, TK_DOUBLE_QUOTED)
+		|| consume_token(token_list, TK_IO_NUMBER)
 		|| consume_token(token_list, TK_REDIRECT_IN)
-		|| consume_token(token_list, TK_REDIRECT_OUT))
+		|| consume_token(token_list, TK_REDIRECT_OUT)
+		|| consume_token(token_list, TK_REDIRECT_DLESS)
+		|| consume_token(token_list, TK_REDIRECT_DGREAT))
 		;
 	if (*token_list)
 		(*token_list)->prev->next = NULL;

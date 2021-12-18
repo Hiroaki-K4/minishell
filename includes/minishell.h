@@ -77,4 +77,12 @@ int				execute(t_node *ast, char *envp[]);
 
 char			*search(char *path, char **envp);
 
+int				ft_echo(char **argv);
+int				ft_cd(char **argv);
+int				ft_pwd(char **argv);
+int				ft_export(char **argv);
+int				ft_unset(char **argv);
+int				ft_env(char **argv);
+int				ft_exit(char **argv);
+
 #endif
