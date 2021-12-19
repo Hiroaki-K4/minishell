@@ -13,6 +13,7 @@ int	is_builtin_command(char *token, char **argv)
 		if (!ft_strncmp(token, builtins[i], ft_strlen(builtins[i]) + 1))
 		{
 			ret = builtin_funcs[i](argv);
+			(void)ret;  // TODO: use ret value
 			return (TRUE);
 		}
 		i++;
