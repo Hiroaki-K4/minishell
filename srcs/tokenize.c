@@ -7,7 +7,7 @@ t_token_kind	check_quote(char *line, size_t pos, size_t *i)
 
 	idx = 1;
 	quote_start = line[pos];
-	while (line[pos + idx] != quote_start && line[pos + idx])
+	while (line[pos + idx] && line[pos + idx] != quote_start)
 		idx++;
 	*i += idx;
 	if (line[pos + idx] == quote_start && quote_start == '\'')
@@ -62,7 +62,7 @@ t_token_kind	decide_attr(char *line, int pos, size_t *i)
 	}
 	else
 	{
-		while (!is_metacharacter(line[pos + *i]))
+		while (line[pos + *i] && !is_metacharacter(line[pos + *i]))
 			*i += 1;
 		token_kind = TK_WORD;
 	}
