@@ -19,13 +19,11 @@ void	do_piping(int pipes[2], int is_asynchronous)
 	}
 }
 
-void	close_pipes(int pipes[2])
+void	close_pipes(int pipes[2], int is_asynchronous)
 {
 	if (pipes == NULL)
 		return ;
-	if (pipes[0] >= 0)
-		close(pipes[0]);
-	if (pipes[1] >= 0)
+	if (!is_asynchronous)
 		close(pipes[1]);
 }
 
@@ -79,8 +77,7 @@ int	execute_commands(t_node *ast, char *envp[], int pipes[2], int is_asynchronou
 	argv = construct_argv(ast->tokens);
 	if (is_builtin_command(((t_token *)(ast->tokens->content))->content, argv))
 		return (SUCCESS);
-	if (pipes && !is_asynchronous)
-		close(pipes[1]);
+	close_pipes(pipes, is_asynchronous);
 	pid = fork();
 	if (pid < 0)
 	{
