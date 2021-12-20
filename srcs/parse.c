@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/20 14:01:05 by ychida           ###   ########.fr       */
+/*   Updated: 2021/12/20 16:12:32 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,30 +76,81 @@ t_node	*parse_pipe_sequence(t_list **token_list)
 	t_node	*node;
 
 	node = parse_command(token_list);
-	if (consume_token(token_list, TK_PIPE))
-		return (new_node(node, parse_pipe_sequence(token_list), ND_PIPE));
-	return (node);
+	while (TRUE)
+	{
+		if (consume_token(token_list, TK_PIPE))
+			node = new_node(node, parse_command(token_list), ND_PIPE);
+		else
+			return (node);
+	}
 }
 
-void	print_ast(t_node *node)
+int g_node_count;
+
+void	print_ast(t_node *node, FILE *fp)
 {
+	int	node_id;
+
+	g_node_count++;
+	node_id = g_node_count;
 	if (node->lhs)
-		print_ast(node->lhs);
-	if (node->rhs)
-		print_ast(node->rhs);
-	if (node->tokens)
 	{
-		printf("tokens\n");
-		ft_lstiter(node->tokens, output_result);
-		printf("\n");
+		fputs("  ", fp);
+		putc(node_id + '0', fp);
+		fputs(" -> ", fp);
+		putc(g_node_count + 1 + '0', fp);
+		fputs(";\n", fp);
+		print_ast(node->lhs, fp);
 	}
+	if (node->rhs)
+	{
+		fputs("  ", fp);
+		putc(node_id + '0', fp);
+		fputs(" -> ", fp);
+		putc(g_node_count + 1 + '0', fp);
+		fputs(";\n", fp);
+		print_ast(node->rhs, fp);
+	}
+	printf("tokens\n");
+	if (node->tokens)
+		ft_lstiter(node->tokens, output_result);
+	else
+		printf("(null)\n");
+	printf("\n");
+
+	fputs("  ", fp);
+	putc(node_id + '0', fp);
+	fputs(" [\n    label = \"", fp);
+	if (node->attr == ND_PIPE)
+		fputs("pipe", fp);
+	else if (node->attr == ND_COMMAND)
+	{
+		fputs("command", fp);
+		fputs("\n", fp);
+		while (node->tokens)
+		{
+			fputs(((t_token *)(node->tokens->content))->content, fp);
+			fputs(" ", fp);
+			node->tokens = node->tokens->next;
+		}
+	}
+	fputs("\",\n  ];\n", fp);
 }
 
 t_node	*parse(t_list **token_list)
 {
+	FILE	*fp;
 	t_node	*node;
 
 	node = parse_pipe_sequence(token_list);
-	// print_ast(node);
+	if ((fp = fopen("ast.dot", "w+")) == NULL)
+	{
+		printf("failed open file\n");
+		exit(EXIT_FAILURE);
+	}
+	fputs("digraph graph_name {\n", fp);
+	print_ast(node, fp);
+	fputs("}", fp);
+	fclose(fp);
 	return (node);
 }

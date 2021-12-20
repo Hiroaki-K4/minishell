@@ -60,6 +60,9 @@ re: fclean all
 test: all
 	@bash test.sh
 
+dot: all
+	@dot -Tsvg ast.dot > ast.svg
+
 -include $(DEPS)
 
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re test dot
