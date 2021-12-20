@@ -1,5 +1,6 @@
 *.d
 *.o
+ast.*
 minishell
 libft.a
 test/result/

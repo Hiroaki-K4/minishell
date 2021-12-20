@@ -8,7 +8,7 @@ int	is_pipe_or_semicolon(int attr)
 int	is_redirect(int attr)
 {
 	return (attr == TK_REDIRECT_IN || attr == TK_REDIRECT_OUT
-		|| attr == TK_REDIRECT_MULTI || attr == TK_REDIRECT_APPEND);
+		|| attr == TK_REDIRECT_DLESS || attr == TK_REDIRECT_DGREAT);
 }
 
 int	check_syntax(t_list *token_list)

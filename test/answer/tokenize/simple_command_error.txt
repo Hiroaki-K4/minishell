@@ -1,0 +1,13 @@
+minishell> echo abc"
+content: echo attr: 0
+content: abc" attr: 0
+minishell> minishell> echo "abc
+content: echo attr: 0
+content: "abc attr: 0
+minishell> minishell> echo 'abc
+content: echo attr: 0
+content: 'abc attr: 0
+minishell> minishell> echo abc'
+content: echo attr: 0
+content: abc' attr: 0
+minishell> 

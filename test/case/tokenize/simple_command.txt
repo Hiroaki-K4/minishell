@@ -1,0 +1,3 @@
+# simple commnad pattern
+echo 'echo "abc"' | ./minishell
+echo "echo 'abc'" | ./minishell

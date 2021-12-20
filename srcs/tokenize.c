@@ -1,87 +1,83 @@
 #include "minishell.h"
 
-t_token_kind	decide_attr(char *line, int pos)
+t_token_kind	check_quote(char *line, size_t pos, size_t *i)
+{
+	size_t	idx;
+	char	quote_start;
+
+	idx = 1;
+	quote_start = line[pos];
+	while (line[pos + idx] && line[pos + idx] != quote_start)
+		idx++;
+	*i += idx;
+	if (line[pos + idx] == quote_start && quote_start == '\'')
+		return (TK_SINGLE_QUOTED);
+	else if (line[pos + idx] == quote_start && quote_start == '\"')
+		return (TK_DOUBLE_QUOTED);
+	else
+	{
+		printf("invalid syntax: %s, %zu\n", line, pos);
+		exit(EXIT_FAILURE);
+	}
+}
+
+t_token_kind	decide_attr(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
-	if (line[pos] == ' ')
-		token_kind = TK_SPACE;
-	else if (line[pos] == '|')
+	if (line[pos] == '|')
+	{
+		*i += 1;
 		token_kind = TK_PIPE;
-	else if (line[pos] == '<' && line[pos + 1] == '<')
-		token_kind = TK_REDIRECT_MULTI;
+	}
+	else if ((ft_isdigit(line[pos]) && (line[pos + 1] == '<' || line[pos + 1] == '>')))
+	{
+		*i += 1;
+		token_kind = TK_IO_NUMBER;
+	}
+	else if ((line[pos] == '<' && line[pos + 1] == '<'))
+	{
+		*i += 2;
+		token_kind = TK_REDIRECT_DLESS;
+	}
 	else if (line[pos] == '>' && line[pos + 1] == '>')
-		token_kind = TK_REDIRECT_APPEND;
+	{
+		*i += 2;
+		token_kind = TK_REDIRECT_DGREAT;
+	}
 	else if (line[pos] == '<')
+	{
+		*i += 1;
 		token_kind = TK_REDIRECT_IN;
+	}
 	else if (line[pos] == '>')
+	{
+		*i += 1;
 		token_kind = TK_REDIRECT_OUT;
-	else if (line[pos] == ';')
-		token_kind = TK_SEMICOLON;
+	}
+	else if (line[pos] == '\"' || line[pos] == '\'')
+	{
+		*i += 1;
+		token_kind = check_quote(line, pos, i);
+	}
 	else
+	{
+		while (line[pos + *i] && !is_metacharacter(line[pos + *i]))
+			*i += 1;
 		token_kind = TK_WORD;
+	}
 	return (token_kind);
 }
 
-t_token	*check_quote(char *line, size_t pos, size_t *i, t_token *token)
+size_t	store_token(char *line, t_list **token_list, size_t pos)
 {
-	while (line[pos + *i] != line[pos] && line[pos + *i])
-		(*i)++;
-	if (line[pos + *i] == line[pos] && line[pos] == '\'')
-		token->attr = TK_SINGLE_QUOTED;
-	else if (line[pos + *i] == line[pos] && line[pos] == '\"')
-		token->attr = TK_DOUBLE_QUOTED;
-	else
-		token->attr = TK_WORD;
-	token = make_token(token, line, pos, *i + 1);
-	return (token);
-}
-
-int	store_operator(char *line, t_list **token_list, size_t pos)
-{
-	size_t	i;
-	t_token	*new_token;
-
-	i = 1;
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
-		return (FAIL);
-	if (line[pos] == '\'' || line[pos] == '\"')
-	{
-		new_token = check_quote(line, pos, &i, new_token);
-		if (ft_lstadd_node(token_list, new_token) == FAIL)
-			return (FAIL);
-		return (pos + i);
-	}
-	else if ((line[pos] == '<' && line[pos + i] == '<')
-		|| (line[pos] == '>' && line[pos + i] == '>'))
-		new_token = make_token(new_token, line, pos, i + 1);
-	else
-	{
-		new_token = make_token(new_token, line, pos, i);
-		i = 0;
-	}
-	if (ft_lstadd_node(token_list, new_token) == FAIL)
-		return (FAIL);
-	return (pos + i);
-}
-
-int	store_word(char *line, t_list **token_list, size_t pos)
-{
-	size_t	i;
-	t_token	*new_token;
+	size_t			i;
+	t_token			*new_token;
+	t_token_kind	attr;
 
 	i = 0;
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
-		return (FAIL);
-	while (line[pos + i])
-	{
-		if (is_metacharacter(line[pos + i]))
-			break ;
-		i++;
-	}
-	new_token = make_token(new_token, line, pos, i);
+	attr = decide_attr(line, pos, &i);
+	new_token = make_token(line, pos, i, attr);
 	if (ft_lstadd_node(token_list, new_token) == FAIL)
 		return (FAIL);
 	return (pos + i);
@@ -94,15 +90,11 @@ void	tokenize(char *line, t_list **token_list)
 	pos = 0;
 	while (line[pos] && pos < ft_strlen(line))
 	{
-		if (is_separating_character(line[pos]))
+		if (line[pos] == ' ' || line[pos] == '\t' || line[pos] == '\n')
 		{
-			if ((line[pos] != ' ' && line[pos] != '\t' && line[pos] != '\n'))
-				pos = store_operator(line, token_list, pos);
+			pos++;
+			continue ;
 		}
-		else
-		{
-			pos = store_word(line, token_list, pos);
-		}
-		pos++;
+		pos = store_token(line, token_list, pos);
 	}
 }
