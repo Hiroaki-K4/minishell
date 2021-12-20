@@ -1,5 +1,34 @@
 #include "minishell.h"
 
+int	g_last_pid;
+
+void	do_piping(int pipes[2], int is_asynchronous)
+{
+	if (pipes == NULL)
+		return ;
+	if (is_asynchronous)
+	{
+		if (dup2(pipes[1], 1) < 0)
+			exit(errno);
+		close(pipes[0]);
+	}
+	else
+	{
+		if (dup2(pipes[0], 0) < 0)
+			exit(errno);
+	}
+}
+
+void	close_pipes(int pipes[2])
+{
+	if (pipes == NULL)
+		return ;
+	if (pipes[0] >= 0)
+		close(pipes[0]);
+	if (pipes[1] >= 0)
+		close(pipes[1]);
+}
+
 int	is_builtin_command(char *token, char **argv)
 {
 	int		ret;
@@ -40,7 +69,7 @@ char	**construct_argv(t_list *tokens)
 	return (argv);
 }
 
-int	execute_commands(t_node *ast, char *envp[])
+int	execute_commands(t_node *ast, char *envp[], int pipes[2], int is_asynchronous)
 {
 	char	*path;
 	char	**argv;
@@ -50,6 +79,8 @@ int	execute_commands(t_node *ast, char *envp[])
 	argv = construct_argv(ast->tokens);
 	if (is_builtin_command(((t_token *)(ast->tokens->content))->content, argv))
 		return (SUCCESS);
+	if (pipes && !is_asynchronous)
+		close(pipes[1]);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -58,6 +89,7 @@ int	execute_commands(t_node *ast, char *envp[])
 	}
 	else if (pid == 0)
 	{
+		do_piping(pipes, is_asynchronous);
 		path = search(argv[0], envp);
 		if (execve(path, argv, envp) == -1)
 		{
@@ -65,78 +97,38 @@ int	execute_commands(t_node *ast, char *envp[])
 			exit(errno);
 		}
 	}
-	else if (waitpid(pid, &status, 0) < 0)
+	else
 	{
-		printf("Error\n");
-		exit(EXIT_FAILURE);
+		if (!is_asynchronous)
+		{
+			if (waitpid(pid, &status, 0) < 0)
+			{
+				printf("Error\n");
+				exit(EXIT_FAILURE);
+			}
+		}
 	}
 	return (SUCCESS);
 }
 
-int	execute_pipe(t_node *ast, char *envp[])
+// int	execute_command_internal(t_node *command, char *envp[], int pipe[2])
+// {
+
+// }
+
+int	execute_pipe(t_node *ast, char *envp[], int pipes[2])
 {
-	char	*path;
-	char	**argv;
-	int		status;
-	pid_t	lhs_pid;
-	pid_t	rhs_pid;
 	int		fildes[2];
 
+	(void)pipes;
+	if (pipe(fildes) == FAIL)
+		exit(errno);
 	if (ast->lhs->attr == ND_PIPE)
-		execute_pipe(ast->lhs, envp);
+		execute_pipe(ast->lhs, envp, fildes);
 	else if (ast->lhs->attr == ND_COMMAND)
 	{
-		if (pipe(fildes) == FAIL)
-			exit(errno);
-		argv = construct_argv(ast->lhs->tokens);
-		if (is_builtin_command(((t_token *)(ast->lhs->tokens->content))->content, argv))
-			return (SUCCESS);
-		lhs_pid = fork();
-		if (lhs_pid < 0)
-		{
-			printf("Error\n");
-			exit(EXIT_FAILURE);
-		}
-		else if (lhs_pid == 0)
-		{
-			close(fildes[0]);
-			dup2(fildes[1], 1);
-			path = search(argv[0], envp);
-			if (execve(path, argv, envp) == -1)
-			{
-				printf("minishell: %s: command not found\n", argv[0]);
-				exit(errno);
-			}
-		}
-		else
-		{
-			if (is_builtin_command(((t_token *)(ast->rhs->tokens->content))->content, argv))
-				return (SUCCESS);
-			close(fildes[1]);
-			rhs_pid = fork();
-			if (rhs_pid < 0)
-			{
-				printf("Error\n");
-				exit(EXIT_FAILURE);
-			}
-			else if (rhs_pid == 0)
-			{
-				dup2(fildes[0], 0);
-				argv = construct_argv(ast->rhs->tokens);
-				path = search(argv[0], envp);
-				if (execve(path, argv, envp) == -1)
-				{
-					printf("minishell: %s: command not found\n", argv[0]);
-					exit(errno);
-				}
-			}
-			close(fildes[0]);
-			if (waitpid(rhs_pid, &status, 0) < 0)
-			{
-				printf("Error\n");
-				exit(EXIT_FAILURE);
-			}
-		}
+		execute_commands(ast->lhs, envp, fildes, TRUE);
+		execute_commands(ast->rhs, envp, fildes, FALSE);
 	}
 	return (SUCCESS);
 }
@@ -144,6 +136,6 @@ int	execute_pipe(t_node *ast, char *envp[])
 int	execute(t_node *ast, char *envp[])
 {
 	if (ast->attr == ND_PIPE)
-		return (execute_pipe(ast, envp));
-	return (execute_commands(ast, envp));
+		return (execute_pipe(ast, envp, NULL));
+	return (execute_commands(ast, envp, NULL, FALSE));
 }
