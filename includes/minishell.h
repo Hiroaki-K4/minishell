@@ -87,4 +87,6 @@ int				ft_unset(char **argv);
 int				ft_env(char **argv);
 int				ft_exit(char **argv);
 
+void			exit_with_error(char *msg);
+
 #endif

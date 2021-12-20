@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/20 16:12:32 by ychida           ###   ########.fr       */
+/*   Updated: 2021/12/20 16:27:18 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,12 @@ void	print_ast(t_node *node, FILE *fp)
 		fputs(";\n", fp);
 		print_ast(node->rhs, fp);
 	}
-	printf("tokens\n");
-	if (node->tokens)
-		ft_lstiter(node->tokens, output_result);
-	else
-		printf("(null)\n");
-	printf("\n");
+	// printf("tokens\n");
+	// if (node->tokens)
+	// 	ft_lstiter(node->tokens, output_result);
+	// else
+	// 	printf("(null)\n");
+	// printf("\n");
 
 	fputs("  ", fp);
 	putc(node_id + '0', fp);
@@ -149,7 +149,7 @@ t_node	*parse(t_list **token_list)
 		exit(EXIT_FAILURE);
 	}
 	fputs("digraph graph_name {\n", fp);
-	print_ast(node, fp);
+	// print_ast(node, fp);
 	fputs("}", fp);
 	fclose(fp);
 	return (node);
