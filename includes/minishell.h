@@ -49,6 +49,8 @@ typedef struct s_node
 	struct s_node	*lhs;
 	struct s_node	*rhs;
 	t_list			*tokens;
+	int				is_furthest_left;
+	int				is_furthest_right;
 }	t_node;
 
 void			output_result(void *content);
