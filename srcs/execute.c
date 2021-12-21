@@ -70,8 +70,18 @@ void	set_redirect(t_list *tokens)
 		if (((t_token *)(tokens->content))->attr == TK_REDIRECT_OUT)
 		{
 			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+			if (file_fd < 0)
+				exit_with_error("failed to open");
 			if (redirect_fd == -1)
 				redirect_fd = 1;
+		}
+		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_IN)
+		{
+			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDONLY);
+			if (file_fd < 0)
+				exit_with_error("failed to open");
+			if (redirect_fd == -1)
+				redirect_fd = 0;
 		}
 		tokens = tokens->next;
 	}
