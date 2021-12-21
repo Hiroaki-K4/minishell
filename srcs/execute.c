@@ -36,7 +36,7 @@ void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 		close(state->old_pipes[1]);
 }
 
-int	is_builtin_command(char *token, char **argv)
+int	is_builtin_command(char **argv)
 {
 	int		ret;
 	size_t	i;
@@ -46,7 +46,7 @@ int	is_builtin_command(char *token, char **argv)
 	i = 0;
 	while (builtins[i])
 	{
-		if (!ft_strncmp(token, builtins[i], ft_strlen(builtins[i]) + 1))
+		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
 		{
 			ret = builtin_funcs[i](argv);
 			(void)ret;  // TODO: use ret value
@@ -76,18 +76,32 @@ char	**construct_argv(t_list *tokens)
 	return (argv);
 }
 
+void	execute_command(char **argv, char *envp[])
+{
+	char	*path;
+
+	if (is_builtin_command(argv))
+		exit(errno);
+	else
+	{
+		path = search(argv[0], envp);
+		if (execve(path, argv, envp) == -1)
+		{
+			printf("minishell: %s: command not found\n", argv[0]);
+			exit(errno);
+		}
+	}
+}
+
 int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *state)
 {
 	int		count;
-	char	*path;
 	char	**argv;
 	int		status;
 	pid_t	pid;
 
 	count = 0;
 	argv = construct_argv(node->tokens);
-	if (is_builtin_command(((t_token *)(node->tokens->content))->content, argv))
-		return (SUCCESS);
 	close_pipes(pipes, node, state);
 	pid = fork();
 	state->process_count++;
@@ -96,12 +110,7 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 	else if (pid == 0)
 	{
 		do_piping(pipes, node, state);
-		path = search(argv[0], envp);
-		if (execve(path, argv, envp) == -1)
-		{
-			printf("minishell: %s: command not found\n", argv[0]);
-			exit(errno);
-		}
+		execute_command(argv, envp);
 	}
 	else
 	{
@@ -110,7 +119,7 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 		{
 			while (count < state->process_count)
 			{
-				if (waitpid(state->pids[count], &status, 0) < 0)
+				if (state->pids[count] && waitpid(state->pids[count], &status, 0) < 0)
 					exit_with_error("wait error");
 				count++;
 			}
