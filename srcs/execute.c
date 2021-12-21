@@ -1,5 +1,9 @@
 #include "minishell.h"
 
+int 	has_redirect;
+int		redirect_fd = -1;
+int		file_fd = -1;
+
 void	do_piping(int pipes[2], t_node *node, t_global_state *state)
 {
 	if (pipes == NULL)
@@ -57,6 +61,22 @@ int	is_builtin_command(char **argv)
 	return (FALSE);
 }
 
+void	set_redirect(t_list *tokens)
+{
+	while (tokens)
+	{
+		if (((t_token *)(tokens->content))->attr == TK_IO_NUMBER)
+			redirect_fd = ft_atoi(((t_token *)(tokens->content))->content);
+		if (((t_token *)(tokens->content))->attr == TK_REDIRECT_OUT)
+		{
+			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+			if (redirect_fd == -1)
+				redirect_fd = 1;
+		}
+		tokens = tokens->next;
+	}
+}
+
 char	**construct_argv(t_list *tokens)
 {
 	size_t	idx;
@@ -66,13 +86,18 @@ char	**construct_argv(t_list *tokens)
 	argv = (char **)malloc(sizeof(char *) * (ft_lstsize(tokens) + 1));
 	if (argv == NULL)
 		return (NULL);
-	while (tokens)
+	while (tokens && (((t_token *)(tokens->content))->attr != TK_IO_NUMBER
+		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_IN
+		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_OUT
+		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_DGREAT
+		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_DLESS))
 	{
 		argv[idx] = (((t_token *)(tokens->content))->content);
 		tokens = tokens->next;
 		idx++;
 	}
 	argv[idx] = NULL;
+	set_redirect(tokens);
 	return (argv);
 }
 
@@ -80,6 +105,8 @@ void	execute_command(char **argv, char *envp[])
 {
 	char	*path;
 
+	if (file_fd)
+		dup2(file_fd, redirect_fd);
 	if (is_builtin_command(argv))
 		exit(errno);
 	else
@@ -103,8 +130,8 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 	count = 0;
 	argv = construct_argv(node->tokens);
 	close_pipes(pipes, node, state);
-	pid = fork();
 	state->process_count++;
+	pid = fork();
 	if (pid < 0)
 		exit_with_error("fork error");
 	else if (pid == 0)
@@ -122,6 +149,11 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 				if (state->pids[count] && waitpid(state->pids[count], &status, 0) < 0)
 					exit_with_error("wait error");
 				count++;
+			}
+			if (file_fd)
+			{
+				close(file_fd);
+				redirect_fd = -1;
 			}
 		}
 	}
