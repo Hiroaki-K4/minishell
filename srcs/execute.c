@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-int		redirect_fd = -1;
-int		file_fd = -1;
-
 void	do_piping(int pipes[2], t_node *node, t_global_state *state)
 {
 	if (pipes == NULL)
@@ -60,41 +57,66 @@ int	is_builtin_command(char **argv)
 	return (FALSE);
 }
 
-void	set_redirect(t_list *tokens)
+void	set_redirect(t_list *tokens, t_global_state *state)
 {
+	char	*input;
+	char	*tmp_fp;
+
 	while (tokens)
 	{
 		if (((t_token *)(tokens->content))->attr == TK_IO_NUMBER)
-			redirect_fd = ft_atoi(((t_token *)(tokens->content))->content);
+			state->redirect_fd = ft_atoi(((t_token *)(tokens->content))->content);
 		if (((t_token *)(tokens->content))->attr == TK_REDIRECT_OUT)
 		{
-			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
-			if (file_fd < 0)
+			state->file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+			if (state->file_fd < 0)
 				exit_with_error("failed to open");
-			if (redirect_fd == -1)
-				redirect_fd = 1;
+			if (state->redirect_fd == -1)
+				state->redirect_fd = 1;
 		}
 		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_IN)
 		{
-			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDONLY);
-			if (file_fd < 0)
+			state->file_fd = open(((t_token *)(tokens->next->content))->content, O_RDONLY);
+			if (state->file_fd < 0)
 				exit_with_error("failed to open");
-			if (redirect_fd == -1)
-				redirect_fd = 0;
+			if (state->redirect_fd == -1)
+				state->redirect_fd = 0;
 		}
 		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_DGREAT)
 		{
-			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
-			if (file_fd < 0)
+			state->file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
+			if (state->file_fd < 0)
 				exit_with_error("failed to open");
-			if (redirect_fd == -1)
-				redirect_fd = 1;
+			if (state->redirect_fd == -1)
+				state->redirect_fd = 1;
+		}
+		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_DLESS)
+		{
+			state->here_delimiter = ((t_token *)(tokens->next->content))->content;
+			input = readline("> ");
+			state->here_document = input;
+			while (ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+			{
+				input = readline("> ");
+				if (!ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+					break ;
+				state->here_document = ft_strjoin(state->here_document, ft_strjoin(ft_strdup("\n"), input));
+			}
+			state->here_document = ft_strjoin(state->here_document, ft_strdup("\n"));
+			tmp_fp = ft_strjoin(getenv("PWD"), "/minishell_tmp");
+			state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+			write(state->file_fd, state->here_document, ft_strlen(state->here_document));
+			close(state->file_fd);
+			state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+			unlink(tmp_fp);
+			if (state->redirect_fd == -1)
+				state->redirect_fd = 0;
 		}
 		tokens = tokens->next;
 	}
 }
 
-char	**construct_argv(t_list *tokens)
+char	**construct_argv(t_list *tokens, t_global_state *state)
 {
 	size_t	idx;
 	char	**argv;
@@ -114,16 +136,16 @@ char	**construct_argv(t_list *tokens)
 		idx++;
 	}
 	argv[idx] = NULL;
-	set_redirect(tokens);
+	set_redirect(tokens, state);
 	return (argv);
 }
 
-void	execute_command(char **argv, char *envp[])
+void	execute_command(char **argv, char *envp[], t_global_state *state)
 {
 	char	*path;
 
-	if (file_fd)
-		dup2(file_fd, redirect_fd);
+	if (state->file_fd)
+		dup2(state->file_fd, state->redirect_fd);
 	if (is_builtin_command(argv))
 		exit(errno);
 	else
@@ -145,7 +167,7 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 	pid_t	pid;
 
 	count = 0;
-	argv = construct_argv(node->tokens);
+	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
 	state->process_count++;
 	pid = fork();
@@ -154,7 +176,7 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 	else if (pid == 0)
 	{
 		do_piping(pipes, node, state);
-		execute_command(argv, envp);
+		execute_command(argv, envp, state);
 	}
 	else
 	{
@@ -167,11 +189,8 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 					exit_with_error("wait error");
 				count++;
 			}
-			if (file_fd)
-			{
-				close(file_fd);
-				redirect_fd = -1;
-			}
+			if (state->file_fd)
+				close(state->file_fd);
 		}
 	}
 	return (SUCCESS);

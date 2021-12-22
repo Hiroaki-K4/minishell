@@ -60,6 +60,10 @@ typedef struct s_global_state
 	int		old_pipes[2];
 	int		process_count;
 	int		*pids;
+	int		redirect_fd;
+	int		file_fd;
+	char	*here_delimiter;
+	char	*here_document;
 }	t_global_state;
 
 void			output_result(void *content);
