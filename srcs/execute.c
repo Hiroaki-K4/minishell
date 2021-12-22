@@ -57,63 +57,78 @@ int	is_builtin_command(char **argv)
 	return (FALSE);
 }
 
-void	set_redirect(t_list *tokens, t_global_state *state)
+void	set_redirect(t_list **tokens, t_global_state *state)
 {
 	char	*input;
 	char	*tmp_fp;
 
-	while (tokens)
+	if (*tokens == NULL)
+		return ;
+	if (((t_token *)((*tokens)->content))->attr == TK_IO_NUMBER)
 	{
-		if (((t_token *)(tokens->content))->attr == TK_IO_NUMBER)
-			state->redirect_fd = ft_atoi(((t_token *)(tokens->content))->content);
-		if (((t_token *)(tokens->content))->attr == TK_REDIRECT_OUT)
-		{
-			state->file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
-			if (state->file_fd < 0)
-				exit_with_error("failed to open");
-			if (state->redirect_fd == -1)
-				state->redirect_fd = 1;
-		}
-		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_IN)
-		{
-			state->file_fd = open(((t_token *)(tokens->next->content))->content, O_RDONLY);
-			if (state->file_fd < 0)
-				exit_with_error("failed to open");
-			if (state->redirect_fd == -1)
-				state->redirect_fd = 0;
-		}
-		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_DGREAT)
-		{
-			state->file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
-			if (state->file_fd < 0)
-				exit_with_error("failed to open");
-			if (state->redirect_fd == -1)
-				state->redirect_fd = 1;
-		}
-		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_DLESS)
-		{
-			state->here_delimiter = ((t_token *)(tokens->next->content))->content;
-			input = readline("> ");
-			state->here_document = input;
-			while (ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
-			{
-				input = readline("> ");
-				if (!ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
-					break ;
-				state->here_document = ft_strjoin(state->here_document, ft_strjoin(ft_strdup("\n"), input));
-			}
-			state->here_document = ft_strjoin(state->here_document, ft_strdup("\n"));
-			tmp_fp = ft_strjoin(getenv("PWD"), "/minishell_tmp");
-			state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
-			write(state->file_fd, state->here_document, ft_strlen(state->here_document));
-			close(state->file_fd);
-			state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
-			unlink(tmp_fp);
-			if (state->redirect_fd == -1)
-				state->redirect_fd = 0;
-		}
-		tokens = tokens->next;
+		state->redirect_fd = ft_atoi(((t_token *)((*tokens)->content))->content);
+		*tokens = (*tokens)->next;
 	}
+	if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_OUT)
+	{
+		*tokens = (*tokens)->next;
+		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+		if (state->file_fd < 0)
+			exit_with_error("failed to open");
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 1;
+	}
+	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_IN)
+	{
+		*tokens = (*tokens)->next;
+		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDONLY);
+		if (state->file_fd < 0)
+			exit_with_error("failed to open");
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 0;
+	}
+	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DGREAT)
+	{
+		*tokens = (*tokens)->next;
+		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
+		if (state->file_fd < 0)
+			exit_with_error("failed to open");
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 1;
+	}
+	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DLESS)
+	{
+		*tokens = (*tokens)->next;
+		state->here_delimiter = ((t_token *)((*tokens)->content))->content;
+		input = readline("> ");
+		state->here_document = input;
+		while (ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+		{
+			input = readline("> ");
+			if (!ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+				break ;
+			state->here_document = ft_strjoin(state->here_document, ft_strjoin(ft_strdup("\n"), input));
+		}
+		state->here_document = ft_strjoin(state->here_document, ft_strdup("\n"));
+		tmp_fp = ft_strjoin(getenv("PWD"), "/minishell_tmp");
+		state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+		write(state->file_fd, state->here_document, ft_strlen(state->here_document));
+		close(state->file_fd);
+		state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+		unlink(tmp_fp);
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 0;
+	}
+	*tokens = (*tokens)->next;
+}
+
+int	is_redirect_token(t_token *token)
+{
+	return (token->attr == TK_IO_NUMBER
+		|| token->attr == TK_REDIRECT_IN
+		|| token->attr == TK_REDIRECT_OUT
+		|| token->attr == TK_REDIRECT_DGREAT
+		|| token->attr == TK_REDIRECT_DLESS);
 }
 
 char	**construct_argv(t_list *tokens, t_global_state *state)
@@ -125,18 +140,21 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 	argv = (char **)malloc(sizeof(char *) * (ft_lstsize(tokens) + 1));
 	if (argv == NULL)
 		return (NULL);
-	while (tokens && (((t_token *)(tokens->content))->attr != TK_IO_NUMBER
-		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_IN
-		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_OUT
-		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_DGREAT
-		&& ((t_token *)(tokens->content))->attr != TK_REDIRECT_DLESS))
+	while (TRUE)
 	{
-		argv[idx] = (((t_token *)(tokens->content))->content);
-		tokens = tokens->next;
-		idx++;
+		if (tokens == NULL)
+			break ;
+		while (TRUE)
+		{
+			if (tokens == NULL || is_redirect_token((t_token *)(tokens->content)))
+				break ;
+			argv[idx] = (((t_token *)(tokens->content))->content);
+			tokens = tokens->next;
+			idx++;
+		}
+		set_redirect(&tokens, state);
 	}
 	argv[idx] = NULL;
-	set_redirect(tokens, state);
 	return (argv);
 }
 
