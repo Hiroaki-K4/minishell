@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-int 	has_redirect;
 int		redirect_fd = -1;
 int		file_fd = -1;
 
@@ -82,6 +81,14 @@ void	set_redirect(t_list *tokens)
 				exit_with_error("failed to open");
 			if (redirect_fd == -1)
 				redirect_fd = 0;
+		}
+		else if (((t_token *)(tokens->content))->attr == TK_REDIRECT_DGREAT)
+		{
+			file_fd = open(((t_token *)(tokens->next->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
+			if (file_fd < 0)
+				exit_with_error("failed to open");
+			if (redirect_fd == -1)
+				redirect_fd = 1;
 		}
 		tokens = tokens->next;
 	}
