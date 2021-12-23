@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2021/12/20 16:27:18 by ychida           ###   ########.fr       */
+/*   Updated: 2021/12/21 20:50:45 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_node	*new_node(t_node *lhs, t_node *rhs, t_node_kind attr)
 	new_node->tokens = NULL;
 	new_node->is_furthest_left = FALSE;
 	new_node->is_furthest_right = FALSE;
+	new_node->is_top = FALSE;
 	return (new_node);
 }
 
@@ -143,6 +144,7 @@ t_node	*parse(t_list **token_list)
 	t_node	*node;
 
 	node = parse_pipe_sequence(token_list);
+	node->is_top = TRUE;
 	if ((fp = fopen("ast.dot", "w+")) == NULL)
 	{
 		printf("failed open file\n");

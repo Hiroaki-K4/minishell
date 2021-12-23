@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # include <errno.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -51,7 +52,19 @@ typedef struct s_node
 	t_list			*tokens;
 	int				is_furthest_left;
 	int				is_furthest_right;
+	int				is_top;
 }	t_node;
+
+typedef struct s_global_state
+{
+	int		old_pipes[2];
+	int		process_count;
+	int		*pids;
+	int		redirect_fd;
+	int		file_fd;
+	char	*here_delimiter;
+	char	*here_document;
+}	t_global_state;
 
 void			output_result(void *content);
 
@@ -75,7 +88,7 @@ int				check_syntax(t_list *token_list);
 
 t_node			*parse(t_list **token_list);
 
-int				execute(t_node *ast, char *envp[]);
+int				execute(t_node *ast, char *envp[], t_global_state *state);
 
 char			*search(char *path, char **envp);
 

@@ -1,9 +1,6 @@
 #include "minishell.h"
 
-int	g_pipes[2];
-int	g_last_pid;
-
-void	do_piping(int pipes[2], t_node *node)
+void	do_piping(int pipes[2], t_node *node, t_global_state *state)
 {
 	if (pipes == NULL)
 		return ;
@@ -20,14 +17,14 @@ void	do_piping(int pipes[2], t_node *node)
 	}
 	else
 	{
-		if (dup2(g_pipes[0], 0) < 0)
+		if (dup2(state->old_pipes[0], 0) < 0)
 			exit_with_error("internal1 dup2 error");
 		if (dup2(pipes[1], 1) < 0)
 			exit_with_error("internal2 dup2 error");
 	}
 }
 
-void	close_pipes(int pipes[2], t_node *node)
+void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 {
 	if (pipes == NULL)
 		return ;
@@ -36,10 +33,10 @@ void	close_pipes(int pipes[2], t_node *node)
 	else if (node->is_furthest_right)
 		close(pipes[1]);
 	else
-		close(g_pipes[1]);
+		close(state->old_pipes[1]);
 }
 
-int	is_builtin_command(char *token, char **argv)
+int	is_builtin_command(char **argv)
 {
 	int		ret;
 	size_t	i;
@@ -49,7 +46,7 @@ int	is_builtin_command(char *token, char **argv)
 	i = 0;
 	while (builtins[i])
 	{
-		if (!ft_strncmp(token, builtins[i], ft_strlen(builtins[i]) + 1))
+		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
 		{
 			ret = builtin_funcs[i](argv);
 			(void)ret;  // TODO: use ret value
@@ -60,7 +57,81 @@ int	is_builtin_command(char *token, char **argv)
 	return (FALSE);
 }
 
-char	**construct_argv(t_list *tokens)
+void	set_redirect(t_list **tokens, t_global_state *state)
+{
+	char	*input;
+	char	*tmp_fp;
+
+	if (*tokens == NULL)
+		return ;
+	if (((t_token *)((*tokens)->content))->attr == TK_IO_NUMBER)
+	{
+		state->redirect_fd = ft_atoi(((t_token *)((*tokens)->content))->content);
+		*tokens = (*tokens)->next;
+	}
+	if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_OUT)
+	{
+		*tokens = (*tokens)->next;
+		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+		if (state->file_fd < 0)
+			exit_with_error("failed to open");
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 1;
+	}
+	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_IN)
+	{
+		*tokens = (*tokens)->next;
+		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDONLY);
+		if (state->file_fd < 0)
+			exit_with_error("failed to open");
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 0;
+	}
+	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DGREAT)
+	{
+		*tokens = (*tokens)->next;
+		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
+		if (state->file_fd < 0)
+			exit_with_error("failed to open");
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 1;
+	}
+	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DLESS)
+	{
+		*tokens = (*tokens)->next;
+		state->here_delimiter = ((t_token *)((*tokens)->content))->content;
+		input = readline("> ");
+		state->here_document = input;
+		while (ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+		{
+			input = readline("> ");
+			if (!ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+				break ;
+			state->here_document = ft_strjoin(state->here_document, ft_strjoin(ft_strdup("\n"), input));
+		}
+		state->here_document = ft_strjoin(state->here_document, ft_strdup("\n"));
+		tmp_fp = ft_strjoin(getenv("PWD"), "/minishell_tmp");
+		state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+		write(state->file_fd, state->here_document, ft_strlen(state->here_document));
+		close(state->file_fd);
+		state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+		unlink(tmp_fp);
+		if (state->redirect_fd == -1)
+			state->redirect_fd = 0;
+	}
+	*tokens = (*tokens)->next;
+}
+
+int	is_redirect_token(t_token *token)
+{
+	return (token->attr == TK_IO_NUMBER
+		|| token->attr == TK_REDIRECT_IN
+		|| token->attr == TK_REDIRECT_OUT
+		|| token->attr == TK_REDIRECT_DGREAT
+		|| token->attr == TK_REDIRECT_DLESS);
+}
+
+char	**construct_argv(t_list *tokens, t_global_state *state)
 {
 	size_t	idx;
 	char	**argv;
@@ -69,33 +140,34 @@ char	**construct_argv(t_list *tokens)
 	argv = (char **)malloc(sizeof(char *) * (ft_lstsize(tokens) + 1));
 	if (argv == NULL)
 		return (NULL);
-	while (tokens)
+	while (TRUE)
 	{
-		argv[idx] = (((t_token *)(tokens->content))->content);
-		tokens = tokens->next;
-		idx++;
+		if (tokens == NULL)
+			break ;
+		while (TRUE)
+		{
+			if (tokens == NULL || is_redirect_token((t_token *)(tokens->content)))
+				break ;
+			argv[idx] = (((t_token *)(tokens->content))->content);
+			tokens = tokens->next;
+			idx++;
+		}
+		set_redirect(&tokens, state);
 	}
 	argv[idx] = NULL;
 	return (argv);
 }
 
-int	execute_commands(t_node *node, char *envp[], int pipes[2])
+void	execute_command(char **argv, char *envp[], t_global_state *state)
 {
 	char	*path;
-	char	**argv;
-	int		status;
-	pid_t	pid;
 
-	argv = construct_argv(node->tokens);
-	if (is_builtin_command(((t_token *)(node->tokens->content))->content, argv))
-		return (SUCCESS);
-	close_pipes(pipes, node);
-	pid = fork();
-	if (pid < 0)
-		exit_with_error("fork error");
-	else if (pid == 0)
+	if (state->file_fd)
+		dup2(state->file_fd, state->redirect_fd);
+	if (is_builtin_command(argv))
+		exit(errno);
+	else
 	{
-		do_piping(pipes, node);
 		path = search(argv[0], envp);
 		if (execve(path, argv, envp) == -1)
 		{
@@ -103,47 +175,80 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2])
 			exit(errno);
 		}
 	}
+}
+
+int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *state)
+{
+	int		count;
+	char	**argv;
+	int		status;
+	pid_t	pid;
+
+	count = 0;
+	argv = construct_argv(node->tokens, state);
+	close_pipes(pipes, node, state);
+	state->process_count++;
+	pid = fork();
+	if (pid < 0)
+		exit_with_error("fork error");
+	else if (pid == 0)
+	{
+		do_piping(pipes, node, state);
+		execute_command(argv, envp, state);
+	}
 	else
 	{
+		state->pids[state->process_count - 1] = pid;
 		if (node->is_furthest_right)
 		{
-			if (waitpid(pid, &status, 0) < 0)
-				exit_with_error("wait error");
+			while (count < state->process_count)
+			{
+				if (state->pids[count] && waitpid(state->pids[count], &status, 0) < 0)
+					exit_with_error("wait error");
+				count++;
+			}
+			if (state->file_fd)
+				close(state->file_fd);
 		}
 	}
 	return (SUCCESS);
 }
 
-int	execute_pipe(t_node *ast, char *envp[])
+int	execute_pipe(t_node *ast, char *envp[], t_global_state *state)
 {
 	int		fildes[2];
 
 	if (ast->lhs->attr == ND_PIPE)
 	{
-		execute_pipe(ast->lhs, envp);
+		execute_pipe(ast->lhs, envp, state);
 		if (pipe(fildes) == FAIL)
 			exit_with_error("pipe error");
-		execute_commands(ast->lhs->rhs, envp, fildes);
-		execute_commands(ast->rhs, envp, fildes);
-		g_pipes[0] = fildes[0];
-		g_pipes[1] = fildes[1];
+		execute_commands(ast->lhs->rhs, envp, fildes, state);
+		if (ast->is_top)
+		{
+			state->old_pipes[0] = fildes[0];
+			state->old_pipes[1] = fildes[1];
+			execute_commands(ast->rhs, envp, fildes, state);
+		}
+		state->old_pipes[0] = fildes[0];
+		state->old_pipes[1] = fildes[1];
 	}
 	else if (ast->lhs->attr == ND_COMMAND)
 	{
 		if (pipe(fildes) == FAIL)
 			exit_with_error("pipe error");
-		execute_commands(ast->lhs, envp, fildes);
-		if (g_pipes[0] == 0 && g_pipes[1] == 0)
-			execute_commands(ast->rhs, envp, fildes);
-		g_pipes[0] = fildes[0];
-		g_pipes[1] = fildes[1];
+		execute_commands(ast->lhs, envp, fildes, state);
+		if (ast->is_top)
+			execute_commands(ast->rhs, envp, fildes, state);
+		state->old_pipes[0] = fildes[0];
+		state->old_pipes[1] = fildes[1];
 	}
 	return (SUCCESS);
 }
 
-int	execute(t_node *ast, char *envp[])
+int	execute(t_node *ast, char *envp[], t_global_state *state)
 {
 	if (ast->attr == ND_PIPE)
-		return (execute_pipe(ast, envp));
-	return (execute_commands(ast, envp, NULL));
+		return (execute_pipe(ast, envp, state));
+	return (execute_commands(ast, envp, NULL, state));
 }
