@@ -36,12 +36,33 @@ void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 		close(state->old_pipes[1]);
 }
 
+int	is_special_builtin_command(char **argv)
+{
+	int		ret;
+	size_t	i;
+	char *builtins[] = {"cd", "export", "unset", "exit", NULL};
+	int (*builtin_funcs[])(char **) = {ft_cd, ft_export, ft_unset, ft_exit};
+
+	i = 0;
+	while (builtins[i])
+	{
+		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
+		{
+			ret = builtin_funcs[i](argv);
+			(void)ret;  // TODO: use ret value
+			return (TRUE);
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
 int	is_builtin_command(char **argv)
 {
 	int		ret;
 	size_t	i;
-	char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
-	int (*builtin_funcs[])(char **) = {ft_echo, ft_cd, ft_pwd, ft_export, ft_unset, ft_env, ft_exit};
+	char *builtins[] = {"echo", "pwd", "env", NULL};
+	int (*builtin_funcs[])(char **) = {ft_echo, ft_pwd, ft_env};
 
 	i = 0;
 	while (builtins[i])
@@ -74,7 +95,7 @@ void	set_redirect(t_list **tokens, t_global_state *state)
 		*tokens = (*tokens)->next;
 		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
 		if (state->file_fd < 0)
-			exit_with_error("failed to open");
+			exit_with_error(((t_token *)((*tokens)->content))->content);
 		if (state->redirect_fd == -1)
 			state->redirect_fd = 1;
 	}
@@ -83,7 +104,7 @@ void	set_redirect(t_list **tokens, t_global_state *state)
 		*tokens = (*tokens)->next;
 		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDONLY);
 		if (state->file_fd < 0)
-			exit_with_error("failed to open");
+			exit_with_error(((t_token *)((*tokens)->content))->content);
 		if (state->redirect_fd == -1)
 			state->redirect_fd = 0;
 	}
@@ -92,7 +113,7 @@ void	set_redirect(t_list **tokens, t_global_state *state)
 		*tokens = (*tokens)->next;
 		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
 		if (state->file_fd < 0)
-			exit_with_error("failed to open");
+			exit_with_error(((t_token *)((*tokens)->content))->content);
 		if (state->redirect_fd == -1)
 			state->redirect_fd = 1;
 	}
@@ -179,14 +200,14 @@ void	execute_command(char **argv, char *envp[], t_global_state *state)
 
 int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *state)
 {
-	int		count;
 	char	**argv;
 	int		status;
 	pid_t	pid;
 
-	count = 0;
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
+	if (is_special_builtin_command(argv))
+		return (SUCCESS);
 	state->process_count++;
 	pid = fork();
 	if (pid < 0)
@@ -201,11 +222,11 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 		state->pids[state->process_count - 1] = pid;
 		if (node->is_furthest_right)
 		{
-			while (count < state->process_count)
+			while (state->process_count)
 			{
-				if (state->pids[count] && waitpid(state->pids[count], &status, 0) < 0)
+				if (waitpid(-1, &status, 0) < 0)
 					exit_with_error("wait error");
-				count++;
+				state->process_count--;
 			}
 			if (state->file_fd)
 				close(state->file_fd);
