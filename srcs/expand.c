@@ -36,6 +36,7 @@ char	*expand_env_vals(char *content)
 		{
 			if (start != i)
 				expanded = ft_strjoin(expanded, ft_substr(content, start, i - start));
+			// TODO: Correspond $?
 			env_pos = get_env_first_pos(content, &env, i + 1, get_next_dollar_pos(content, i));
 			if (env != NULL)
 				expanded = ft_strjoin(expanded, env);
