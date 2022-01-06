@@ -246,6 +246,13 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 	else
 	{
 		state->pids[state->process_count - 1] = pid;
+		int i = 0;
+		while (i < state->redirect_num)
+		{
+			if (state->redirects[i].file_fd != -1)
+				close(state->redirects[i].file_fd);
+			i++;
+		}
 		if (node->is_furthest_right)
 		{
 			while (state->process_count)
@@ -253,13 +260,6 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 				if (waitpid(-1, &status, 0) < 0)
 					exit_with_error("wait error");
 				state->process_count--;
-			}
-			int i = 0;
-			while (i < state->redirect_num)
-			{
-				if (state->redirects[i].file_fd != -1)
-					close(state->redirects[i].file_fd);
-				i++;
 			}
 		}
 	}
