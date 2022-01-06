@@ -12,6 +12,7 @@ t_node	*preprocess(char *line)
 {
 	char		*trimed;
 	t_list		*token_list;
+	t_list		*expanded_list;
 
 	token_list = NULL;
 	trimed = ft_strtrim(line, " \t");
@@ -21,5 +22,7 @@ t_node	*preprocess(char *line)
 	if (check_syntax(token_list) == FAIL)
 		return (NULL);
 	ft_lstiter(token_list, output_result);
-	return (parse(&token_list));
+	expanded_list = NULL;
+	expand(token_list, &expanded_list);
+	return (parse(&expanded_list));
 }

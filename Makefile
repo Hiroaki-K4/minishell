@@ -10,6 +10,7 @@ SRC := main.c \
 	   operate_list.c \
 	   signal_handler.c \
 	   error.c \
+	   expand.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
 	   builtins/pwd.c \

@@ -86,6 +86,8 @@ void			tokenize(char *line, t_list **token_list);
 
 int				check_syntax(t_list *token_list);
 
+int				expand(t_list *token_list, t_list **expanded_list);
+
 t_node			*parse(t_list **token_list);
 
 int				execute(t_node *ast, char *envp[], t_global_state *state);
