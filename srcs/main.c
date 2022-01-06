@@ -8,10 +8,9 @@ void	init_global_state(t_global_state *state)
 	state->pids = (int *)malloc(sizeof(int) * 10);
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
-	state->redirect_fd = -1;
-	state->file_fd = -1;
-	state->here_delimiter = NULL;
-	state->here_document = NULL;
+	state->last_command_exit_status = 0;
+	state->redirects = NULL;
+	state->redirect_num = 0;
 }
 
 void	refresh_global_state(t_global_state *state)
@@ -24,12 +23,16 @@ void	refresh_global_state(t_global_state *state)
 	ft_bzero(state->pids, 10);
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
-	state->redirect_fd = -1;
-	state->file_fd = -1;
-	free(state->here_delimiter);
-	state->here_delimiter = NULL;
-	free(state->here_document);
-	state->here_document = NULL;
+	int i = 0;
+	while (i < state->redirect_num)
+	{
+		free(state->redirects[i].here_delimiter);
+		state->redirects[i].here_delimiter = NULL;
+		free(state->redirects[i].here_document);
+		state->redirects[i].here_document = NULL;
+		i++;
+	}
+	state->redirect_num = 0;
 }
 
 void	minishell(char *envp[])

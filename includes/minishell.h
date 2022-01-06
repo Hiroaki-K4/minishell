@@ -55,15 +55,22 @@ typedef struct s_node
 	int				is_top;
 }	t_node;
 
-typedef struct s_global_state
+typedef struct s_redirect
 {
-	int		old_pipes[2];
-	int		process_count;
-	int		*pids;
 	int		redirect_fd;
 	int		file_fd;
 	char	*here_delimiter;
 	char	*here_document;
+}	t_redirect;
+
+typedef struct s_global_state
+{
+	int			old_pipes[2];
+	int			process_count;
+	int			*pids;
+	int			last_command_exit_status;
+	t_redirect	*redirects;
+	int			redirect_num;
 }	t_global_state;
 
 void			output_result(void *content);
