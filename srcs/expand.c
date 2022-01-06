@@ -1,19 +1,11 @@
 #include "minishell.h"
 
-int	get_next_dollar_pos(char *content, int pos)
-{
-	pos++;
-	while (content[pos] && content[pos] != '$')
-		pos++;
-	return (pos);
-}
-
-int	get_env_first_pos(char *content, char **env, int start, int next_dollar)
+int	get_env_first_pos(char *content, char **env, int start)
 {
 	int	env_pos;
 
 	env_pos = start;
-	while (env_pos < next_dollar && content[env_pos] != ' ')
+	while (content[env_pos] && content[env_pos] != ' ' && content[env_pos] != '$')
 		env_pos++;
 	*env = getenv(ft_substr(content, start, env_pos - start));
 	return (env_pos);
@@ -37,7 +29,7 @@ char	*expand_env_vals(char *content)
 			if (start != i)
 				expanded = ft_strjoin(expanded, ft_substr(content, start, i - start));
 			// TODO: Correspond $?
-			env_pos = get_env_first_pos(content, &env, i + 1, get_next_dollar_pos(content, i));
+			env_pos = get_env_first_pos(content, &env, i + 1);
 			if (env != NULL)
 				expanded = ft_strjoin(expanded, env);
 			i = env_pos;
