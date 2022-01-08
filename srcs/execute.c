@@ -36,12 +36,12 @@ void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 		close(state->old_pipes[1]);
 }
 
-int	is_builtin_command(char **argv)
+int	is_special_builtin_command(char **argv)
 {
 	int		ret;
 	size_t	i;
-	char *builtins[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
-	int (*builtin_funcs[])(char **) = {ft_echo, ft_cd, ft_pwd, ft_export, ft_unset, ft_env, ft_exit};
+	char *builtins[] = {"cd", "export", "unset", "exit", NULL};
+	int (*builtin_funcs[])(char **) = {ft_cd, ft_export, ft_unset, ft_exit};
 
 	i = 0;
 	while (builtins[i])
@@ -57,7 +57,36 @@ int	is_builtin_command(char **argv)
 	return (FALSE);
 }
 
-void	set_redirect(t_list **tokens, t_global_state *state)
+int	is_builtin_command(char **argv)
+{
+	int		ret;
+	size_t	i;
+	char *builtins[] = {"echo", "pwd", "env", NULL};
+	int (*builtin_funcs[])(char **) = {ft_echo, ft_pwd, ft_env};
+
+	i = 0;
+	while (builtins[i])
+	{
+		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
+		{
+			ret = builtin_funcs[i](argv);
+			(void)ret;  // TODO: use ret value
+			return (TRUE);
+		}
+		i++;
+	}
+	return (FALSE);
+}
+
+void	init_redirect(t_redirect *redirect)
+{
+	redirect->redirect_fd = -1;
+	redirect->file_fd = -1;
+	redirect->here_delimiter = NULL;
+	redirect->here_document = NULL;
+}
+
+void	set_redirect(t_list **tokens, t_redirect *redirect)
 {
 	char	*input;
 	char	*tmp_fp;
@@ -66,58 +95,58 @@ void	set_redirect(t_list **tokens, t_global_state *state)
 		return ;
 	if (((t_token *)((*tokens)->content))->attr == TK_IO_NUMBER)
 	{
-		state->redirect_fd = ft_atoi(((t_token *)((*tokens)->content))->content);
+		redirect->redirect_fd = ft_atoi(((t_token *)((*tokens)->content))->content);
 		*tokens = (*tokens)->next;
 	}
 	if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_OUT)
 	{
 		*tokens = (*tokens)->next;
-		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
-		if (state->file_fd < 0)
-			exit_with_error("failed to open");
-		if (state->redirect_fd == -1)
-			state->redirect_fd = 1;
+		redirect->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+		if (redirect->file_fd < 0)
+			exit_with_error(((t_token *)((*tokens)->content))->content);
+		if (redirect->redirect_fd == -1)
+			redirect->redirect_fd = 1;
 	}
 	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_IN)
 	{
 		*tokens = (*tokens)->next;
-		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDONLY);
-		if (state->file_fd < 0)
-			exit_with_error("failed to open");
-		if (state->redirect_fd == -1)
-			state->redirect_fd = 0;
+		redirect->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDONLY);
+		if (redirect->file_fd < 0)
+			exit_with_error(((t_token *)((*tokens)->content))->content);
+		if (redirect->redirect_fd == -1)
+			redirect->redirect_fd = 0;
 	}
 	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DGREAT)
 	{
 		*tokens = (*tokens)->next;
-		state->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
-		if (state->file_fd < 0)
-			exit_with_error("failed to open");
-		if (state->redirect_fd == -1)
-			state->redirect_fd = 1;
+		redirect->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
+		if (redirect->file_fd < 0)
+			exit_with_error(((t_token *)((*tokens)->content))->content);
+		if (redirect->redirect_fd == -1)
+			redirect->redirect_fd = 1;
 	}
 	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DLESS)
 	{
 		*tokens = (*tokens)->next;
-		state->here_delimiter = ((t_token *)((*tokens)->content))->content;
+		redirect->here_delimiter = ((t_token *)((*tokens)->content))->content;
 		input = readline("> ");
-		state->here_document = input;
-		while (ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+		redirect->here_document = input;
+		while (ft_strncmp(input, redirect->here_delimiter, ft_strlen(redirect->here_delimiter) + 1))
 		{
 			input = readline("> ");
-			if (!ft_strncmp(input, state->here_delimiter, ft_strlen(state->here_delimiter) + 1))
+			if (!ft_strncmp(input, redirect->here_delimiter, ft_strlen(redirect->here_delimiter) + 1))
 				break ;
-			state->here_document = ft_strjoin(state->here_document, ft_strjoin(ft_strdup("\n"), input));
+			redirect->here_document = ft_strjoin(redirect->here_document, ft_strjoin(ft_strdup("\n"), input));
 		}
-		state->here_document = ft_strjoin(state->here_document, ft_strdup("\n"));
+		redirect->here_document = ft_strjoin(redirect->here_document, ft_strdup("\n"));
 		tmp_fp = ft_strjoin(getenv("PWD"), "/minishell_tmp");
-		state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
-		write(state->file_fd, state->here_document, ft_strlen(state->here_document));
-		close(state->file_fd);
-		state->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+		redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+		write(redirect->file_fd, redirect->here_document, ft_strlen(redirect->here_document));
+		close(redirect->file_fd);
+		redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
 		unlink(tmp_fp);
-		if (state->redirect_fd == -1)
-			state->redirect_fd = 0;
+		if (redirect->redirect_fd == -1)
+			redirect->redirect_fd = 0;
 	}
 	*tokens = (*tokens)->next;
 }
@@ -135,6 +164,7 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 {
 	size_t	idx;
 	char	**argv;
+	t_redirect	*tmp;
 
 	idx = 0;
 	argv = (char **)malloc(sizeof(char *) * (ft_lstsize(tokens) + 1));
@@ -142,8 +172,6 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		return (NULL);
 	while (TRUE)
 	{
-		if (tokens == NULL)
-			break ;
 		while (TRUE)
 		{
 			if (tokens == NULL || is_redirect_token((t_token *)(tokens->content)))
@@ -152,7 +180,21 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 			tokens = tokens->next;
 			idx++;
 		}
-		set_redirect(&tokens, state);
+		if (tokens == NULL)
+			break ;
+		state->redirect_num++;
+		tmp = (t_redirect *)malloc(sizeof(t_redirect) * state->redirect_num);
+		if (tmp == NULL)
+			return (NULL);
+		int i = 0;
+		while (i < state->redirect_num - 1)
+		{
+			tmp[i] = state->redirects[i];
+			i++;
+		}
+		state->redirects = tmp;
+		init_redirect(&state->redirects[state->redirect_num - 1]);
+		set_redirect(&tokens, &state->redirects[state->redirect_num - 1]);
 	}
 	argv[idx] = NULL;
 	return (argv);
@@ -162,8 +204,13 @@ void	execute_command(char **argv, char *envp[], t_global_state *state)
 {
 	char	*path;
 
-	if (state->file_fd)
-		dup2(state->file_fd, state->redirect_fd);
+	int i = 0;
+	while (i < state->redirect_num)
+	{
+		if (state->redirects[i].file_fd)
+			dup2(state->redirects[i].file_fd, state->redirects[i].redirect_fd);
+		i++;
+	}
 	if (is_builtin_command(argv))
 		exit(errno);
 	else
@@ -179,14 +226,14 @@ void	execute_command(char **argv, char *envp[], t_global_state *state)
 
 int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *state)
 {
-	int		count;
 	char	**argv;
 	int		status;
 	pid_t	pid;
 
-	count = 0;
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
+	if (is_special_builtin_command(argv))
+		return (SUCCESS);
 	state->process_count++;
 	pid = fork();
 	if (pid < 0)
@@ -199,16 +246,21 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 	else
 	{
 		state->pids[state->process_count - 1] = pid;
+		int i = 0;
+		while (i < state->redirect_num)
+		{
+			if (state->redirects[i].file_fd != -1)
+				close(state->redirects[i].file_fd);
+			i++;
+		}
 		if (node->is_furthest_right)
 		{
-			while (count < state->process_count)
+			while (state->process_count)
 			{
-				if (state->pids[count] && waitpid(state->pids[count], &status, 0) < 0)
+				if (waitpid(-1, &status, 0) < 0)
 					exit_with_error("wait error");
-				count++;
+				state->process_count--;
 			}
-			if (state->file_fd)
-				close(state->file_fd);
 		}
 	}
 	return (SUCCESS);
