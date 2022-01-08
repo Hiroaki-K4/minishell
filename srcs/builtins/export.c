@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
-}
-
-
 int	get_env_pos(char *env_name)
 {
 	size_t	i;
@@ -24,7 +13,7 @@ int	get_env_pos(char *env_name)
 		while (g_envs[i][j] && g_envs[i][j] != '=')
 			j++;
 		name = ft_substr(g_envs[i], 0, j);
-		if (ft_strcmp(env_name, name) == 0)
+		if (ft_strncmp(env_name, name, ft_strlen(env_name) + 1) == 0)
 			return (i);
 		i++;
 	}
@@ -73,55 +62,65 @@ int	ft_setenv(char *name, char *val)
 	return (SUCCESS);
 }
 
-int	ft_export(char **argv)
+int	handle_args(char **argv)
 {
 	size_t	i;
 	size_t	j;
 	char	*name;
 	char	*val;
 
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		if (ft_strchr(argv[i], '=') == NULL)
+		{
+			name = argv[i];
+			val = NULL;
+			if (ft_setenv(name, val) == FAIL)
+				return (FAIL);
+		}
+		else
+		{
+			while (argv[i][j])
+			{
+				if (argv[i][j] == '=')
+				{
+					if (j == 0)
+						return (FAIL);
+					else
+					{
+						name = ft_substr(argv[i], 0, j);
+						val = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
+						if (val == NULL)
+							val = ft_strdup("");
+						if (val[0] == '"' && val[ft_strlen(val) - 1] == '"')
+							val = ft_strtrim(val, "\"");
+						else if (val[0] == '\'' && val[ft_strlen(val) - 1] == '\'')
+							val = ft_strtrim(val, "'");
+						if (ft_setenv(name, val) == FAIL)
+							return (FAIL);
+					}
+				}
+				j++;
+			}
+		}
+		i++;
+	}
+	return (SUCCESS);
+}
+
+int	ft_export(char **argv)
+{
 	if (argv[1] == NULL)
-		print_export();
+	{
+		if (print_export() == FAIL)
+			return (FAIL);
+	}
 	else
 	{
-		i = 1;
-		while (argv[i])
-		{
-			j = 0;
-			if (ft_strchr(argv[i], '=') == NULL)
-			{
-				name = argv[i];
-				val = NULL;
-				if (ft_setenv(name, val) == FAIL)
-					return (FAIL);
-			}
-			else
-			{
-				while (argv[i][j])
-				{
-					if (argv[i][j] == '=')
-					{
-						if (j == 0)
-							return (FAIL);
-						else
-						{
-							name = ft_substr(argv[i], 0, j);
-							val = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
-							if (val == NULL)
-								val = ft_strdup("");
-							if (val[0] == '"' && val[ft_strlen(val) - 1] == '"')
-								val = ft_strtrim(val, "\"");
-							else if (val[0] == '\'' && val[ft_strlen(val) - 1] == '\'')
-								val = ft_strtrim(val, "'");
-							if (ft_setenv(name, val) == FAIL)
-								return (FAIL);
-						}
-					}
-					j++;
-				}
-			}
-			i++;
-		}
+		if (handle_args(argv) == FAIL)
+			return (FAIL);
 	}
 	return (SUCCESS);
 }

@@ -12,7 +12,7 @@ char	**sort_envs(char **dup_env)
 		j = i + 1;
 		while (dup_env[j])
 		{
-			if (ft_strcmp(dup_env[i], dup_env[j]) > 0)
+			if (ft_strncmp(dup_env[i], dup_env[j], ft_strlen(dup_env[i]) + 1) > 0)
 			{
 				tmp = dup_env[i];
 				dup_env[i] = dup_env[j];

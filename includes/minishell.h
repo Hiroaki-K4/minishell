@@ -114,7 +114,6 @@ int				ft_exit(char **argv);
 void			exit_with_error(char *msg);
 
 int				print_export();
-int				ft_strcmp(const char *s1, const char *s2);
 int				get_env_pos(char *env_name);
 
 #endif
