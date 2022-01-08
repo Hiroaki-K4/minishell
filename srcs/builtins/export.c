@@ -11,7 +11,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 }
 
 
-int	get_env_pos(char *new_name)
+int	get_env_pos(char *env_name)
 {
 	size_t	i;
 	size_t	j;
@@ -24,7 +24,7 @@ int	get_env_pos(char *new_name)
 		while (g_envs[i][j] && g_envs[i][j] != '=')
 			j++;
 		name = ft_substr(g_envs[i], 0, j);
-		if (ft_strcmp(new_name, name) == 0)
+		if (ft_strcmp(env_name, name) == 0)
 			return (i);
 		i++;
 	}
