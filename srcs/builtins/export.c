@@ -1,42 +1,99 @@
 #include "minishell.h"
 
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}
+
+
+int	get_env_pos(char *new_name)
+{
+	size_t	i;
+	size_t	j;
+	char	*name;
+
+	i = 0;
+	while (g_envs[i])
+	{
+		j = 0;
+		while (g_envs[i][j] && g_envs[i][j] != '=')
+			j++;
+		name = ft_substr(g_envs[i], 0, j);
+		if (ft_strcmp(new_name, name) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	ft_setenv(char *name, char *val)
+{
+	int	env_pos;
+	size_t	i;
+	size_t	size;
+	char	**new_environ;
+
+	env_pos = get_env_pos(name);
+	if (env_pos != -1)
+	{
+		if (val != NULL)
+		{
+			free(g_envs[env_pos]);
+			g_envs[env_pos] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
+		}
+	}
+	else
+	{
+		size = 0;
+		while (g_envs[size])
+			size++;
+		new_environ = (char **)malloc(sizeof(char *) * (size + 2));
+		if (!new_environ)
+			return (FAIL);
+		i = 0;
+		while (g_envs[i])
+		{
+			new_environ[i] = ft_strdup(g_envs[i]);
+			free(g_envs[i]);
+			i++;
+		}
+		free(g_envs);
+		if (val == NULL)
+			new_environ[i] = ft_strdup(name);
+		else
+			new_environ[i] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
+		new_environ[i + 1] = NULL;
+		g_envs = new_environ;
+	}
+	return (SUCCESS);
+}
+
 int	ft_export(char **argv)
 {
 	size_t	i;
 	size_t	j;
+	char	*name;
 	char	*val;
-	char	*word;
 
 	if (argv[1] == NULL)
-	{
-		extern char	**environ;
-		char	**env;
-
-		env = environ;
-		while (*env)
-		{
-			const char *val;
-
-			val = *env;
-			if (val)
-				printf("%s\n", val);
-			env++;
-		}
-	}
+		print_export();
 	else
 	{
 		i = 1;
 		while (argv[i])
 		{
-			printf("i: %ld\n", i);
 			j = 0;
 			if (ft_strchr(argv[i], '=') == NULL)
 			{
-				val = argv[i];
-				word = NULL;
-				printf("val: %s word: %s\n", val, word);
-				if (setenv(val, word, 1) == -1)
-					printf("FAILED\n");
+				name = argv[i];
+				val = NULL;
+				if (ft_setenv(name, val) == FAIL)
+					return (FAIL);
 			}
 			else
 			{
@@ -48,19 +105,21 @@ int	ft_export(char **argv)
 							return (FAIL);
 						else
 						{
-							val = ft_substr(argv[i], 0, j);
-							word = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
-							if (word == NULL)
-								word = ft_strdup("");
-							printf("val: %s word: %s\n", val, word);
-							if (setenv(val, word, 1) == -1)
-								printf("FAILED\n");
+							name = ft_substr(argv[i], 0, j);
+							val = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
+							if (val == NULL)
+								val = ft_strdup("");
+							if (val[0] == '"' && val[ft_strlen(val) - 1] == '"')
+								val = ft_strtrim(val, "\"");
+							else if (val[0] == '\'' && val[ft_strlen(val) - 1] == '\'')
+								val = ft_strtrim(val, "'");
+							if (ft_setenv(name, val) == FAIL)
+								return (FAIL);
 						}
 					}
 					j++;
 				}
 			}
-
 			i++;
 		}
 	}

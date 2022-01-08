@@ -15,6 +15,7 @@ SRC := main.c \
 	   builtins/cd.c \
 	   builtins/pwd.c \
 	   builtins/export.c \
+	   builtins/print_export.c \
 	   builtins/unset.c \
 	   builtins/env.c \
 	   builtins/exit.c

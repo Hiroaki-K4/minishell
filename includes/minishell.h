@@ -17,6 +17,8 @@
 # define SUCCESS 0
 # define FAIL -1
 
+char **g_envs;
+
 typedef enum e_token_kind
 {
 	TK_WORD = 0,
@@ -110,5 +112,8 @@ int				ft_env(char **argv);
 int				ft_exit(char **argv);
 
 void			exit_with_error(char *msg);
+
+int				print_export();
+int				ft_strcmp(const char *s1, const char *s2);
 
 #endif
