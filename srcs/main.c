@@ -11,7 +11,7 @@ void	init_global_state(t_global_state *state, char **envp)
 	state->last_command_exit_status = 0;
 	state->redirects = NULL;
 	state->redirect_num = 0;
-	if (init_envs(state, envp) == FAIL)
+	if (init_envs(&(state->envs), envp) == FAIL)
 		printf("init_env error\n");
 }
 
@@ -65,7 +65,7 @@ void	minishell(char *envp[])
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			// execute(ast, envp, &state);
+			execute(ast, envp, &state);
 			add_history(input);
 		}
 		free(input);

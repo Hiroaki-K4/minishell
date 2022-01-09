@@ -36,19 +36,19 @@ void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 		close(state->old_pipes[1]);
 }
 
-int	is_special_builtin_command(char **argv, t_global_state *state)
+int	is_special_builtin_command(char **argv, t_env **envs)
 {
 	int		ret;
 	size_t	i;
 	char *builtins[] = {"cd", "export", "unset", "exit", NULL};
-	int (*builtin_funcs[])(char **, t_global_state *) = {ft_cd, ft_export, ft_unset, ft_exit};
+	int (*builtin_funcs[])(char **, t_env **) = {ft_cd, ft_export, ft_unset, ft_exit};
 
 	i = 0;
 	while (builtins[i])
 	{
 		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
 		{
-			ret = builtin_funcs[i](argv, state);
+			ret = builtin_funcs[i](argv, envs);
 			(void)ret;  // TODO: use ret value
 			return (TRUE);
 		}
@@ -57,19 +57,19 @@ int	is_special_builtin_command(char **argv, t_global_state *state)
 	return (FALSE);
 }
 
-int	is_builtin_command(char **argv, t_global_state *state)
+int	is_builtin_command(char **argv, t_env *envs)
 {
 	int		ret;
 	size_t	i;
 	char *builtins[] = {"echo", "pwd", "env", NULL};
-	int (*builtin_funcs[])(char **, t_global_state *) = {ft_echo, ft_pwd, ft_env};
+	int (*builtin_funcs[])(char **, t_env *) = {ft_echo, ft_pwd, ft_env};
 
 	i = 0;
 	while (builtins[i])
 	{
 		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
 		{
-			ret = builtin_funcs[i](argv, state);
+			ret = builtin_funcs[i](argv, envs);
 			(void)ret;  // TODO: use ret value
 			return (TRUE);
 		}
@@ -86,7 +86,7 @@ void	init_redirect(t_redirect *redirect)
 	redirect->here_document = NULL;
 }
 
-void	set_redirect(t_list **tokens, t_redirect *redirect, t_global_state *state)
+void	set_redirect(t_list **tokens, t_redirect *redirect, t_env *envs)
 {
 	char	*input;
 	char	*tmp_fp;
@@ -139,7 +139,7 @@ void	set_redirect(t_list **tokens, t_redirect *redirect, t_global_state *state)
 			redirect->here_document = ft_strjoin(redirect->here_document, ft_strjoin(ft_strdup("\n"), input));
 		}
 		redirect->here_document = ft_strjoin(redirect->here_document, ft_strdup("\n"));
-		tmp_fp = ft_strjoin(get_env("PWD", state), "/minishell_tmp");
+		tmp_fp = ft_strjoin(get_env("PWD", envs), "/minishell_tmp");
 		redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
 		write(redirect->file_fd, redirect->here_document, ft_strlen(redirect->here_document));
 		close(redirect->file_fd);
@@ -194,7 +194,7 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		}
 		state->redirects = tmp;
 		init_redirect(&state->redirects[state->redirect_num - 1]);
-		set_redirect(&tokens, &state->redirects[state->redirect_num - 1], state);
+		set_redirect(&tokens, &state->redirects[state->redirect_num - 1], state->envs);
 	}
 	argv[idx] = NULL;
 	return (argv);
@@ -211,7 +211,7 @@ void	execute_command(char **argv, char *envp[], t_global_state *state)
 			dup2(state->redirects[i].file_fd, state->redirects[i].redirect_fd);
 		i++;
 	}
-	if (is_builtin_command(argv, state))
+	if (is_builtin_command(argv, state->envs))
 		exit(errno);
 	else
 	{
@@ -232,7 +232,7 @@ int	execute_commands(t_node *node, char *envp[], int pipes[2], t_global_state *s
 
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
-	if (is_special_builtin_command(argv, state))
+	if (is_special_builtin_command(argv, &(state->envs)))
 		return (SUCCESS);
 	state->process_count++;
 	pid = fork();

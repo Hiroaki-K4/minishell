@@ -100,7 +100,7 @@ void			tokenize(char *line, t_list **token_list);
 
 int				check_syntax(t_list *token_list);
 
-int				expand(t_list *token_list, t_list **expanded_list, t_global_state *state);
+int				expand(t_list *token_list, t_list **expanded_list, t_env *envs);
 
 t_node			*parse(t_list **token_list);
 
@@ -108,23 +108,22 @@ int				execute(t_node *ast, char *envp[], t_global_state *state);
 
 char			*search(char *path, char **envp);
 
-int				ft_echo(char **argv, t_global_state *state);
-int				ft_cd(char **argv, t_global_state *state);
-int				ft_pwd(char **argv, t_global_state *state);
-int				ft_export(char **argv, t_global_state *state);
-int				ft_unset(char **argv, t_global_state *state);
-int				ft_env(char **argv, t_global_state *state);
-int				ft_exit(char **argv, t_global_state *state);
+int				ft_echo(char **argv, t_env *envs);
+int				ft_cd(char **argv, t_env **envs);
+int				ft_pwd(char **argv, t_env *envs);
+int				ft_export(char **argv, t_env **envs);
+int				ft_unset(char **argv, t_env **envs);
+int				ft_env(char **argv, t_env *envs);
+int				ft_exit(char **argv, t_env **envs);
 
 void			exit_with_error(char *msg);
 
 int				print_envs();
-int				get_env_pos(char *env_name, t_global_state *state);
+int				get_env_pos(char *env_name, t_env *envs);
 int				get_first_char_pos(char *word, char c);
 
-
-int				init_envs(t_global_state *state, char **envp);
+int				init_envs(t_env **envs, char **envp);
 char			**sort_envs(char **dup_env);
-char			*get_env(char *env, t_global_state *state);
+char			*get_env(char *env, t_env *envs);
 
 #endif
