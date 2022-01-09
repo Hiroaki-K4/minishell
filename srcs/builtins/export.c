@@ -24,7 +24,7 @@ int	set_env(char *name, char *val, t_envs **envs)
 {
 	int	env_pos;
 	size_t	i;
-	char	**new_environ;
+	char	**new_envs;
 
 	env_pos = get_env_pos(name, *envs);
 	if (env_pos != -1)
@@ -37,29 +37,28 @@ int	set_env(char *name, char *val, t_envs **envs)
 	}
 	else
 	{
-		new_environ = (char **)malloc(sizeof(char *) * ((*envs)->envs_num + 2));
-		if (!new_environ)
+		new_envs = (char **)malloc(sizeof(char *) * ((*envs)->envs_num + 2));
+		if (!new_envs)
 			return (FAIL);
 		i = 0;
 		while ((*envs)->content[i])
 		{
-			new_environ[i] = ft_strdup((*envs)->content[i]);
-			free((*envs)->content[i]);
+			new_envs[i] = (*envs)->content[i];
 			i++;
 		}
-		free((*envs)->content);
 		if (val == NULL)
-			new_environ[i] = ft_strdup(name);
+			new_envs[i] = ft_strdup(name);
 		else
-			new_environ[i] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
-		new_environ[i + 1] = NULL;
-		(*envs)->content = new_environ;
+			new_envs[i] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
+		new_envs[i + 1] = NULL;
+		free((*envs)->content);
+		(*envs)->content = new_envs;
 		(*envs)->envs_num++;
 	}
 	return (SUCCESS);
 }
 
-int	handle_args(char **argv, t_envs **envs)
+int	set_new_env_to_envs(char **argv, t_envs **envs)
 {
 	size_t	i;
 	size_t	j;
@@ -116,7 +115,7 @@ int	ft_export(char **argv, t_envs **envs)
 	}
 	else
 	{
-		if (handle_args(argv, envs) == FAIL)
+		if (set_new_env_to_envs(argv, envs) == FAIL)
 			return (FAIL);
 	}
 	return (SUCCESS);

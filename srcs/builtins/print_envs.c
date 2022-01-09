@@ -17,33 +17,33 @@ int	get_first_char_pos(char *word, char c)
 int	print_envs(t_envs *envs)
 {
 	size_t	i;
-	char	**dup_env;
 	char	*env_name;
 	char	*env_value;
+	char	**envs_for_print;
 
-	dup_env = (char **)malloc(sizeof(char *) * (envs->envs_num + 1));
-	if (!dup_env)
+	envs_for_print = (char **)malloc(sizeof(char *) * (envs->envs_num + 1));
+	if (!envs_for_print)
 		return (FAIL);
 	i = 0;
 	while (envs->content[i])
 	{
 		if (ft_strchr(envs->content[i], '=') == NULL)
-			dup_env[i] = envs->content[i];
+			envs_for_print[i] = envs->content[i];
 		else
 		{
 			get_env_name_and_value(&env_name, &env_value, envs->content[i]);
-			dup_env[i] = ft_strjoin(env_name, ft_strjoin(ft_strjoin("=\"", env_value), "\""));
+			envs_for_print[i] = ft_strjoin(env_name, ft_strjoin(ft_strjoin("=\"", env_value), "\""));
 		}
-		if (!dup_env[i])
+		if (!envs_for_print[i])
 			return (FAIL);
 		i++;
 	}
-	dup_env[i] = NULL;
-	dup_env = sort_envs(dup_env);
+	envs_for_print[i] = NULL;
+	envs_for_print = sort_envs(envs_for_print);
 	i = 0;
-	while (dup_env[i])
+	while (envs_for_print[i])
 	{
-		printf("declare -x %s\n", dup_env[i]);
+		printf("declare -x %s\n", envs_for_print[i]);
 		i++;
 	}
 	return (SUCCESS);
