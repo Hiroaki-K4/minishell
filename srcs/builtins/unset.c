@@ -15,8 +15,7 @@ int	remove_env(int index)
 	while (g_envs[i])
 	{
 		if (i != (size_t)index)
-			tmp[i] = ft_strdup(g_envs[i]);
-		free(g_envs[i]);
+			tmp[i] = g_envs[i];
 		i++;
 	}
 	tmp[i] = NULL;
