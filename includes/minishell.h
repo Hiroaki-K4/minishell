@@ -113,7 +113,7 @@ int				ft_exit(char **argv);
 
 void			exit_with_error(char *msg);
 
-int				print_export();
+int				print_envs();
 int				get_env_pos(char *env_name);
 int				get_first_char_pos(char *word, char c);
 

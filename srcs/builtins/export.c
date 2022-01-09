@@ -114,7 +114,7 @@ int	ft_export(char **argv)
 {
 	if (argv[1] == NULL)
 	{
-		if (print_export() == FAIL)
+		if (print_envs() == FAIL)
 			return (FAIL);
 	}
 	else
