@@ -24,27 +24,24 @@ char	*make_env(char *env, int pos)
 	return (ft_strjoin(until_equal, quoted_word));
 }
 
-int	print_envs()
+int	print_envs(t_global_state *state)
 {
 	size_t	i;
 	int	pos;
 	char	**dup_env;
 
-	i = 0;
-	while (g_envs[i])
-		i++;
-	dup_env = (char **)malloc(sizeof(char *) * (i + 1));
+	dup_env = (char **)malloc(sizeof(char *) * (state->envs->envs_num + 1));
 	if (!dup_env)
 		return (FAIL);
 	i = 0;
-	while (g_envs[i])
+	while (state->envs->content[i])
 	{
-		if (ft_strchr(g_envs[i], '=') == NULL)
-			dup_env[i] = ft_strdup(g_envs[i]);
+		if (ft_strchr(state->envs->content[i], '=') == NULL)
+			dup_env[i] = state->envs->content[i];
 		else
 		{
-			pos = get_first_char_pos(g_envs[i], '=');
-			dup_env[i] = make_env(g_envs[i], pos);
+			pos = get_first_char_pos(state->envs->content[i], '=');
+			dup_env[i] = make_env(state->envs->content[i], pos);
 		}
 		if (!dup_env[i])
 			return (FAIL);

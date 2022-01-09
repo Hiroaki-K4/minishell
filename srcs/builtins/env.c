@@ -1,15 +1,16 @@
 #include "minishell.h"
 
-int	ft_env(char **argv)
+int	ft_env(char **argv, t_global_state *state)
 {
 	size_t	i;
 
 	if (argv[1] == NULL)
 	{
 		i = 0;
-		while (g_envs[i])
+		while (state->envs->content[i])
 		{
-			printf("%s\n", g_envs[i]);
+			if (ft_strchr(state->envs->content[i], '=') != NULL)
+				printf("%s\n", state->envs->content[i]);
 			i++;
 		}
 	}

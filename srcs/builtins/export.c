@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-int	get_env_pos(char *env_name)
+int	get_env_pos(char *env_name, t_global_state *state)
 {
 	size_t	i;
 	size_t	j;
 	char	*name;
 
 	i = 0;
-	while (g_envs[i])
+	while (state->envs->content[i])
 	{
 		j = 0;
-		while (g_envs[i][j] && g_envs[i][j] != '=')
+		while (state->envs->content[i][j] && state->envs->content[i][j] != '=')
 			j++;
-		name = ft_substr(g_envs[i], 0, j);
+		name = ft_substr(state->envs->content[i], 0, j);
 		if (ft_strncmp(env_name, name, ft_strlen(env_name) + 1) == 0)
 			return (i);
 		i++;
@@ -20,49 +20,46 @@ int	get_env_pos(char *env_name)
 	return (-1);
 }
 
-int	set_env(char *name, char *val)
+int	set_env(char *name, char *val, t_global_state *state)
 {
 	int	env_pos;
 	size_t	i;
-	size_t	size;
 	char	**new_environ;
 
-	env_pos = get_env_pos(name);
+	env_pos = get_env_pos(name, state);
 	if (env_pos != -1)
 	{
 		if (val != NULL)
 		{
-			free(g_envs[env_pos]);
-			g_envs[env_pos] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
+			free(state->envs->content[env_pos]);
+			state->envs->content[env_pos] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
 		}
 	}
 	else
 	{
-		size = 0;
-		while (g_envs[size])
-			size++;
-		new_environ = (char **)malloc(sizeof(char *) * (size + 2));
+		new_environ = (char **)malloc(sizeof(char *) * (state->envs->envs_num + 2));
 		if (!new_environ)
 			return (FAIL);
 		i = 0;
-		while (g_envs[i])
+		while (state->envs->content[i])
 		{
-			new_environ[i] = ft_strdup(g_envs[i]);
-			free(g_envs[i]);
+			new_environ[i] = ft_strdup(state->envs->content[i]);
+			free(state->envs->content[i]);
 			i++;
 		}
-		free(g_envs);
+		free(state->envs->content);
 		if (val == NULL)
 			new_environ[i] = ft_strdup(name);
 		else
 			new_environ[i] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
 		new_environ[i + 1] = NULL;
-		g_envs = new_environ;
+		state->envs->content = new_environ;
+		state->envs->envs_num++;
 	}
 	return (SUCCESS);
 }
 
-int	handle_args(char **argv)
+int	handle_args(char **argv, t_global_state *state)
 {
 	size_t	i;
 	size_t	j;
@@ -77,7 +74,7 @@ int	handle_args(char **argv)
 		{
 			name = argv[i];
 			val = NULL;
-			if (set_env(name, val) == FAIL)
+			if (set_env(name, val, state) == FAIL)
 				return (FAIL);
 		}
 		else
@@ -98,7 +95,7 @@ int	handle_args(char **argv)
 							val = ft_strtrim(val, "\"");
 						else if (val[0] == '\'' && val[ft_strlen(val) - 1] == '\'')
 							val = ft_strtrim(val, "'");
-						if (set_env(name, val) == FAIL)
+						if (set_env(name, val, state) == FAIL)
 							return (FAIL);
 					}
 				}
@@ -110,16 +107,16 @@ int	handle_args(char **argv)
 	return (SUCCESS);
 }
 
-int	ft_export(char **argv)
+int	ft_export(char **argv, t_global_state *state)
 {
 	if (argv[1] == NULL)
 	{
-		if (print_envs() == FAIL)
+		if (print_envs(state) == FAIL)
 			return (FAIL);
 	}
 	else
 	{
-		if (handle_args(argv) == FAIL)
+		if (handle_args(argv, state) == FAIL)
 			return (FAIL);
 	}
 	return (SUCCESS);

@@ -1,10 +1,11 @@
 #include "minishell.h"
 
-int	ft_echo(char **argv)
+int	ft_echo(char **argv, t_global_state *state)
 {
 	int		has_n_option;
 	size_t	i;
 
+	(void)state;
 	if (argv[1] != NULL && !ft_strncmp(argv[1], "-n", 3))
 	{
 		has_n_option = TRUE;

@@ -2,13 +2,14 @@
 
 #define BUF_SIZE 1024
 
-int	ft_pwd(char **argv)
+int	ft_pwd(char **argv, t_global_state *state)
 {
 	int		count;
 	char	*buf;
 	char	*fp;
 
 	(void)argv;
+	(void)state;
 	count = 1;
 	while (TRUE)
 	{

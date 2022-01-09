@@ -25,41 +25,43 @@ char	**sort_envs(char **dup_env)
 	return (dup_env);
 }
 
-int	init_envs(char **envp)
+int	init_envs(t_global_state *state, char **envp)
 {
 	size_t	i;
 
+	state->envs = (t_env *)malloc(sizeof(t_env));
 	i = 0;
 	while (envp[i])
 		i++;
-	g_envs = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!g_envs)
+	state->envs->content = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!state->envs->content)
 		return (FAIL);
 	i = 0;
 	while (envp[i])
 	{
-		g_envs[i] = ft_strdup(envp[i]);
+		state->envs->content[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	g_envs[i] = NULL;
+	state->envs->content[i] = NULL;
+	state->envs->envs_num = i;
 	return (SUCCESS);
 }
 
-char	*get_env(char *env)
+char	*get_env(char *env, t_global_state *state)
 {
 	size_t	i;
 	int	pos;
 	char	*env_name;
 
 	i = 0;
-	while (g_envs[i])
+	while (state->envs->content[i])
 	{
-		pos = get_first_char_pos(g_envs[i], '=');
+		pos = get_first_char_pos(state->envs->content[i], '=');
 		if (pos != -1)
 		{
-			env_name = ft_substr(g_envs[i], 0, pos);
+			env_name = ft_substr(state->envs->content[i], 0, pos);
 			if (ft_strncmp(env_name, env, ft_strlen(env_name)) == 0)
-				return (ft_substr(g_envs[i], pos + 1, ft_strlen(g_envs[i]) - pos - 1));
+				return (ft_substr(state->envs->content[i], pos + 1, ft_strlen(state->envs->content[i]) - pos - 1));
 		}
 		i++;
 	}

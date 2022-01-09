@@ -1,17 +1,17 @@
 #include "minishell.h"
 
-int	get_env_first_pos(char *content, char **env, int start)
+int	get_env_first_pos(char *content, char **env, int start, t_global_state *state)
 {
 	int	env_pos;
 
 	env_pos = start;
 	while (content[env_pos] && content[env_pos] != ' ' && content[env_pos] != '$')
 		env_pos++;
-	*env = get_env(ft_substr(content, start, env_pos - start));
+	*env = get_env(ft_substr(content, start, env_pos - start), state);
 	return (env_pos);
 }
 
-char	*expand_env_vals(char *content)
+char	*expand_env_vals(char *content, t_global_state *state)
 {
 	int		i;
 	int		start;
@@ -29,7 +29,7 @@ char	*expand_env_vals(char *content)
 			if (start != i)
 				expanded = ft_strjoin(expanded, ft_substr(content, start, i - start));
 			// TODO: Correspond $?
-			env_pos = get_env_first_pos(content, &env, i + 1);
+			env_pos = get_env_first_pos(content, &env, i + 1, state);
 			if (env != NULL)
 				expanded = ft_strjoin(expanded, env);
 			i = env_pos;
@@ -41,7 +41,7 @@ char	*expand_env_vals(char *content)
 	return (expanded);
 }
 
-int	expand(t_list *token_list, t_list **expanded_list)
+int	expand(t_list *token_list, t_list **expanded_list, t_global_state *state)
 {
 	t_token	*expanded_token;
 
@@ -56,7 +56,7 @@ int	expand(t_list *token_list, t_list **expanded_list)
 		else
 			expanded_token->content = ((t_token *)token_list->content)->content;
 		if ((expanded_token->attr == TK_WORD || expanded_token->attr == TK_DOUBLE_QUOTED) && ft_strchr(expanded_token->content, '$') != NULL)
-			expanded_token->content = expand_env_vals(expanded_token->content);
+			expanded_token->content = expand_env_vals(expanded_token->content, state);
 		if (ft_lstadd_node(expanded_list, expanded_token) == FAIL)
 			return (FAIL);
 		token_list = token_list->next;

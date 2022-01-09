@@ -1,29 +1,26 @@
 #include "minishell.h"
 
-int	remove_env(int index)
+int	remove_env(int index, t_global_state *state)
 {
 	size_t	i;
 	char	**tmp;
 
-	i = 0;
-	while (g_envs[i])
-		i++;
-	tmp = (char **)malloc(sizeof(char *) * i);
+	tmp = (char **)malloc(sizeof(char *) * state->envs->envs_num);
 	if (!tmp)
 		return (FAIL);
 	i = 0;
-	while (g_envs[i])
+	while (state->envs->content[i])
 	{
 		if (i != (size_t)index)
-			tmp[i] = g_envs[i];
+			tmp[i] = state->envs->content[i];
 		i++;
 	}
 	tmp[i] = NULL;
-	g_envs = tmp;
+	state->envs->content = tmp;
 	return (SUCCESS);
 }
 
-int	ft_unset(char **argv)
+int	ft_unset(char **argv, t_global_state *state)
 {
 	int	index;
 	size_t	i;
@@ -33,10 +30,10 @@ int	ft_unset(char **argv)
 		i = 1;
 		while (argv[i])
 		{
-			index = get_env_pos(argv[i]);
+			index = get_env_pos(argv[i], state);
 			if (index != -1)
 			{
-				if (remove_env(index) == FAIL)
+				if (remove_env(index, state) == FAIL)
 					return (FAIL);
 			}
 			i++;
