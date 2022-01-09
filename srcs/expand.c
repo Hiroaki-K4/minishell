@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	get_env_first_pos(char *content, char **env, int start, t_env *envs)
+int	get_env_first_pos(char *content, char **env, int start, t_envs *envs)
 {
 	int	env_pos;
 
@@ -11,7 +11,7 @@ int	get_env_first_pos(char *content, char **env, int start, t_env *envs)
 	return (env_pos);
 }
 
-char	*expand_env_vals(char *content, t_env *envs)
+char	*expand_env_vals(char *content, t_envs *envs)
 {
 	int		i;
 	int		start;
@@ -41,7 +41,7 @@ char	*expand_env_vals(char *content, t_env *envs)
 	return (expanded);
 }
 
-int	expand(t_list *token_list, t_list **expanded_list, t_env *envs)
+int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 {
 	t_token	*expanded_token;
 

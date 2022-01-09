@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_echo(char **argv, t_env *envs)
+int	ft_echo(char **argv, t_envs *envs)
 {
 	int		has_n_option;
 	size_t	i;

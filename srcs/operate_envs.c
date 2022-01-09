@@ -25,11 +25,11 @@ char	**sort_envs(char **dup_env)
 	return (dup_env);
 }
 
-int	init_envs(t_env **envs, char **envp)
+int	init_envs(t_envs **envs, char **envp)
 {
 	size_t	i;
 
-	*envs = (t_env *)malloc(sizeof(t_env));
+	*envs = (t_envs *)malloc(sizeof(t_envs));
 	i = 0;
 	while (envp[i])
 		i++;
@@ -47,7 +47,7 @@ int	init_envs(t_env **envs, char **envp)
 	return (SUCCESS);
 }
 
-char	*get_env(char *env, t_env *envs)
+char	*get_env(char *env, t_envs *envs)
 {
 	size_t	i;
 	int	pos;

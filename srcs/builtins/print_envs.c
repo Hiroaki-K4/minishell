@@ -24,7 +24,7 @@ char	*make_env(char *env, int pos)
 	return (ft_strjoin(until_equal, quoted_word));
 }
 
-int	print_envs(t_env *envs)
+int	print_envs(t_envs *envs)
 {
 	size_t	i;
 	int	pos;

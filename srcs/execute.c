@@ -36,12 +36,12 @@ void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 		close(state->old_pipes[1]);
 }
 
-int	is_special_builtin_command(char **argv, t_env **envs)
+int	is_special_builtin_command(char **argv, t_envs **envs)
 {
 	int		ret;
 	size_t	i;
 	char *builtins[] = {"cd", "export", "unset", "exit", NULL};
-	int (*builtin_funcs[])(char **, t_env **) = {ft_cd, ft_export, ft_unset, ft_exit};
+	int (*builtin_funcs[])(char **, t_envs **) = {ft_cd, ft_export, ft_unset, ft_exit};
 
 	i = 0;
 	while (builtins[i])
@@ -57,12 +57,12 @@ int	is_special_builtin_command(char **argv, t_env **envs)
 	return (FALSE);
 }
 
-int	is_builtin_command(char **argv, t_env *envs)
+int	is_builtin_command(char **argv, t_envs *envs)
 {
 	int		ret;
 	size_t	i;
 	char *builtins[] = {"echo", "pwd", "env", NULL};
-	int (*builtin_funcs[])(char **, t_env *) = {ft_echo, ft_pwd, ft_env};
+	int (*builtin_funcs[])(char **, t_envs *) = {ft_echo, ft_pwd, ft_env};
 
 	i = 0;
 	while (builtins[i])
@@ -86,7 +86,7 @@ void	init_redirect(t_redirect *redirect)
 	redirect->here_document = NULL;
 }
 
-void	set_redirect(t_list **tokens, t_redirect *redirect, t_env *envs)
+void	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 {
 	char	*input;
 	char	*tmp_fp;

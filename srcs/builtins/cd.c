@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_cd(char **argv, t_env **envs)
+int	ft_cd(char **argv, t_envs **envs)
 {
 	(void)envs;
 	if (chdir(argv[1]) == FAIL)

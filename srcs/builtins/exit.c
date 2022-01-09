@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_exit(char **argv, t_env **envs)
+int	ft_exit(char **argv, t_envs **envs)
 {
 	int		exit_status;
 

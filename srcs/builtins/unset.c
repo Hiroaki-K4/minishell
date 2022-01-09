@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	remove_env(int index, t_env **envs)
+int	remove_env(int index, t_envs **envs)
 {
 	size_t	i;
 	size_t	pos;
@@ -26,7 +26,7 @@ int	remove_env(int index, t_env **envs)
 	return (SUCCESS);
 }
 
-int	ft_unset(char **argv, t_env **envs)
+int	ft_unset(char **argv, t_envs **envs)
 {
 	int	index;
 	size_t	i;

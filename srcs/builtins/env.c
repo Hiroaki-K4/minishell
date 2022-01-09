@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_env(char **argv, t_env *envs)
+int	ft_env(char **argv, t_envs *envs)
 {
 	size_t	i;
 

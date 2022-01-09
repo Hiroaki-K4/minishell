@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	get_env_pos(char *env_name, t_env *envs)
+int	get_env_pos(char *env_name, t_envs *envs)
 {
 	size_t	i;
 	size_t	j;
@@ -20,7 +20,7 @@ int	get_env_pos(char *env_name, t_env *envs)
 	return (-1);
 }
 
-int	set_env(char *name, char *val, t_env **envs)
+int	set_env(char *name, char *val, t_envs **envs)
 {
 	int	env_pos;
 	size_t	i;
@@ -59,7 +59,7 @@ int	set_env(char *name, char *val, t_env **envs)
 	return (SUCCESS);
 }
 
-int	handle_args(char **argv, t_env **envs)
+int	handle_args(char **argv, t_envs **envs)
 {
 	size_t	i;
 	size_t	j;
@@ -107,7 +107,7 @@ int	handle_args(char **argv, t_env **envs)
 	return (SUCCESS);
 }
 
-int	ft_export(char **argv, t_env **envs)
+int	ft_export(char **argv, t_envs **envs)
 {
 	if (argv[1] == NULL)
 	{

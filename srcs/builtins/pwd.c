@@ -2,7 +2,7 @@
 
 #define BUF_SIZE 1024
 
-int	ft_pwd(char **argv, t_env *envs)
+int	ft_pwd(char **argv, t_envs *envs)
 {
 	int		count;
 	char	*buf;
