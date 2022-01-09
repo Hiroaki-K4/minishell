@@ -90,10 +90,6 @@ int	set_new_env_to_envs(char **argv, t_envs **envs)
 						val = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
 						if (val == NULL)
 							val = ft_strdup("");
-						if (val[0] == '"' && val[ft_strlen(val) - 1] == '"')
-							val = ft_strtrim(val, "\"");
-						else if (val[0] == '\'' && val[ft_strlen(val) - 1] == '\'')
-							val = ft_strtrim(val, "'");
 						if (set_env(name, val, envs) == FAIL)
 							return (FAIL);
 					}
