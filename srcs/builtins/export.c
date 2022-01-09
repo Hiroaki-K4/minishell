@@ -20,7 +20,7 @@ int	get_env_pos(char *env_name)
 	return (-1);
 }
 
-int	ft_setenv(char *name, char *val)
+int	set_env(char *name, char *val)
 {
 	int	env_pos;
 	size_t	i;
@@ -77,7 +77,7 @@ int	handle_args(char **argv)
 		{
 			name = argv[i];
 			val = NULL;
-			if (ft_setenv(name, val) == FAIL)
+			if (set_env(name, val) == FAIL)
 				return (FAIL);
 		}
 		else
@@ -98,7 +98,7 @@ int	handle_args(char **argv)
 							val = ft_strtrim(val, "\"");
 						else if (val[0] == '\'' && val[ft_strlen(val) - 1] == '\'')
 							val = ft_strtrim(val, "'");
-						if (ft_setenv(name, val) == FAIL)
+						if (set_env(name, val) == FAIL)
 							return (FAIL);
 					}
 				}
