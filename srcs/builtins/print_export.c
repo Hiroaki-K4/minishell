@@ -1,30 +1,5 @@
 #include "minishell.h"
 
-char	**sort_envs(char **dup_env)
-{
-	size_t	i;
-	size_t	j;
-	char	*tmp;
-
-	i = 0;
-	while (dup_env[i])
-	{
-		j = i + 1;
-		while (dup_env[j])
-		{
-			if (ft_strncmp(dup_env[i], dup_env[j], ft_strlen(dup_env[i]) + 1) > 0)
-			{
-				tmp = dup_env[i];
-				dup_env[i] = dup_env[j];
-				dup_env[j] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-	return (dup_env);
-}
-
 int	get_first_char_pos(char *word, char c)
 {
 	int pos;

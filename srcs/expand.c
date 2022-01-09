@@ -7,7 +7,7 @@ int	get_env_first_pos(char *content, char **env, int start)
 	env_pos = start;
 	while (content[env_pos] && content[env_pos] != ' ' && content[env_pos] != '$')
 		env_pos++;
-	*env = getenv(ft_substr(content, start, env_pos - start));
+	*env = get_env(ft_substr(content, start, env_pos - start));
 	return (env_pos);
 }
 

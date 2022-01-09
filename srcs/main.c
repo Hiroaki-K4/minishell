@@ -71,26 +71,6 @@ void	minishell(char *envp[])
 	}
 }
 
-int	init_envs(char **envp)
-{
-	size_t	i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	g_envs = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!g_envs)
-		return (FAIL);
-	i = 0;
-	while (envp[i])
-	{
-		g_envs[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	g_envs[i] = NULL;
-	return (SUCCESS);
-}
-
 int	main(int argc, char *argv[], char *envp[])
 {
 	(void)argv;

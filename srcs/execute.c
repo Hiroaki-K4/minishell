@@ -139,7 +139,7 @@ void	set_redirect(t_list **tokens, t_redirect *redirect)
 			redirect->here_document = ft_strjoin(redirect->here_document, ft_strjoin(ft_strdup("\n"), input));
 		}
 		redirect->here_document = ft_strjoin(redirect->here_document, ft_strdup("\n"));
-		tmp_fp = ft_strjoin(getenv("PWD"), "/minishell_tmp");
+		tmp_fp = ft_strjoin(get_env("PWD"), "/minishell_tmp");
 		redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
 		write(redirect->file_fd, redirect->here_document, ft_strlen(redirect->here_document));
 		close(redirect->file_fd);

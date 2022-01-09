@@ -8,6 +8,7 @@ SRC := main.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
+	   operate_envs.c \
 	   signal_handler.c \
 	   error.c \
 	   expand.c \
