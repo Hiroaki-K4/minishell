@@ -37,11 +37,8 @@ int	ft_unset(char **argv)
 			index = get_env_pos(argv[i]);
 			if (index != -1)
 			{
-				if (g_envs[index])
-				{
-					if (remove_env(index) == FAIL)
-						return (FAIL);
-				}
+				if (remove_env(index) == FAIL)
+					return (FAIL);
 			}
 			i++;
 		}
