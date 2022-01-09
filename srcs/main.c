@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	init_global_state(t_global_state *state)
+void	init_global_state(t_global_state *state, char **envp)
 {
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
@@ -11,6 +11,8 @@ void	init_global_state(t_global_state *state)
 	state->last_command_exit_status = 0;
 	state->redirects = NULL;
 	state->redirect_num = 0;
+	if (init_envs(&(state->envs), envp) == FAIL)
+		printf("init_env error\n");
 }
 
 void	refresh_global_state(t_global_state *state)
@@ -45,7 +47,7 @@ void	minishell(char *envp[])
 
 	input = NULL;
 	init_sigaction(&sa_sigint, &sa_sigquit);
-	init_global_state(&state);
+	init_global_state(&state, envp);
 	while (TRUE)
 	{
 		if (sigaction(SIGINT, &sa_sigint, NULL) < 0
@@ -59,7 +61,7 @@ void	minishell(char *envp[])
 			exit(SUCCESS);  // TODO: when exitting, echo "exit"
 		else if (ft_strlen(input) > 0)
 		{
-			ast = preprocess(input);
+			ast = preprocess(input, &state);
 			if (ast == NULL)
 				continue ;
 			(void)envp;

@@ -8,7 +8,7 @@ void	output_result(void *content)
 	printf("content: %s attr: %d\n", (char *)token->content, token->attr);
 }
 
-t_node	*preprocess(char *line)
+t_node	*preprocess(char *line, t_global_state *state)
 {
 	char		*trimed;
 	t_list		*token_list;
@@ -23,6 +23,6 @@ t_node	*preprocess(char *line)
 		return (NULL);
 	ft_lstiter(token_list, output_result);
 	expanded_list = NULL;
-	expand(token_list, &expanded_list);
+	expand(token_list, &expanded_list, state->envs);
 	return (parse(&expanded_list));
 }

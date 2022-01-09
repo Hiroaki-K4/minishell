@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-int	ft_exit(char **argv)
+int	ft_exit(char **argv, t_envs **envs)
 {
 	int		exit_status;
 
+	(void)envs;
 	ft_putendl_fd("exit", 1);
 	if (argv[1] == NULL)
 		exit(EXIT_SUCCESS); // TODO: use global state

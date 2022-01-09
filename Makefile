@@ -8,6 +8,7 @@ SRC := main.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
+	   operate_envs.c \
 	   signal_handler.c \
 	   error.c \
 	   expand.c \
@@ -15,6 +16,7 @@ SRC := main.c \
 	   builtins/cd.c \
 	   builtins/pwd.c \
 	   builtins/export.c \
+	   builtins/print_envs.c \
 	   builtins/unset.c \
 	   builtins/env.c \
 	   builtins/exit.c
