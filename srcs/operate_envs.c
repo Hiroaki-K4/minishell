@@ -1,28 +1,28 @@
 #include "minishell.h"
 
-char	**sort_envs(char **dup_env)
+char	**sort_envs(char **envs)
 {
 	size_t	i;
 	size_t	j;
 	char	*tmp;
 
 	i = 0;
-	while (dup_env[i])
+	while (envs[i])
 	{
 		j = i + 1;
-		while (dup_env[j])
+		while (envs[j])
 		{
-			if (ft_strncmp(dup_env[i], dup_env[j], ft_strlen(dup_env[i]) + 1) > 0)
+			if (ft_strncmp(envs[i], envs[j], ft_strlen(envs[i]) + 1) > 0)
 			{
-				tmp = dup_env[i];
-				dup_env[i] = dup_env[j];
-				dup_env[j] = tmp;
+				tmp = envs[i];
+				envs[i] = envs[j];
+				envs[j] = tmp;
 			}
 			j++;
 		}
 		i++;
 	}
-	return (dup_env);
+	return (envs);
 }
 
 int	init_envs(t_envs **envs, char **envp)
@@ -47,22 +47,32 @@ int	init_envs(t_envs **envs, char **envp)
 	return (SUCCESS);
 }
 
+void	get_env_name_and_value(char **name, char **value, char *env)
+{
+	int	pos;
+
+	*name = NULL;
+	*value = NULL;
+	pos = get_first_char_pos(env, '=');
+	if (pos != -1)
+	{
+		*name = ft_substr(env, 0, pos);
+		*value = ft_substr(env, pos + 1, ft_strlen(env) - pos - 1);
+	}
+}
+
 char	*get_env(char *env, t_envs *envs)
 {
 	size_t	i;
-	int	pos;
 	char	*env_name;
+	char	*env_value;
 
 	i = 0;
 	while (envs->content[i])
 	{
-		pos = get_first_char_pos(envs->content[i], '=');
-		if (pos != -1)
-		{
-			env_name = ft_substr(envs->content[i], 0, pos);
-			if (ft_strncmp(env_name, env, ft_strlen(env_name)) == 0)
-				return (ft_substr(envs->content[i], pos + 1, ft_strlen(envs->content[i]) - pos - 1));
-		}
+		get_env_name_and_value(&env_name, &env_value, envs->content[i]);
+		if (ft_strncmp(env_name, env, ft_strlen(env_name) + 1) == 0)
+			return (env_value);
 		i++;
 	}
 	return (NULL);

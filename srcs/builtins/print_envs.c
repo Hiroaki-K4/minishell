@@ -14,21 +14,12 @@ int	get_first_char_pos(char *word, char c)
 	return (-1);
 }
 
-char	*make_env(char *env, int pos)
-{
-	char	*until_equal;
-	char	*quoted_word;
-
-	until_equal = ft_substr(env, 0, pos + 1);
-	quoted_word = ft_strjoin(ft_strjoin("\"", ft_substr(env, pos + 1, ft_strlen(env) - pos)), "\"");
-	return (ft_strjoin(until_equal, quoted_word));
-}
-
 int	print_envs(t_envs *envs)
 {
 	size_t	i;
-	int	pos;
 	char	**dup_env;
+	char	*env_name;
+	char	*env_value;
 
 	dup_env = (char **)malloc(sizeof(char *) * (envs->envs_num + 1));
 	if (!dup_env)
@@ -40,8 +31,8 @@ int	print_envs(t_envs *envs)
 			dup_env[i] = envs->content[i];
 		else
 		{
-			pos = get_first_char_pos(envs->content[i], '=');
-			dup_env[i] = make_env(envs->content[i], pos);
+			get_env_name_and_value(&env_name, &env_value, envs->content[i]);
+			dup_env[i] = ft_strjoin(env_name, ft_strjoin(ft_strjoin("=\"", env_value), "\""));
 		}
 		if (!dup_env[i])
 			return (FAIL);
