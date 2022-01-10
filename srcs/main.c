@@ -17,6 +17,8 @@ void	init_global_state(t_global_state *state, char **envp)
 
 void	refresh_global_state(t_global_state *state)
 {
+	int	i;
+
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
@@ -25,7 +27,7 @@ void	refresh_global_state(t_global_state *state)
 	ft_bzero(state->pids, 10);
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
-	int i = 0;
+	i = 0;
 	while (i < state->redirect_num)
 	{
 		free(state->redirects[i].here_delimiter);
@@ -65,7 +67,7 @@ void	minishell(char *envp[])
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			// execute(ast, envp, &state);
+			// execute(ast, &state);
 			add_history(input);
 		}
 		free(input);

@@ -1,27 +1,17 @@
 #include "minishell.h"
 
-char	**get_paths(char **envp)
-{
-	char	**paths;
-
-	while (*envp)
-	{
-		if (!ft_strncmp(*envp, "PATH=", 5))
-			break ;
-		envp++;
-	}
-	paths = ft_split(*envp, ':');
-	return (paths);
-}
-
-char	*search(char *path, char **envp)
+char	*search(char *path, t_envs *envs)
 {
 	char	*tmp;
 	char	**paths;
 	char	*executable_path;
 
 	executable_path = NULL;
-	paths = get_paths(envp);
+	tmp = get_env("PATH", envs);
+	if (tmp == NULL)
+		return (NULL);
+	paths = ft_split(tmp, ':');
+	free(tmp);
 	if (paths == NULL)
 		return (NULL);
 	while (*paths)

@@ -2,16 +2,21 @@ SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
 	   tokenize.c \
-	   parse.c \
-	   execute.c \
+	   parse/parse.c \
+	   parse/parse_utils.c \
+	   execute/execute.c \
+	   execute/construct.c \
 	   search.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
 	   operate_envs.c \
 	   signal_handler.c \
+	   pipe.c \
+	   redirect.c \
 	   error.c \
 	   expand.c \
+	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
 	   builtins/pwd.c \
@@ -39,11 +44,8 @@ LIBFT := libft
 
 all: $(NAME)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/builtins/%.c
-	@-mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+.SECONDEXPANSION:
+$(OBJ_DIR)/%.o: $$(wildcard $(SRC_DIR)/*/%.c)
 	@-mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
