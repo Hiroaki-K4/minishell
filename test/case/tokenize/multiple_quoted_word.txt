@@ -1,0 +1,6 @@
+echo '"aaa""bbb"' | ./minishell
+echo "'aaa''bbb'" | ./minishell
+echo '""aaa""bbb""' | ./minishell
+# echo ''"aaa""bbb"'' | ./minishell
+# echo "' "aaa>" "bbb" '" | ./minishell
+# echo '" "aaa>" "bbb" "' | ./minishell
