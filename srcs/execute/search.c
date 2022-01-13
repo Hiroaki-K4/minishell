@@ -6,6 +6,8 @@ char	*search(char *path, t_envs *envs)
 	char	**paths;
 	char	*executable_path;
 
+	if (path == NULL)
+		return (NULL);
 	executable_path = NULL;
 	tmp = get_env("PATH", envs);
 	if (tmp == NULL)

@@ -8,6 +8,8 @@ int	is_special_builtin_command(char **argv, t_envs **envs)
 	int (*builtin_funcs[])(char **, t_envs **) = {ft_cd, ft_export, ft_unset, ft_exit};
 
 	i = 0;
+	if (argv[0] == NULL)
+		return (FALSE);
 	while (builtins[i])
 	{
 		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
