@@ -73,9 +73,9 @@ typedef struct s_global_state
 {
 	int			old_pipes[2];
 	int			process_count;
-	int			*pids;
+	pid_t		*pids;
 	int			last_command_exit_status;
-	t_redirect	*redirects;
+	t_redirect	**redirects;
 	int			redirect_num;
 	t_envs		*envs;
 }	t_global_state;
@@ -93,6 +93,13 @@ int				is_separating_character(char c);
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
 
+void			do_piping(int pipes[2], t_node *node, t_global_state *state);
+void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
+
+void			init_redirect(t_redirect *redirect);
+int				is_redirect_token(t_token *token);
+void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
+
 t_node			*preprocess(char *input, t_global_state *state);
 
 t_token_kind	decide_attr(char *line, int pos, size_t *i);
@@ -100,13 +107,20 @@ void			tokenize(char *line, t_list **token_list);
 
 int				check_syntax(t_list *token_list);
 
-int				expand(t_list *token_list, t_list **expanded_list, t_envs *envs);
+int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs);
 
 t_node			*parse(t_list **token_list);
+int				is_command_token(t_list **token_list);
+t_node			*new_node(t_node *lhs, t_node *rhs, t_node_kind attr);
+int				consume_token(t_list **token_list, t_token_kind kind);
 
-int				execute(t_node *ast, char *envp[], t_global_state *state);
+int				execute(t_node *ast, t_global_state *state);
+char			**construct_argv(t_list *tokens, t_global_state *state);
 
-char			*search(char *path, char **envp);
+char			*search(char *path, t_envs *envs);
+
+int				is_special_builtin_command(char **argv, t_envs **envs);
+int				is_builtin_command(char **argv, t_envs *envs);
 
 int				ft_echo(char **argv, t_envs *envs);
 int				ft_cd(char **argv, t_envs **envs);
@@ -118,13 +132,13 @@ int				ft_exit(char **argv, t_envs **envs);
 
 void			exit_with_error(char *msg);
 
-int				print_envs();
+int				print_envs(t_envs *envs);
 int				get_env_pos(char *env_name, t_envs *envs);
 int				get_first_char_pos(char *word, char c);
 
 int				init_envs(t_envs **envs, char **envp);
 char			**sort_envs(char **dup_env);
 void			get_env_name_and_value(char **name, char **value, char *env);
-char			*get_env(char *env, t_envs *envs);
+char			*get_env(char *name, t_envs *envs);
 
 #endif

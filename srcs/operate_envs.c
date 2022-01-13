@@ -61,7 +61,7 @@ void	get_env_name_and_value(char **name, char **value, char *env)
 	}
 }
 
-char	*get_env(char *env, t_envs *envs)
+char	*get_env(char *name, t_envs *envs)
 {
 	size_t	i;
 	char	*env_name;
@@ -71,7 +71,7 @@ char	*get_env(char *env, t_envs *envs)
 	while (envs->content[i])
 	{
 		get_env_name_and_value(&env_name, &env_value, envs->content[i]);
-		if (ft_strncmp(env_name, env, ft_strlen(env_name) + 1) == 0)
+		if (ft_strncmp(env_name, name, ft_strlen(env_name) + 1) == 0)
 			return (env_value);
 		i++;
 	}

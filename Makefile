@@ -1,10 +1,9 @@
+VPATH := srcs/:srcs/builtins/:srcs/execute/:srcs/parse/
+
 SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
 	   tokenize.c \
-	   parse.c \
-	   execute.c \
-	   search.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
@@ -12,6 +11,7 @@ SRC := main.c \
 	   signal_handler.c \
 	   error.c \
 	   expand.c \
+	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
 	   builtins/pwd.c \
@@ -19,13 +19,20 @@ SRC := main.c \
 	   builtins/print_envs.c \
 	   builtins/unset.c \
 	   builtins/env.c \
-	   builtins/exit.c
-SRCS := $(addprefix $(SRC_DIR)/,$(notdir $(SRC)))
+	   builtins/exit.c \
+	   execute/execute.c \
+	   execute/construct.c \
+	   execute/search.c \
+	   execute/pipe.c \
+	   execute/redirect.c \
+	   parse/parse.c \
+	   parse/parse_utils.c
+SRCS := $(notdir $(SRC))
 
 OBJ_DIR := ./.objects
-OBJS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.o)))
+OBJS := $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
 
-DEPS := $(addprefix $(OBJ_DIR)/,$(notdir $(SRCS:.c=.d)))
+DEPS := $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.d))
 
 INCLUDE := -I./includes -I$(shell brew --prefix readline)/include
 LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
@@ -39,12 +46,8 @@ LIBFT := libft
 
 all: $(NAME)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/builtins/%.c
-	@-mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@-mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c
+	@-mkdir -p $(OBJ_DIR) $(DEP_DIR)
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS)
