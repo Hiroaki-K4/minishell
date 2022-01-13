@@ -35,10 +35,6 @@ for fp in `ls test/case/tokenize`; do
 		continue
 	fi
 
-	if [ $fp = "multiple_quoted_word.txt" ]; then
-		continue
-	fi
-
 	while read line
 	do
 		eval ${line} >> test/result/tokenize/$fp

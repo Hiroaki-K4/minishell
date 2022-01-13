@@ -106,7 +106,7 @@ size_t	store_token(char *line, t_list **token_list, size_t *trim_start, size_t c
 	else if ((is_separate_word(line, current_pos) && *q_state == NORMAL))
 	{
 		attr = decide_attr(line, current_pos, &i, q_state);
-		printf("[separate2]trim_start: %ld current_pos: %ld i: %ld q_state: %d\n", *trim_start, current_pos, i, *q_state);
+		// printf("[separate2]trim_start: %ld current_pos: %ld i: %ld q_state: %d\n", *trim_start, current_pos, i, *q_state);
 		if (*trim_start != current_pos)
 		{
 			new_token = make_token(line, *trim_start, current_pos - *trim_start, get_attr_about_quote(q_state, line[current_pos - 1]));
@@ -123,7 +123,6 @@ size_t	store_token(char *line, t_list **token_list, size_t *trim_start, size_t c
 		new_token = make_token(line, start, len, attr);
 		if (ft_lstadd_node(token_list, new_token) == FAIL)
 			return (FAIL);
-		printf("seprate2_finish\n");
 		current_pos += i;
 		*trim_start = current_pos;
 	}
