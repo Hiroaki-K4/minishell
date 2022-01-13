@@ -1,25 +1,17 @@
 #include "minishell.h"
 
-int	construct_redirects(t_list **tokens, t_global_state **s_ptr)
+int	construct_redirects(t_list **tokens, t_global_state *state)
 {
-	int				i;
-	t_redirect		*tmp;
-	t_global_state	*state;
+	int	i;
 
 	i = 0;
-	state = *s_ptr;
-	state->redirect_num++;
-	tmp = (t_redirect *)malloc(sizeof(t_redirect) * state->redirect_num);
-	if (tmp == NULL)
-		return (FAIL);
 	while (i < state->redirect_num - 1)
-	{
-		tmp[i] = state->redirects[i];
 		i++;
-	}
-	state->redirects = tmp;
-	init_redirect(&state->redirects[state->redirect_num - 1]);
-	set_redirect(tokens, &state->redirects[state->redirect_num - 1], state->envs);
+	state->redirects[i] = (t_redirect *)malloc(sizeof(t_redirect));
+	if (state->redirects[i] == NULL)
+		return (FAIL);
+	init_redirect(state->redirects[i]);
+	set_redirect(tokens, state->redirects[i], state->envs);
 	return (SUCCESS);
 }
 
@@ -45,7 +37,8 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		}
 		if (tokens == NULL)
 			break ;
-		if (construct_redirects(&tokens, &state) == FAIL)
+		state->redirect_num++;
+		if (construct_redirects(&tokens, state) == FAIL)
 		{
 			while (*argv)
 			{

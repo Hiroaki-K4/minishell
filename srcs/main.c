@@ -5,11 +5,19 @@ void	init_global_state(t_global_state *state, char **envp)
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
-	state->pids = (int *)malloc(sizeof(int) * 10);
+	state->pids = (int *)malloc(sizeof(int) * 10);  // TODO: hard coded!!!
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
 	state->last_command_exit_status = 0;
-	state->redirects = NULL;
+	state->redirects = (t_redirect **)malloc(sizeof(t_redirect *) * (10 + 1));  // TODO: hard coded!!!
+	if (state->redirects == NULL)
+		exit_with_error("initialize state error");
+	int i = 0;
+	while (i < 11)
+	{
+		state->redirects[i] = NULL;
+		i++;
+	}
 	state->redirect_num = 0;
 	if (init_envs(&(state->envs), envp) == FAIL)
 		printf("init_env error\n");
@@ -30,10 +38,10 @@ void	refresh_global_state(t_global_state *state)
 	i = 0;
 	while (i < state->redirect_num)
 	{
-		free(state->redirects[i].here_delimiter);
-		state->redirects[i].here_delimiter = NULL;
-		free(state->redirects[i].here_document);
-		state->redirects[i].here_document = NULL;
+		free(state->redirects[i]->here_delimiter);
+		state->redirects[i]->here_delimiter = NULL;
+		free(state->redirects[i]->here_document);
+		state->redirects[i]->here_document = NULL;
 		i++;
 	}
 	state->redirect_num = 0;
@@ -67,7 +75,7 @@ void	minishell(char *envp[])
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			// execute(ast, &state);
+			execute(ast, &state);
 			add_history(input);
 		}
 		free(input);

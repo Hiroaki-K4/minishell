@@ -8,8 +8,8 @@ void	execute_command(char **argv, t_global_state *state)
 	i = 0;
 	while (i < state->redirect_num)
 	{
-		if (state->redirects[i].file_fd)
-			dup2(state->redirects[i].file_fd, state->redirects[i].redirect_fd);
+		if (state->redirects[i]->file_fd)
+			dup2(state->redirects[i]->file_fd, state->redirects[i]->redirect_fd);
 		i++;
 	}
 	if (is_builtin_command(argv, state->envs))
@@ -25,17 +25,35 @@ void	execute_command(char **argv, t_global_state *state)
 	}
 }
 
+void	wait_all_processes(t_global_state *state)
+{
+	int		i;
+	int		status;
+	pid_t	finished_pid;
+
+	i = 0;
+	while (i < state->process_count)
+	{
+		finished_pid = waitpid(-1, &status, 0);
+		if (finished_pid < 0)
+		{
+			if (WIFSIGNALED(status))
+				exit_with_error("wait error");
+		}
+		i++;
+	}
+}
+
 int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 {
-	char	**argv;
-	int		status;
-	pid_t	pid;
+	int			i;
+	pid_t		pid;
+	char		**argv;
 
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
 	if (is_special_builtin_command(argv, &(state->envs)))
 		return (SUCCESS);
-	state->process_count++;
 	pid = fork();
 	if (pid < 0)
 		exit_with_error("fork error");
@@ -46,26 +64,18 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	}
 	else
 	{
+		state->process_count++;
 		state->pids[state->process_count - 1] = pid;
-		int i = 0;
+		i = 0;
 		while (i < state->redirect_num)
 		{
-			if (state->redirects[i].file_fd != -1)
-				close(state->redirects[i].file_fd);
+			if (state->redirects[i]->file_fd != -1)
+				close(state->redirects[i]->file_fd);
 			i++;
 		}
+		state->redirect_num = 0;
 		if (node->is_furthest_right)
-		{
-			while (state->process_count)
-			{
-				if (waitpid(-1, &status, 0) < 0)
-				{
-					if (WIFSIGNALED(status))
-						exit_with_error("wait error");
-				}
-				state->process_count--;
-			}
-		}
+			wait_all_processes(state);
 	}
 	return (SUCCESS);
 }

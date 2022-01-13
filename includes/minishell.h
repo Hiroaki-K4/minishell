@@ -73,9 +73,9 @@ typedef struct s_global_state
 {
 	int			old_pipes[2];
 	int			process_count;
-	int			*pids;
+	pid_t		*pids;
 	int			last_command_exit_status;
-	t_redirect	*redirects;
+	t_redirect	**redirects;
 	int			redirect_num;
 	t_envs		*envs;
 }	t_global_state;
