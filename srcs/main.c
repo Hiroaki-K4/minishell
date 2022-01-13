@@ -75,7 +75,7 @@ void	minishell(char *envp[])
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			execute(ast, &state);
+			// execute(ast, &state);
 			add_history(input);
 		}
 		free(input);
