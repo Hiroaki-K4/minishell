@@ -17,8 +17,10 @@ void	sigquit_handler(int sig)
 	rl_redisplay();
 }
 
-void	init_sigaction(struct sigaction *sa_sigint,
-	struct sigaction *sa_sigquit)
+void	init_sigaction(
+	struct sigaction *sa_sigint,
+	struct sigaction *sa_sigquit
+)
 {
 	ft_bzero(sa_sigint, sizeof(*sa_sigint));
 	ft_bzero(sa_sigquit, sizeof(*sa_sigquit));
