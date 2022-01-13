@@ -45,6 +45,14 @@ typedef enum e_quote_state
 	IN_DQUOTE,
 }	t_quote_state;
 
+typedef struct s_tokenizer
+{
+	size_t			trim_start;
+	size_t			current_pos;
+	t_quote_state	quote_state;
+	t_token_kind	token_kind;
+}	t_tokenizer;
+
 typedef struct s_token
 {
 	char				*content;
@@ -102,8 +110,8 @@ int				ft_lstadd_node(t_list **token_list, t_token *new_token);
 
 t_node			*preprocess(char *input, t_global_state *state);
 
-t_token_kind	decide_attr(char *line, int pos, size_t *i, t_quote_state *q_state);
-void			tokenize(char *line, t_list **token_list);
+t_token_kind	decide_attr(char *line, int pos, size_t *i);
+int				tokenize(char *line, t_list **token_list);
 
 int				check_syntax(t_list *token_list);
 

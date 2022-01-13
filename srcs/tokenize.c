@@ -10,24 +10,23 @@ void	check_quote_state(t_quote_state *state, char c)
 		*state = NORMAL;
 }
 
-t_token_kind	get_attr_about_quote(t_quote_state *state, char c)
+t_token_kind	get_token_kind_about_quote(t_quote_state state, char c)
 {
 	t_token_kind	token_kind;
 
-	if (c == '\'' && *state == NORMAL)
+	if (c == '\'' && state == NORMAL)
 		token_kind = TK_SINGLE_QUOTED;
-	else if (c == '\"' && *state == NORMAL)
+	else if (c == '\"' && state == NORMAL)
 		token_kind = TK_DOUBLE_QUOTED;
 	else
 		token_kind = TK_WORD;
 	return (token_kind);
 }
 
-t_token_kind	decide_attr(char *line, int pos, size_t *i, t_quote_state *q_state)
+t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
-	(void)q_state;
 	if (line[pos] == '|')
 	{
 		*i += 1;
@@ -81,78 +80,94 @@ int	is_separate_word(char *line, int pos)
 	return (0);
 }
 
-size_t	store_token(char *line, t_list **token_list, size_t *trim_start, size_t current_pos, t_quote_state *q_state)
+int	separate_by_no_kind_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer)
 {
-	size_t			i;
-	size_t			len;
-	size_t			start;
-	t_token			*new_token;
-	t_token_kind	attr;
+	size_t	i;
+	t_token	*new_token;
 
 	i = 0;
-	if ((line[current_pos] == ' ' || line[current_pos] == '\t' || line[current_pos] == '\n') && *q_state == NORMAL)
+	tokenizer->token_kind = get_token_kind(line, tokenizer->current_pos, &i);
+	if (tokenizer->trim_start != tokenizer->current_pos)
 	{
-		attr = decide_attr(line, current_pos, &i, q_state);
-		// printf("[separate1]trim_start: %ld current_pos: %ld i: %ld q_state: %d\n", *trim_start, current_pos, i, *q_state);
-		if (*trim_start != current_pos)
-		{
-			new_token = make_token(line, *trim_start, current_pos - *trim_start, attr);
-			if (ft_lstadd_node(token_list, new_token) == FAIL)
-				return (FAIL);
-		}
-		current_pos += i;
-		*trim_start = current_pos;
-	}
-	else if ((is_separate_word(line, current_pos) && *q_state == NORMAL))
-	{
-		attr = decide_attr(line, current_pos, &i, q_state);
-		// printf("[separate2]trim_start: %ld current_pos: %ld i: %ld q_state: %d\n", *trim_start, current_pos, i, *q_state);
-		if (*trim_start != current_pos)
-		{
-			new_token = make_token(line, *trim_start, current_pos - *trim_start, get_attr_about_quote(q_state, line[current_pos - 1]));
-			if (ft_lstadd_node(token_list, new_token) == FAIL)
-				return (FAIL);
-			start = current_pos;
-			len = i;
-		}
-		else
-		{
-			start = *trim_start;
-			len = current_pos + i - *trim_start;
-		}
-		new_token = make_token(line, start, len, attr);
+		new_token = make_token(line, tokenizer->trim_start, tokenizer->current_pos - tokenizer->trim_start, tokenizer->token_kind);
 		if (ft_lstadd_node(token_list, new_token) == FAIL)
 			return (FAIL);
-		current_pos += i;
-		*trim_start = current_pos;
 	}
-	else if (line[current_pos + 1] == '\0')
-	{
-		attr = get_attr_about_quote(q_state, line[current_pos]);
-		current_pos++;
-		// printf("[separate3]trim_start: %ld current_pos: %ld i: %ld q_state: %d\n", *trim_start, current_pos, i, *q_state);
-		new_token = make_token(line, *trim_start, current_pos - *trim_start, attr);
-		if (ft_lstadd_node(token_list, new_token) == FAIL)
-			return (FAIL);
-		*trim_start = current_pos + i;
-	}
-	else
-		current_pos++;
-	return (current_pos);
+	tokenizer->current_pos += i;
+	tokenizer->trim_start = tokenizer->current_pos;
+	return (SUCCESS);
 }
 
-void	tokenize(char *line, t_list **token_list)
+int	separate_by_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer)
 {
-	size_t	trim_start;
-	size_t	current_pos;
-	t_quote_state	q_state;
+	size_t	i;
+	size_t	len;
+	size_t	start;
+	t_token	*new_token;
 
-	q_state = NORMAL;
-	trim_start = 0;
-	current_pos = 0;
-	while (line[current_pos] && current_pos < ft_strlen(line))
+	i = 0;
+	tokenizer->token_kind = get_token_kind(line, tokenizer->current_pos, &i);
+	if (tokenizer->trim_start != tokenizer->current_pos)
 	{
-		check_quote_state(&q_state, line[current_pos]);
-		current_pos = store_token(line, token_list, &trim_start, current_pos, &q_state);
+		new_token = make_token(line, tokenizer->trim_start, tokenizer->current_pos - tokenizer->trim_start, get_token_kind_about_quote(tokenizer->quote_state, line[tokenizer->current_pos - 1]));
+		if (ft_lstadd_node(token_list, new_token) == FAIL)
+			return (FAIL);
+		start = tokenizer->current_pos;
+		len = i;
 	}
+	else
+	{
+		start = tokenizer->trim_start;
+		len = tokenizer->current_pos + i - tokenizer->trim_start;
+	}
+	new_token = make_token(line, start, len, tokenizer->token_kind);
+	if (ft_lstadd_node(token_list, new_token) == FAIL)
+		return (FAIL);
+	tokenizer->current_pos += i;
+	tokenizer->trim_start = tokenizer->current_pos;
+	return (SUCCESS);
+}
+
+int	separate_by_null_char(char *line, t_list **token_list, t_tokenizer *tokenizer)
+{
+	size_t	i;
+	t_token	*new_token;
+
+	i = 0;
+	tokenizer->current_pos++;
+	new_token = make_token(line, tokenizer->trim_start, tokenizer->current_pos - tokenizer->trim_start, get_token_kind_about_quote(tokenizer->quote_state, line[tokenizer->current_pos - 1]));
+	if (ft_lstadd_node(token_list, new_token) == FAIL)
+		return (FAIL);
+	tokenizer->trim_start = tokenizer->current_pos + i;
+	return (SUCCESS);
+}
+
+int	read_line(char *line, t_list **token_list, t_tokenizer *tokenizer)
+{
+	if ((line[tokenizer->current_pos] == ' ' || line[tokenizer->current_pos] == '\t' || line[tokenizer->current_pos] == '\n') && tokenizer->quote_state == NORMAL)
+		return (separate_by_no_kind_sep_word(line, token_list, tokenizer));
+	else if ((is_separate_word(line, tokenizer->current_pos) && tokenizer->quote_state == NORMAL))
+		return (separate_by_sep_word(line, token_list, tokenizer));
+	else if (line[tokenizer->current_pos + 1] == '\0')
+		return (separate_by_null_char(line, token_list, tokenizer));
+	else
+		tokenizer->current_pos++;
+	return (SUCCESS);
+}
+
+int	tokenize(char *line, t_list **token_list)
+{
+	t_tokenizer	tokenizer;
+
+	tokenizer.trim_start = 0;
+	tokenizer.current_pos = 0;
+	tokenizer.quote_state = NORMAL;
+	tokenizer.token_kind = TK_WORD;
+	while (line[tokenizer.current_pos] && tokenizer.current_pos < ft_strlen(line))
+	{
+		check_quote_state(&tokenizer.quote_state, line[tokenizer.current_pos]);
+		if (read_line(line, token_list, &tokenizer) == FAIL)
+			return (FAIL);
+	}
+	return (SUCCESS);
 }
