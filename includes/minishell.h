@@ -55,8 +55,8 @@ typedef struct s_tokenizer
 
 typedef struct s_token
 {
-	char				*content;
-	t_token_kind		attr;
+	char			*content;
+	t_token_kind	attr;
 }	t_token;
 
 typedef struct s_node
