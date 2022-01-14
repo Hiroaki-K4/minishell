@@ -23,14 +23,19 @@ int	read_line(char *line, t_list **token_list, t_tokenizer *tokenizer)
 	return (SUCCESS);
 }
 
+void init_tokenizer(t_tokenizer	*tokenizer)
+{
+	tokenizer->trim_start = 0;
+	tokenizer->current_pos = 0;
+	tokenizer->quote_state = NORMAL;
+	tokenizer->token_kind = TK_WORD;
+}
+
 int	tokenize(char *line, t_list **token_list)
 {
 	t_tokenizer	tokenizer;
 
-	tokenizer.trim_start = 0;
-	tokenizer.current_pos = 0;
-	tokenizer.quote_state = NORMAL;
-	tokenizer.token_kind = TK_WORD;
+	init_tokenizer(&tokenizer);
 	while (line[tokenizer.current_pos] && tokenizer.current_pos < ft_strlen(line))
 	{
 		check_quote_state(&tokenizer.quote_state, line[tokenizer.current_pos]);
