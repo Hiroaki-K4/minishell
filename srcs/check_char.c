@@ -7,12 +7,11 @@ int	is_metacharacter(char c)
 		|| c == '(' || c == ')' || c == ';');
 }
 
-int	is_quotes(char c)
+int	is_separating_word(char *line, int pos)
 {
-	return (c == '\'' || c == '\"');
-}
-
-int	is_separating_character(char c)
-{
-	return (is_metacharacter(c) || is_quotes(c));
+	if (is_metacharacter(line[pos]))
+		return (1);
+	else if ((ft_isdigit(line[pos]) && (line[pos + 1] == '<' || line[pos + 1] == '>')))
+		return (1);
+	return (0);
 }

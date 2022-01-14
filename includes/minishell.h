@@ -102,8 +102,7 @@ void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
 
 int				is_metacharacter(char c);
-int				is_quotes(char c);
-int				is_separating_character(char c);
+int				is_separating_word(char *line, int pos);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
@@ -117,8 +116,14 @@ void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
 
 t_node			*preprocess(char *input, t_global_state *state);
 
-t_token_kind	decide_attr(char *line, int pos, size_t *i);
+t_token_kind	get_token_kind(char *line, int pos, size_t *i);
+t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
+
 int				tokenize(char *line, t_list **token_list);
+
+int				separate_by_no_kind_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer);
+int				separate_by_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer);
+int				separate_by_null_char(char *line, t_list **token_list, t_tokenizer *tokenizer);
 
 int				check_syntax(t_list *token_list);
 

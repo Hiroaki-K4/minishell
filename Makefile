@@ -4,6 +4,8 @@ SRC_DIR := ./srcs
 SRC := main.c \
 	   preprocess.c \
 	   tokenize.c \
+	   separate.c \
+	   get_token_kind.c \
 	   check_syntax.c \
 	   check_char.c \
 	   operate_list.c \
