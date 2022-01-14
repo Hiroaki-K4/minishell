@@ -21,8 +21,6 @@ int	separate_by_no_kind_sep_word(char *line, t_list **token_list, t_tokenizer *t
 int	separate_by_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer)
 {
 	size_t	i;
-	size_t	len;
-	size_t	start;
 	t_token	*new_token;
 
 	i = 0;
@@ -32,15 +30,9 @@ int	separate_by_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer
 		new_token = make_token(line, tokenizer->trim_start, tokenizer->current_pos - tokenizer->trim_start, get_token_kind_about_quote(tokenizer->quote_state, line[tokenizer->current_pos - 1]));
 		if (ft_lstadd_node(token_list, new_token) == FAIL)
 			return (FAIL);
-		start = tokenizer->current_pos;
-		len = i;
+		tokenizer->trim_start = tokenizer->current_pos;
 	}
-	else
-	{
-		start = tokenizer->trim_start;
-		len = tokenizer->current_pos + i - tokenizer->trim_start;
-	}
-	new_token = make_token(line, start, len, tokenizer->token_kind);
+	new_token = make_token(line, tokenizer->trim_start, tokenizer->current_pos + i - tokenizer->trim_start, tokenizer->token_kind);
 	if (ft_lstadd_node(token_list, new_token) == FAIL)
 		return (FAIL);
 	tokenizer->current_pos += i;
