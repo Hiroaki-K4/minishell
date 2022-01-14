@@ -17,7 +17,8 @@ t_token_kind	check_whether_quoted_word(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
-	while (line[pos + *i] && (line[pos + *i] == ' ' || line[pos + *i] == '\t' || line[pos + *i] == '\n'))
+	while (line[pos + *i] && (line[pos + *i] == ' '
+			|| line[pos + *i] == '\t' || line[pos + *i] == '\n'))
 		*i += 1;
 	if (pos - 1 > 0 && line[pos - 1] == '\'')
 		token_kind = TK_SINGLE_QUOTED;
@@ -37,7 +38,8 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 		*i += 1;
 		token_kind = TK_PIPE;
 	}
-	else if ((ft_isdigit(line[pos]) && (line[pos + 1] == '<' || line[pos + 1] == '>')))
+	else if ((ft_isdigit(line[pos])
+			&& (line[pos + 1] == '<' || line[pos + 1] == '>')))
 	{
 		*i += 1;
 		token_kind = TK_IO_NUMBER;
