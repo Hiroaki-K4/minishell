@@ -101,7 +101,8 @@ void			init_sigaction(struct sigaction *si, struct sigaction *sq);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
 
-int				is_metacharacter(char c);
+int				is_metacharacter_with_token_kind(char c);
+int				is_metacharacter_without_token_kind(char c);
 int				is_separating_word(char *line, int pos);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);

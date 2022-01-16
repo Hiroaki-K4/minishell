@@ -13,10 +13,8 @@ void	update_quote_state(t_quote_state *state, char c)
 
 int	read_line(char *line, t_list **token_list, t_tokenize_state *tokenize_state)
 {
-	if ((line[tokenize_state->current_pos] == ' '
-			|| line[tokenize_state->current_pos] == '\t'
-			|| line[tokenize_state->current_pos] == '\n')
-		&& tokenize_state->quote_state == NORMAL)
+	if (is_metacharacter_without_token_kind(line[tokenize_state->current_pos])
+			&& tokenize_state->quote_state == NORMAL)
 		return (separate_by_no_kind_sep_word(line, token_list, tokenize_state));
 	else if ((is_separating_word(line, tokenize_state->current_pos)
 			&& tokenize_state->quote_state == NORMAL))
