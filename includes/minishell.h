@@ -59,6 +59,15 @@ typedef struct s_token
 	t_token_kind	attr;
 }	t_token;
 
+typedef struct s_expand_state
+{
+	size_t			trim_start;
+	size_t			current_pos;
+	t_quote_state	quote_state;
+	t_token_kind	token_kind;
+	t_token			*expanded_token;
+}	t_expand_state;
+
 typedef struct s_node
 {
 	t_node_kind		attr;
@@ -120,6 +129,7 @@ t_node			*preprocess(char *input, t_global_state *state);
 t_token_kind	get_token_kind(char *line, int pos, size_t *i);
 t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
 
+void			update_quote_state(t_quote_state *state, char c);
 int				tokenize(char *line, t_list **token_list);
 
 int				separate_by_no_kind_sep_word(char *line, t_list **token_list,

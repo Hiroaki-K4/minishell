@@ -26,7 +26,7 @@ int	read_line(char *line, t_list **token_list, t_tokenize_state *tokenize_state)
 	return (SUCCESS);
 }
 
-void	init_tokenize_state(t_tokenize_state	*tokenize_state)
+void	init_tokenize_state(t_tokenize_state *tokenize_state)
 {
 	tokenize_state->trim_start = 0;
 	tokenize_state->current_pos = 0;
@@ -46,6 +46,11 @@ int	tokenize(char *line, t_list **token_list)
 			line[tokenize_state.current_pos]);
 		if (read_line(line, token_list, &tokenize_state) == FAIL)
 			return (FAIL);
+	}
+	if (tokenize_state.quote_state != NORMAL)
+	{
+		printf("Quote is not closed\n");
+		return (FAIL);
 	}
 	return (SUCCESS);
 }

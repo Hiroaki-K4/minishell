@@ -1,4 +1,4 @@
-VPATH := srcs/:srcs/builtins/:srcs/execute/:srcs/parse/:srcs/tokenize/
+VPATH := srcs/:srcs/builtins/:srcs/execute/:srcs/parse/:srcs/tokenize/:srcs/expand/
 
 SRC_DIR := ./srcs
 SRC := main.c \
@@ -9,7 +9,6 @@ SRC := main.c \
 	   operate_envs.c \
 	   signal_handler.c \
 	   error.c \
-	   expand.c \
 	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
@@ -28,7 +27,8 @@ SRC := main.c \
 	   parse/parse_utils.c \
 	   tokenize/tokenize.c \
 	   tokenize/separate.c \
-	   tokenize/get_token_kind.c
+	   tokenize/get_token_kind.c \
+	   expand/expand.c
 SRCS := $(notdir $(SRC))
 
 OBJ_DIR := ./.objects
