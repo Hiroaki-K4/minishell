@@ -7,7 +7,8 @@ int	separate_by_no_kind_sep_word(char *line, t_list **token_list,
 	t_token	*new_token;
 
 	i = 0;
-	tokenize_state->token_kind = get_token_kind(line, tokenize_state->current_pos, &i);
+	tokenize_state->token_kind = get_token_kind(line,
+			tokenize_state->current_pos, &i);
 	if (tokenize_state->trim_start != tokenize_state->current_pos)
 	{
 		new_token = make_token(line, tokenize_state->trim_start,
@@ -28,7 +29,8 @@ int	separate_by_sep_word(char *line, t_list **token_list,
 	t_token	*new_token;
 
 	i = 0;
-	tokenize_state->token_kind = get_token_kind(line, tokenize_state->current_pos, &i);
+	tokenize_state->token_kind = get_token_kind(line,
+			tokenize_state->current_pos, &i);
 	if (tokenize_state->trim_start != tokenize_state->current_pos)
 	{
 		new_token = make_token(line, tokenize_state->trim_start,

@@ -122,9 +122,12 @@ t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
 
 int				tokenize(char *line, t_list **token_list);
 
-int				separate_by_no_kind_sep_word(char *line, t_list **token_list, t_tokenize_state *tokenize_state);
-int				separate_by_sep_word(char *line, t_list **token_list, t_tokenize_state *tokenize_state);
-int				separate_by_null_char(char *line, t_list **token_list, t_tokenize_state *tokenize_state);
+int				separate_by_no_kind_sep_word(char *line, t_list **token_list,
+					t_tokenize_state *tokenize_state);
+int				separate_by_sep_word(char *line, t_list **token_list,
+					t_tokenize_state *tokenize_state);
+int				separate_by_null_char(char *line, t_list **token_list,
+					t_tokenize_state *tokenize_state);
 
 int				check_syntax(t_list *token_list);
 
