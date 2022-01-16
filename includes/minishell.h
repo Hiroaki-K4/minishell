@@ -38,10 +38,25 @@ typedef enum e_node_kind
 	ND_SEMICOLON,
 }	t_node_kind;
 
+typedef enum e_quote_state
+{
+	NORMAL,
+	IN_QUOTE,
+	IN_DQUOTE,
+}	t_quote_state;
+
+typedef struct s_tokenize_state
+{
+	size_t			trim_start;
+	size_t			current_pos;
+	t_quote_state	quote_state;
+	t_token_kind	token_kind;
+}	t_tokenize_state;
+
 typedef struct s_token
 {
-	char				*content;
-	t_token_kind		attr;
+	char			*content;
+	t_token_kind	attr;
 }	t_token;
 
 typedef struct s_node
@@ -86,9 +101,9 @@ void			init_sigaction(struct sigaction *si, struct sigaction *sq);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
 
-int				is_metacharacter(char c);
-int				is_quotes(char c);
-int				is_separating_character(char c);
+int				is_metacharacter_with_token_kind(char c);
+int				is_metacharacter_without_token_kind(char c);
+int				is_separating_word(char *line, int pos);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
@@ -102,8 +117,17 @@ void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
 
 t_node			*preprocess(char *input, t_global_state *state);
 
-t_token_kind	decide_attr(char *line, int pos, size_t *i);
-void			tokenize(char *line, t_list **token_list);
+t_token_kind	get_token_kind(char *line, int pos, size_t *i);
+t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
+
+int				tokenize(char *line, t_list **token_list);
+
+int				separate_by_no_kind_sep_word(char *line, t_list **token_list,
+					t_tokenize_state *tokenize_state);
+int				separate_by_sep_word(char *line, t_list **token_list,
+					t_tokenize_state *tokenize_state);
+int				separate_by_null_char(char *line, t_list **token_list,
+					t_tokenize_state *tokenize_state);
 
 int				check_syntax(t_list *token_list);
 
