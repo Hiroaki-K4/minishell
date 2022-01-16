@@ -33,7 +33,6 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
-	token_kind = TK_WORD;
 	if (line[pos] == '|')
 	{
 		*i += 1;
@@ -67,5 +66,7 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 	}
 	else if (line[pos] == ' ' || line[pos] == '\t' || line[pos] == '\n')
 		token_kind = check_whether_quoted_word(line, pos, i);
+	else
+		token_kind = TK_WORD;
 	return (token_kind);
 }

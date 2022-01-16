@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	check_quote_state(t_quote_state *state, char c)
+void	update_quote_state(t_quote_state *state, char c)
 {
 	if (c == '\'' && *state == NORMAL)
 		*state = IN_QUOTE;
@@ -11,41 +11,41 @@ void	check_quote_state(t_quote_state *state, char c)
 		*state = NORMAL;
 }
 
-int	read_line(char *line, t_list **token_list, t_tokenizer *tokenizer)
+int	read_line(char *line, t_list **token_list, t_tokenize_state *tokenize_state)
 {
-	if ((line[tokenizer->current_pos] == ' '
-			|| line[tokenizer->current_pos] == '\t'
-			|| line[tokenizer->current_pos] == '\n')
-		&& tokenizer->quote_state == NORMAL)
-		return (separate_by_no_kind_sep_word(line, token_list, tokenizer));
-	else if ((is_separating_word(line, tokenizer->current_pos)
-			&& tokenizer->quote_state == NORMAL))
-		return (separate_by_sep_word(line, token_list, tokenizer));
-	else if (line[tokenizer->current_pos + 1] == '\0')
-		return (separate_by_null_char(line, token_list, tokenizer));
+	if ((line[tokenize_state->current_pos] == ' '
+			|| line[tokenize_state->current_pos] == '\t'
+			|| line[tokenize_state->current_pos] == '\n')
+		&& tokenize_state->quote_state == NORMAL)
+		return (separate_by_no_kind_sep_word(line, token_list, tokenize_state));
+	else if ((is_separating_word(line, tokenize_state->current_pos)
+			&& tokenize_state->quote_state == NORMAL))
+		return (separate_by_sep_word(line, token_list, tokenize_state));
+	else if (line[tokenize_state->current_pos + 1] == '\0')
+		return (separate_by_null_char(line, token_list, tokenize_state));
 	else
-		tokenizer->current_pos++;
+		tokenize_state->current_pos++;
 	return (SUCCESS);
 }
 
-void	init_tokenizer(t_tokenizer	*tokenizer)
+void	init_tokenize_state(t_tokenize_state	*tokenize_state)
 {
-	tokenizer->trim_start = 0;
-	tokenizer->current_pos = 0;
-	tokenizer->quote_state = NORMAL;
-	tokenizer->token_kind = TK_WORD;
+	tokenize_state->trim_start = 0;
+	tokenize_state->current_pos = 0;
+	tokenize_state->quote_state = NORMAL;
+	tokenize_state->token_kind = TK_WORD;
 }
 
 int	tokenize(char *line, t_list **token_list)
 {
-	t_tokenizer	tokenizer;
+	t_tokenize_state	tokenize_state;
 
-	init_tokenizer(&tokenizer);
-	while (line[tokenizer.current_pos]
-		&& tokenizer.current_pos < ft_strlen(line))
+	init_tokenize_state(&tokenize_state);
+	while (line[tokenize_state.current_pos]
+		&& tokenize_state.current_pos < ft_strlen(line))
 	{
-		check_quote_state(&tokenizer.quote_state, line[tokenizer.current_pos]);
-		if (read_line(line, token_list, &tokenizer) == FAIL)
+		update_quote_state(&tokenize_state.quote_state, line[tokenize_state.current_pos]);
+		if (read_line(line, token_list, &tokenize_state) == FAIL)
 			return (FAIL);
 	}
 	return (SUCCESS);

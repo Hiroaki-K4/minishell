@@ -45,13 +45,13 @@ typedef enum e_quote_state
 	IN_DQUOTE,
 }	t_quote_state;
 
-typedef struct s_tokenizer
+typedef struct s_tokenize_state
 {
 	size_t			trim_start;
 	size_t			current_pos;
 	t_quote_state	quote_state;
 	t_token_kind	token_kind;
-}	t_tokenizer;
+}	t_tokenize_state;
 
 typedef struct s_token
 {
@@ -121,9 +121,9 @@ t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
 
 int				tokenize(char *line, t_list **token_list);
 
-int				separate_by_no_kind_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer);
-int				separate_by_sep_word(char *line, t_list **token_list, t_tokenizer *tokenizer);
-int				separate_by_null_char(char *line, t_list **token_list, t_tokenizer *tokenizer);
+int				separate_by_no_kind_sep_word(char *line, t_list **token_list, t_tokenize_state *tokenize_state);
+int				separate_by_sep_word(char *line, t_list **token_list, t_tokenize_state *tokenize_state);
+int				separate_by_null_char(char *line, t_list **token_list, t_tokenize_state *tokenize_state);
 
 int				check_syntax(t_list *token_list);
 
