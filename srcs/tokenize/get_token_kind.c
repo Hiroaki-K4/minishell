@@ -33,6 +33,7 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
+	token_kind = TK_WORD;
 	if (line[pos] == '|')
 	{
 		*i += 1;

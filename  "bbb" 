@@ -1,0 +1,4 @@
+content: " "aaa attr: 0
+content: > attr: 4
+content: " "bbb" " attr: 9
+minishell: " "aaa: command not found
