@@ -1,7 +1,15 @@
 minishell> echo "abc"
+~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: "abc" attr: 9
+~~~~~After expand~~~~~
+content: echo attr: 0
+content: abc attr: 9
 minishell> minishell> echo 'abc'
+~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: 'abc' attr: 8
+~~~~~After expand~~~~~
+content: echo attr: 0
+content: abc attr: 8
 minishell> 

@@ -13,7 +13,7 @@ char	*get_env_first_pos(t_expand_state *expand_state, char *env, int start, t_en
 		// if 
 		expand_state->current_pos++;
 	}
-	printf("name: %s\n", ft_substr(expand_state->expanded_token->content, start, expand_state->current_pos - start));
+	// printf("name: %s\n", ft_substr(expand_state->expanded_token->content, start, expand_state->current_pos - start));
 	env = get_env(ft_substr(expand_state->expanded_token->content, start, expand_state->current_pos - start), envs);
 	return (env);
 }
@@ -26,7 +26,6 @@ char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 	expand_state->current_pos = 0;
 	expand_state->trim_start = 0;
 	expanded = ft_strdup("");
-	printf("arg_content: %s\n", expand_state->expanded_token->content);
 	while (expand_state->expanded_token->content[expand_state->current_pos])
 	{
 		if (expand_state->expanded_token->content[expand_state->current_pos] == '$')
@@ -45,7 +44,7 @@ char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 	}
 	if (expand_state->trim_start < expand_state->current_pos)
 		expanded = ft_strjoin(expanded, ft_substr(expand_state->expanded_token->content, expand_state->trim_start, expand_state->current_pos - expand_state->trim_start));
-	printf("expanded: %s start: %ld current: %ld\n", expanded, expand_state->trim_start, expand_state->current_pos);
+	// printf("expanded: %s start: %ld current: %ld\n", expanded, expand_state->trim_start, expand_state->current_pos);
 	return (expanded);
 }
 
