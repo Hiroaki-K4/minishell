@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*get_env_first_pos(t_expand_state *expand_state, char *env, int start, t_envs *envs)
+char	*get_env_from_extracted_word(t_expand_state *expand_state, char *env, int start, t_envs *envs)
 {
 	while (expand_state->expanded_token->content[expand_state->current_pos]
 		&& expand_state->expanded_token->content[expand_state->current_pos] != ' '
@@ -28,13 +28,14 @@ char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 	expanded = ft_strdup("");
 	while (expand_state->expanded_token->content[expand_state->current_pos])
 	{
+		// TODO: Add process when `echo "$"USER` and echo $
 		if (expand_state->expanded_token->content[expand_state->current_pos] == '$')
 		{
 			if (expand_state->trim_start != expand_state->current_pos)
 				expanded = ft_strjoin(expanded, ft_substr(expand_state->expanded_token->content, expand_state->trim_start, expand_state->current_pos - expand_state->trim_start));
 			// TODO: Correspond $?
 			expand_state->current_pos++;
-			env = get_env_first_pos(expand_state, env, expand_state->current_pos, envs);
+			env = get_env_from_extracted_word(expand_state, env, expand_state->current_pos, envs);
 			if (env != NULL)
 				expanded = ft_strjoin(expanded, env);
 			expand_state->trim_start = expand_state->current_pos;
