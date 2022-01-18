@@ -8,7 +8,7 @@ void	init_expand_state(t_expand_state *expand_state)
 }
 
 void	update_state_with_quote(t_expand_state *expand_state,
-		t_quote_state quote_state, char **without_quote)
+		t_quote_state quote_state, char **quote_removed)
 {
 	if (expand_state->quote_state == NORMAL)
 	{
@@ -17,7 +17,7 @@ void	update_state_with_quote(t_expand_state *expand_state,
 	}
 	else if (expand_state->quote_state == quote_state)
 	{
-		*without_quote = ft_strjoin(*without_quote,
+		*quote_removed = ft_strjoin(*quote_removed,
 				ft_substr(expand_state->expanded_token->content,
 					expand_state->start + 1,
 					expand_state->current_pos - expand_state->start - 1));
@@ -27,25 +27,25 @@ void	update_state_with_quote(t_expand_state *expand_state,
 
 void	remove_quote(t_expand_state *expand_state)
 {
-	char	*without_quote;
+	char	*quote_removed;
 
-	without_quote = ft_strdup("");
+	quote_removed = ft_strdup("");
 	init_expand_state(expand_state);
 	while (expand_state->expanded_token->content[expand_state->current_pos])
 	{
 		if (expand_state->expanded_token
 			->content[expand_state->current_pos] == '\'')
-			update_state_with_quote(expand_state, IN_QUOTE, &without_quote);
+			update_state_with_quote(expand_state, IN_QUOTE, &quote_removed);
 		else if (expand_state->expanded_token
 			->content[expand_state->current_pos] == '\"')
-			update_state_with_quote(expand_state, IN_DQUOTE, &without_quote);
+			update_state_with_quote(expand_state, IN_DQUOTE, &quote_removed);
 		else if (expand_state->quote_state == NORMAL)
-			without_quote = ft_strjoin(without_quote,
+			quote_removed = ft_strjoin(quote_removed,
 					ft_substr(expand_state->expanded_token->content,
 						expand_state->current_pos, 1));
 		expand_state->current_pos++;
 	}
-	expand_state->expanded_token->content = without_quote;
+	expand_state->expanded_token->content = quote_removed;
 }
 
 int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)

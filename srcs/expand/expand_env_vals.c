@@ -30,24 +30,29 @@ char	*get_env_from_extracted_word(t_expand_state *expand_state,
 	return (env);
 }
 
+void	check_diff_between_start_and_curernt_pos(t_expand_state *expand_state,
+	char **expanded)
+{
+	if (expand_state->start != expand_state->current_pos)
+		*expanded = ft_strjoin(*expanded,
+				ft_substr(expand_state->expanded_token->content,
+					expand_state->start,
+					expand_state->current_pos - expand_state->start));
+}
+
 char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 {
 	char	*env;
 	char	*expanded;
 
-	expand_state->current_pos = 0;
-	expand_state->start = 0;
+	init_expand_state(expand_state);
 	expanded = ft_strdup("");
 	while (expand_state->expanded_token->content[expand_state->current_pos])
 	{
-		if (expand_state->expanded_token->content[expand_state->current_pos]
-			== '$')
+		if (expand_state->expanded_token
+			->content[expand_state->current_pos] == '$')
 		{
-			if (expand_state->start != expand_state->current_pos)
-				expanded = ft_strjoin(expanded,
-						ft_substr(expand_state->expanded_token->content,
-							expand_state->start,
-							expand_state->current_pos - expand_state->start));
+			check_diff_between_start_and_curernt_pos(expand_state, &expanded);
 			expand_state->current_pos++;
 			env = get_env_from_extracted_word(expand_state, env,
 					expand_state->current_pos, envs);
@@ -58,10 +63,6 @@ char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 		}
 		expand_state->current_pos++;
 	}
-	if (expand_state->start < expand_state->current_pos)
-		expanded = ft_strjoin(expanded,
-				ft_substr(expand_state->expanded_token->content,
-					expand_state->start,
-					expand_state->current_pos - expand_state->start));
+	check_diff_between_start_and_curernt_pos(expand_state, &expanded);
 	return (expanded);
 }
