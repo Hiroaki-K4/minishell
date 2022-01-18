@@ -28,7 +28,8 @@ SRC := main.c \
 	   tokenize/tokenize.c \
 	   tokenize/separate.c \
 	   tokenize/get_token_kind.c \
-	   expand/expand.c
+	   expand/expand.c \
+	   expand/expand_env_vals.c
 SRCS := $(notdir $(SRC))
 
 OBJ_DIR := ./.objects

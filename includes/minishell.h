@@ -64,7 +64,6 @@ typedef struct s_expand_state
 	size_t			start;
 	size_t			current_pos;
 	t_quote_state	quote_state;
-	t_token_kind	token_kind;
 	t_token			*expanded_token;
 }	t_expand_state;
 
@@ -140,6 +139,8 @@ int				separate_by_null_char(char *line, t_list **token_list,
 					t_tokenize_state *tokenize_state);
 
 int				check_syntax(t_list *token_list);
+
+char			*expand_env_vals(t_expand_state *expand_state, t_envs *envs);
 
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs);
 
