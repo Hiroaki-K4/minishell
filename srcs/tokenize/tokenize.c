@@ -49,7 +49,7 @@ int	tokenize(char *line, t_list **token_list)
 	}
 	if (tokenize_state.quote_state != NORMAL)
 	{
-		printf("Quote is not closed\n");
+		printf("minishell: syntax error: unexpected end of file\n");
 		return (FAIL);
 	}
 	return (SUCCESS);

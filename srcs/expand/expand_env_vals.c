@@ -28,8 +28,10 @@ char	*get_name_after_dollar(t_expand_state *expand_state, size_t start)
 			start, expand_state->current_pos - start));
 }
 
-void	check_diff_between_start_and_curernt_pos(t_expand_state *expand_state,
-	char **expanded)
+void	check_diff_between_start_and_curernt_pos(
+	t_expand_state *expand_state,
+	char **expanded
+)
 {
 	if (expand_state->start != expand_state->current_pos)
 		*expanded = ft_strjoin(*expanded,
