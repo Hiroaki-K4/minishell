@@ -43,6 +43,18 @@ for fp in `ls test/case/tokenize`; do
 	check_result "tokenize" $fp
 done
 
+# Test Expand
+rm -rf test/result/expand
+mkdir -p test/result/expand
+for fp in `ls test/case/expand`; do
+	while read line
+	do
+		eval ${line} >> test/result/expand/$fp
+	done < test/case/expand/$fp
+	diff test/result/expand/$fp test/answer/expand/$fp
+	check_result "expand" $fp
+done
+
 # Test Syntax checker
 # rm -f test/result/test_syntax_checker.txt
 # while read line

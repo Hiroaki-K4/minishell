@@ -1,24 +1,58 @@
 minishell> a | b
+~~~~~After tokenize~~~~~
+content: a attr: 0
+content: | attr: 2
+content: b attr: 0
+~~~~~After expand~~~~~
 content: a attr: 0
 content: | attr: 2
 content: b attr: 0
 minishell> minishell> a > b
+~~~~~After tokenize~~~~~
+content: a attr: 0
+content: > attr: 4
+content: b attr: 0
+~~~~~After expand~~~~~
 content: a attr: 0
 content: > attr: 4
 content: b attr: 0
 minishell> minishell> a < b
+~~~~~After tokenize~~~~~
+content: a attr: 0
+content: < attr: 3
+content: b attr: 0
+~~~~~After expand~~~~~
 content: a attr: 0
 content: < attr: 3
 content: b attr: 0
 minishell> minishell> a >> b
+~~~~~After tokenize~~~~~
+content: a attr: 0
+content: >> attr: 6
+content: b attr: 0
+~~~~~After expand~~~~~
 content: a attr: 0
 content: >> attr: 6
 content: b attr: 0
 minishell> minishell> a << b
+~~~~~After tokenize~~~~~
+content: a attr: 0
+content: << attr: 5
+content: b attr: 0
+~~~~~After expand~~~~~
 content: a attr: 0
 content: << attr: 5
 content: b attr: 0
 minishell> minishell> a 1> b 2> c
+~~~~~After tokenize~~~~~
+content: a attr: 0
+content: 1 attr: 1
+content: > attr: 4
+content: b attr: 0
+content: 2 attr: 1
+content: > attr: 4
+content: c attr: 0
+~~~~~After expand~~~~~
 content: a attr: 0
 content: 1 attr: 1
 content: > attr: 4
