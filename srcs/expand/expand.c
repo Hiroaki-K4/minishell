@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*get_env_from_extracted_word(t_expand_state *expand_state, char *env, int start, t_envs *envs)
+char	*get_env_from_extracted_word(t_expand_state *expand_state, char *env, size_t start, t_envs *envs)
 {
 	while (expand_state->expanded_token->content[expand_state->current_pos]
 		&& expand_state->expanded_token->content[expand_state->current_pos] != ' '
@@ -9,11 +9,17 @@ char	*get_env_from_extracted_word(t_expand_state *expand_state, char *env, int s
 		&& expand_state->expanded_token->content[expand_state->current_pos] != '\"'
 		)
 	{
-		// update_quote_state(&expand_state->quote_state, expand_state->expanded_token->content[expand_state->current_pos]);
-		// if 
 		expand_state->current_pos++;
+		if (expand_state->expanded_token->content[expand_state->current_pos - 1] == '?')
+		{
+			// TODO: Correspond $?
+			printf("$? appeared\n");
+			continue ;
+		}
 	}
-	// printf("name: %s\n", ft_substr(expand_state->expanded_token->content, start, expand_state->current_pos - start));
+	// printf("name: %s len: %ld\n", ft_substr(expand_state->expanded_token->content, start, expand_state->current_pos - start), expand_state->current_pos - start);
+	if (expand_state->current_pos == start)
+		return (ft_strdup("$"));
 	env = get_env(ft_substr(expand_state->expanded_token->content, start, expand_state->current_pos - start), envs);
 	return (env);
 }
@@ -28,12 +34,10 @@ char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 	expanded = ft_strdup("");
 	while (expand_state->expanded_token->content[expand_state->current_pos])
 	{
-		// TODO: Add process when `echo "$"USER` and echo $
 		if (expand_state->expanded_token->content[expand_state->current_pos] == '$')
 		{
 			if (expand_state->trim_start != expand_state->current_pos)
 				expanded = ft_strjoin(expanded, ft_substr(expand_state->expanded_token->content, expand_state->trim_start, expand_state->current_pos - expand_state->trim_start));
-			// TODO: Correspond $?
 			expand_state->current_pos++;
 			env = get_env_from_extracted_word(expand_state, env, expand_state->current_pos, envs);
 			if (env != NULL)

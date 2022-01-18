@@ -6,3 +6,4 @@ echo 'echo $OUR_MINISHELLa' | ./minishell
 echo 'echo $aOUR_MINISHELL' | ./minishell
 echo 'echo a$OUR_MINISHELL' | ./minishell
 echo 'echo a$OUR_MINISHELLa' | ./minishell
+# echo 'echo $?' | ./minishell
