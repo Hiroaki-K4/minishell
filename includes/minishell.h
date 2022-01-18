@@ -61,7 +61,7 @@ typedef struct s_token
 
 typedef struct s_expand_state
 {
-	size_t			trim_start;
+	size_t			start;
 	size_t			current_pos;
 	t_quote_state	quote_state;
 	t_token_kind	token_kind;

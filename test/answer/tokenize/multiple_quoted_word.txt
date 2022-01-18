@@ -2,24 +2,24 @@ minishell> "aaa""bbb"
 ~~~~~After tokenize~~~~~
 content: "aaa""bbb" attr: 9
 ~~~~~After expand~~~~~
-content: aaa""bbb attr: 9
+content: aaabbb attr: 9
 minishell> minishell> 'aaa''bbb'
 ~~~~~After tokenize~~~~~
 content: 'aaa''bbb' attr: 8
 ~~~~~After expand~~~~~
-content: aaa''bbb attr: 8
+content: aaabbb attr: 8
 minishell> minishell> ""aaa" "bbb""
 ~~~~~After tokenize~~~~~
 content: ""aaa" "bbb"" attr: 9
 ~~~~~After expand~~~~~
-content: aaa" "bbb attr: 9
+content: aaa bbb attr: 9
 minishell> minishell> " "aaa>" "bbb" "
 ~~~~~After tokenize~~~~~
 content: " "aaa attr: 0
 content: > attr: 4
 content: " "bbb" " attr: 9
 ~~~~~After expand~~~~~
-content: " "aaa attr: 0
+content:  aaa attr: 0
 content: > attr: 4
-content:  "bbb"  attr: 9
+content:  bbb  attr: 9
 minishell> 
