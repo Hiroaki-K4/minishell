@@ -140,10 +140,10 @@ int				separate_by_null_char(char *line, t_list **token_list,
 
 int				check_syntax(t_list *token_list);
 
-char			*expand_env_vals(t_expand_state *expand_state, t_envs *envs);
+char			*expand_env_vals(t_expand_state *e_state, t_envs *envs);
 
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs);
-void			init_expand_state(t_expand_state *expand_state);
+void			init_expand_state(t_expand_state *e_state);
 
 t_node			*parse(t_list **token_list);
 int				is_command_token(t_list **token_list);
