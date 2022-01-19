@@ -63,6 +63,7 @@ typedef struct s_expand_state
 	size_t			current_pos;
 	t_quote_state	quote_state;
 	t_token			*origin_token;
+	t_list			*token_list;
 }	t_expand_state;
 
 typedef struct s_node

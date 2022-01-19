@@ -51,6 +51,7 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 	t_expand_state	e_state;
 
 	init_expand_state(&e_state);
+	e_state.token_list = NULL;
 	while (token_list != NULL)
 	{
 		e_state.origin_token = (t_token *)malloc(sizeof(t_token));
