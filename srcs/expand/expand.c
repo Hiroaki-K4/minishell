@@ -57,11 +57,12 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 		e_state.origin_token->attr = ((t_token *)token_list->content)->attr;
 		e_state.origin_token->content
 			= ((t_token *)token_list->content)->content;
-		if ((e_state.origin_token->attr == TK_WORD
-				|| e_state.origin_token->attr == TK_DOUBLE_QUOTED)
-			&& ft_strchr(e_state.origin_token->content, '$') != NULL)
+		if (ft_strchr(e_state.origin_token->content, '$') != NULL)
 			e_state.origin_token->content = expand_env_vals(&e_state, envs);
 		remove_quote(&e_state);
+		// TODO: Add process when there is a delimiter in the environment variable
+		// if (e_state.origin_token->attr == TK_WORD)
+			// tokenize()
 		if (ft_lstadd_node(expanded_list, e_state.origin_token) == FAIL)
 			return (FAIL);
 		token_list = token_list->next;

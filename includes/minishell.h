@@ -26,8 +26,6 @@ typedef enum e_token_kind
 	TK_REDIRECT_OUT,
 	TK_REDIRECT_DLESS,
 	TK_REDIRECT_DGREAT,
-	TK_SINGLE_QUOTED = 8,
-	TK_DOUBLE_QUOTED,
 	TK_SEMICOLON,
 }	t_token_kind;
 

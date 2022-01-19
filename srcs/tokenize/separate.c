@@ -35,8 +35,7 @@ int	separate_by_sep_word(char *line, t_list **token_list,
 	{
 		new_token = make_token(line, tokenize_state->trim_start,
 				tokenize_state->current_pos - tokenize_state->trim_start,
-				get_token_kind_about_quote(tokenize_state->quote_state,
-					line[tokenize_state->current_pos - 1]));
+				TK_WORD);
 		if (ft_lstadd_node(token_list, new_token) == FAIL)
 			return (FAIL);
 		tokenize_state->trim_start = tokenize_state->current_pos;
@@ -60,9 +59,7 @@ int	separate_by_null_char(char *line, t_list **token_list,
 	i = 0;
 	tokenize_state->current_pos++;
 	new_token = make_token(line, tokenize_state->trim_start,
-			tokenize_state->current_pos - tokenize_state->trim_start,
-			get_token_kind_about_quote(tokenize_state->quote_state,
-				line[tokenize_state->current_pos - 1]));
+			tokenize_state->current_pos - tokenize_state->trim_start, TK_WORD);
 	if (ft_lstadd_node(token_list, new_token) == FAIL)
 		return (FAIL);
 	tokenize_state->trim_start = tokenize_state->current_pos + i;

@@ -44,7 +44,10 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 	expanded = ft_strdup("");
 	while (e_state->origin_token->content[e_state->current_pos])
 	{
-		if (e_state->origin_token->content[e_state->current_pos] == '$')
+		update_quote_state(&(e_state->quote_state),
+			e_state->origin_token->content[e_state->current_pos]);
+		if (e_state->origin_token->content[e_state->current_pos] == '$'
+			&& e_state->quote_state != IN_QUOTE)
 		{
 			check_diff_between_start_and_curernt_pos(e_state, &expanded);
 			e_state->current_pos++;
@@ -54,7 +57,6 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 			else
 			{
 				value = get_env(name, envs);
-				// TODO: Add process when there is a delimiter in the environment variable
 				if (value != NULL)
 					expanded = ft_strjoin(expanded, value);
 			}

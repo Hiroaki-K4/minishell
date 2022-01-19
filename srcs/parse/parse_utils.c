@@ -32,8 +32,6 @@ t_node	*new_node(t_node *lhs, t_node *rhs, t_node_kind attr)
 int	is_command_token(t_list **token_list)
 {
 	return (consume_token(token_list, TK_WORD)
-		|| consume_token(token_list, TK_SINGLE_QUOTED)
-		|| consume_token(token_list, TK_DOUBLE_QUOTED)
 		|| consume_token(token_list, TK_IO_NUMBER)
 		|| consume_token(token_list, TK_REDIRECT_IN)
 		|| consume_token(token_list, TK_REDIRECT_OUT)
