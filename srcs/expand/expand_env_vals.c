@@ -3,19 +3,14 @@
 char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 {
 	while (e_state->expanded_token->content[e_state->current_pos]
-		&& e_state->expanded_token
-		->content[e_state->current_pos] != ' '
-		&& e_state->expanded_token
-		->content[e_state->current_pos] != '$'
-		&& e_state->expanded_token
-		->content[e_state->current_pos] != '\''
-		&& e_state->expanded_token
-		->content[e_state->current_pos] != '\"'
+		&& e_state->expanded_token->content[e_state->current_pos] != ' '
+		&& e_state->expanded_token->content[e_state->current_pos] != '$'
+		&& e_state->expanded_token->content[e_state->current_pos] != '\''
+		&& e_state->expanded_token->content[e_state->current_pos] != '\"'
 	)
 	{
 		e_state->current_pos++;
-		if (e_state->expanded_token->content[e_state->current_pos - 1]
-			== '?')
+		if (e_state->expanded_token->content[e_state->current_pos - 1] == '?')
 		{
 			// TODO: Correspond $?
 			printf("$? appeared\n");
@@ -36,8 +31,7 @@ void	check_diff_between_start_and_curernt_pos(
 	if (e_state->start != e_state->current_pos)
 		*expanded = ft_strjoin(*expanded,
 				ft_substr(e_state->expanded_token->content,
-					e_state->start,
-					e_state->current_pos - e_state->start));
+					e_state->start, e_state->current_pos - e_state->start));
 }
 
 char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
@@ -50,8 +44,7 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 	expanded = ft_strdup("");
 	while (e_state->expanded_token->content[e_state->current_pos])
 	{
-		if (e_state->expanded_token
-			->content[e_state->current_pos] == '$')
+		if (e_state->expanded_token->content[e_state->current_pos] == '$')
 		{
 			check_diff_between_start_and_curernt_pos(e_state, &expanded);
 			e_state->current_pos++;

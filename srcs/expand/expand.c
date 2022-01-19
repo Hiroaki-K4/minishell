@@ -33,11 +33,9 @@ void	remove_quote(t_expand_state *e_state)
 	init_expand_state(e_state);
 	while (e_state->expanded_token->content[e_state->current_pos])
 	{
-		if (e_state->expanded_token
-			->content[e_state->current_pos] == '\'')
+		if (e_state->expanded_token->content[e_state->current_pos] == '\'')
 			update_state_with_quote(e_state, IN_QUOTE, &quote_removed);
-		else if (e_state->expanded_token
-			->content[e_state->current_pos] == '\"')
+		else if (e_state->expanded_token->content[e_state->current_pos] == '\"')
 			update_state_with_quote(e_state, IN_DQUOTE, &quote_removed);
 		else if (e_state->quote_state == NORMAL)
 			quote_removed = ft_strjoin(quote_removed,
@@ -56,15 +54,13 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 	while (token_list != NULL)
 	{
 		e_state.expanded_token = (t_token *)malloc(sizeof(t_token));
-		e_state.expanded_token->attr
-			= ((t_token *)token_list->content)->attr;
+		e_state.expanded_token->attr = ((t_token *)token_list->content)->attr;
 		e_state.expanded_token->content
 			= ((t_token *)token_list->content)->content;
 		if ((e_state.expanded_token->attr == TK_WORD
 				|| e_state.expanded_token->attr == TK_DOUBLE_QUOTED)
 			&& ft_strchr(e_state.expanded_token->content, '$') != NULL)
-			e_state.expanded_token->content
-				= expand_env_vals(&e_state, envs);
+			e_state.expanded_token->content = expand_env_vals(&e_state, envs);
 		remove_quote(&e_state);
 		if (ft_lstadd_node(expanded_list, e_state.expanded_token) == FAIL)
 			return (FAIL);
