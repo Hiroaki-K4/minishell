@@ -61,6 +61,7 @@ char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
 			else
 			{
 				value = get_env(name, envs);
+				// TODO: Add process when there is a delimiter in the environment variable
 				if (value != NULL)
 					expanded = ft_strjoin(expanded, value);
 			}
