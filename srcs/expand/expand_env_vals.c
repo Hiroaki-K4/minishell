@@ -34,6 +34,20 @@ void	check_diff_between_start_and_curernt_pos(
 					e_state->start, e_state->current_pos - e_state->start));
 }
 
+void	ft_lstadd_last(t_list **lst, t_list *new)
+{
+	t_list	*last_lst;
+
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	last_lst = ft_lstlast(*lst);
+	new->prev = last_lst;
+	last_lst->next = new;
+}
+
 char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 {
 	char	*name;
@@ -43,7 +57,6 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 	t_list	*tmp_list;
 	t_list	*last_list;
 
-	// TODO: Remove tmp
 	init_expand_state(e_state);
 	tmp = ft_strdup("");
 	while (e_state->origin_token->content[e_state->current_pos])
@@ -80,10 +93,11 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 					{
 						tmp_list = NULL;
 						tokenize(value, &tmp_list);
-						ft_lstadd_back(&(e_state->token_list), tmp_list);
+						// ft_lstadd_back(&(e_state->token_list), tmp_list);
+						ft_lstadd_last(&(e_state->token_list), tmp_list);
 					}
 					else
-					{	
+					{
 						new_token = make_token(value, 0, ft_strlen(value), TK_WORD);
 						if (ft_lstadd_node(&(e_state->token_list), new_token) == FAIL)
 							return (NULL);
