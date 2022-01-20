@@ -3,17 +3,23 @@
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	printf("\n");
-	rl_replace_line("", 0);
+
 	rl_on_new_line();
+	rl_redisplay();
+	write(1, "  \n", 3);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
 void	sigquit_handler(int sig)
 {
 	(void)sig;
-	rl_replace_line("", 0);
+
 	rl_on_new_line();
+	rl_redisplay();
+	write(1, "  \b\b", 4);
+	rl_replace_line(rl_line_buffer, 0);
 	rl_redisplay();
 }
 
