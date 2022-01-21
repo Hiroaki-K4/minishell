@@ -27,14 +27,12 @@ content: echo attr: 0
 content: $OUR_MINISHELLa attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
-content:  attr: 0
 minishell> minishell> echo $aOUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $aOUR_MINISHELL attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
-content:  attr: 0
 minishell> minishell> echo a$OUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0

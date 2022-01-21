@@ -1,0 +1,9 @@
+~~~~~After tokenize~~~~~
+content: " "aaa attr: 0
+content: > attr: 4
+content: " "bbb" " attr: 0
+~~~~~After expand~~~~~
+content:  aaa attr: 0
+content: > attr: 4
+content:  bbb  attr: 0
+minishell:  aaa: command not found

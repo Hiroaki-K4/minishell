@@ -47,17 +47,10 @@ int	ft_lstadd_word(t_list **lst, char *new_word)
 	return (SUCCESS);
 }
 
-void	check_diff_between_start_and_curernt_pos(
-	t_expand_state *e_state,
-	char **expanded
-)
+void	check_diff_between_start_and_curernt_pos(t_expand_state *e_state)
 {
 	if (e_state->start != e_state->current_pos)
-		*expanded = ft_strjoin(*expanded,
-				ft_substr(e_state->origin_token->content,
-					e_state->start, e_state->current_pos - e_state->start));
-	ft_lstadd_word(&(e_state->token_list), ft_substr(e_state->origin_token->content,
-					e_state->start, e_state->current_pos - e_state->start));
+		ft_lstadd_word(&(e_state->token_list), ft_substr(e_state->origin_token->content, e_state->start, e_state->current_pos - e_state->start));
 }
 
 void	ft_lstadd_last(t_list **lst, t_list *new)
@@ -86,15 +79,13 @@ void	ft_lstadd_last(t_list **lst, t_list *new)
 		last_lst->next = NULL;
 }
 
-char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
+int	expand_env_vals(t_expand_state *e_state, t_envs *envs)
 {
 	char	*name;
 	char	*value;
-	char	*tmp;
 	t_list	*tmp_list;
 
 	init_expand_state(e_state);
-	tmp = ft_strdup("");
 	while (e_state->origin_token->content[e_state->current_pos])
 	{
 		update_quote_state(&(e_state->quote_state),
@@ -102,14 +93,11 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 		if (e_state->origin_token->content[e_state->current_pos] == '$'
 			&& e_state->quote_state != IN_QUOTE)
 		{
-			check_diff_between_start_and_curernt_pos(e_state, &tmp);
+			check_diff_between_start_and_curernt_pos(e_state);
 			e_state->current_pos++;
 			name = get_name_after_dollar(e_state, e_state->current_pos);
 			if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
-			{
 				ft_lstadd_word(&(e_state->token_list), name);
-				tmp = ft_strjoin(tmp, name);
-			}
 			else
 			{
 				value = get_env(name, envs);
@@ -123,7 +111,6 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 					}
 					else
 						ft_lstadd_word(&(e_state->token_list), value);
-					tmp = ft_strjoin(tmp, value);
 				}
 			}
 			e_state->start = e_state->current_pos;
@@ -131,6 +118,6 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 		}
 		e_state->current_pos++;
 	}
-	check_diff_between_start_and_curernt_pos(e_state, &tmp);
-	return (tmp);
+	check_diff_between_start_and_curernt_pos(e_state);
+	return (SUCCESS);
 }

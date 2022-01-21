@@ -7,7 +7,7 @@ void	init_expand_state(t_expand_state *e_state)
 	e_state->quote_state = NORMAL;
 }
 
-void	update_state_with_quote(t_expand_state *e_state,
+void	update_state_with_quote(t_expand_state *e_state, t_token *token,
 		t_quote_state quote_state, char **quote_removed)
 {
 	if (e_state->quote_state == NORMAL)
@@ -18,7 +18,7 @@ void	update_state_with_quote(t_expand_state *e_state,
 	else if (e_state->quote_state == quote_state)
 	{
 		*quote_removed = ft_strjoin(*quote_removed,
-				ft_substr(e_state->origin_token->content,
+				ft_substr(token->content,
 					e_state->start + 1,
 					e_state->current_pos - e_state->start - 1));
 		e_state->quote_state = NORMAL;
@@ -38,9 +38,9 @@ t_token	*remove_quote(t_expand_state *e_state)
 	while (token->content[e_state->current_pos])
 	{
 		if (token->content[e_state->current_pos] == '\'')
-			update_state_with_quote(e_state, IN_QUOTE, &quote_removed);
+			update_state_with_quote(e_state, token, IN_QUOTE, &quote_removed);
 		else if (token->content[e_state->current_pos] == '\"')
-			update_state_with_quote(e_state, IN_DQUOTE, &quote_removed);
+			update_state_with_quote(e_state, token, IN_DQUOTE, &quote_removed);
 		else if (e_state->quote_state == NORMAL)
 			quote_removed = ft_strjoin(quote_removed,
 					ft_substr(token->content,
@@ -65,7 +65,7 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 		e_state.origin_token->content
 			= ((t_token *)token_list->content)->content;
 		if (ft_strchr(e_state.origin_token->content, '$') != NULL)
-			e_state.origin_token->content = expand_env_vals(&e_state, envs);
+			expand_env_vals(&e_state, envs);
 		else
 			ft_lstadd_node(&(e_state.token_list), e_state.origin_token);
 		while (e_state.token_list != NULL)
