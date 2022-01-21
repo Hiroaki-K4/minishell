@@ -60,10 +60,9 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 			= ((t_token *)token_list->content)->content;
 		if (ft_strchr(e_state.origin_token->content, '$') != NULL)
 			e_state.origin_token->content = expand_env_vals(&e_state, envs);
+		else
+			ft_lstadd_node(&(e_state.token_list), e_state.origin_token);
 		remove_quote(&e_state);
-		// TODO: Add process when there is a delimiter in the environment variable
-		// if (e_state.origin_token->attr == TK_WORD)
-			// tokenize()
 		// TODO: I want to use ft_lstadd_back instead of ft_lstadd_node function
 		if (ft_lstadd_node(expanded_list, e_state.origin_token) == FAIL)
 			return (FAIL);
