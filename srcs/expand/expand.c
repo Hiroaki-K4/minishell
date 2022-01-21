@@ -47,13 +47,14 @@ t_token	*remove_quote(t_expand_state *e_state)
 						e_state->current_pos, 1));
 		e_state->current_pos++;
 	}
-	q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed), token->attr);
+	q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed),
+			token->attr);
 	return (q_removed);
 }
 
 int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 {
-	t_token	*q_removed;
+	t_token			*q_removed;
 	t_expand_state	e_state;
 
 	init_expand_state(&e_state);
