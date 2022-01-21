@@ -102,8 +102,9 @@ int	set_new_env_to_envs(char **argv, t_envs **envs)
 	return (SUCCESS);
 }
 
-int	ft_export(char **argv, t_envs **envs)
+int	ft_export(char **argv, t_envs **envs, int *exit_status)
 {
+	(void)exit_status;
 	if (argv[1] == NULL)
 	{
 		if (print_envs(*envs) == FAIL)
