@@ -11,11 +11,7 @@ char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 	{
 		e_state->current_pos++;
 		if (e_state->original_token->content[e_state->current_pos - 1] == '?')
-		{
-			// TODO: Correspond $?
-			printf("$? appeared\n");
-			continue ;
-		}
+			return (ft_strdup("$?"));
 	}
 	if (e_state->current_pos == start)
 		return (ft_strdup("$"));
@@ -50,11 +46,18 @@ void	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 	}
 }
 
-int	check_name(char *name, t_envs *envs, t_expand_state *e_state)
+int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
+	int exit_status)
 {
 	if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
 	{
 		if (ft_lstadd_word(&(e_state->token_list), name) == FAIL)
+			return (FAIL);
+	}
+	else if (ft_strncmp(name, "$?", ft_strlen(name) + 1) == 0)
+	{
+		if (ft_lstadd_word(&(e_state->token_list),
+				ft_itoa(exit_status)) == FAIL)
 			return (FAIL);
 	}
 	else
@@ -62,7 +65,7 @@ int	check_name(char *name, t_envs *envs, t_expand_state *e_state)
 	return (SUCCESS);
 }
 
-int	expand_env_vals(t_expand_state *e_state, t_envs *envs)
+int	expand_env_vals(t_expand_state *e_state, t_envs *envs, int exit_status)
 {
 	char	*name;
 
@@ -77,7 +80,7 @@ int	expand_env_vals(t_expand_state *e_state, t_envs *envs)
 			check_diff_between_start_and_curernt_pos(e_state);
 			e_state->current_pos++;
 			name = get_name_after_dollar(e_state, e_state->current_pos);
-			if (check_name(name, envs, e_state) == FAIL)
+			if (check_name(name, envs, e_state, exit_status) == FAIL)
 				return (FAIL);
 			e_state->start = e_state->current_pos;
 			continue ;

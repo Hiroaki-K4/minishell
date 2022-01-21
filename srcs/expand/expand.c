@@ -52,7 +52,8 @@ t_token	*remove_quote(t_expand_state *e_state)
 	return (q_removed);
 }
 
-int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
+int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
+	int exit_status)
 {
 	t_token			*q_removed;
 	t_expand_state	e_state;
@@ -66,7 +67,7 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 		e_state.original_token->content
 			= ((t_token *)token_list->content)->content;
 		if (ft_strchr(e_state.original_token->content, '$') != NULL)
-			expand_env_vals(&e_state, envs);
+			expand_env_vals(&e_state, envs, exit_status);
 		else
 			ft_lstadd_node(&(e_state.token_list), e_state.original_token);
 		while (e_state.token_list != NULL)

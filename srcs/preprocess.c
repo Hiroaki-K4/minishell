@@ -25,7 +25,8 @@ t_node	*preprocess(char *line, t_global_state *state)
 	printf("~~~~~After tokenize~~~~~\n");
 	ft_lstiter(token_list, output_result);
 	expanded_list = NULL;
-	expand(token_list, &expanded_list, state->envs);
+	expand(token_list, &expanded_list, state->envs,
+		state->last_command_exit_status);
 	printf("~~~~~After expand~~~~~\n");
 	ft_lstiter(expanded_list, output_result);
 	return (parse(&expanded_list));
