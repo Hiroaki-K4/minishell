@@ -25,29 +25,35 @@ void	update_state_with_quote(t_expand_state *e_state,
 	}
 }
 
-void	remove_quote(t_expand_state *e_state)
+t_token	*remove_quote(t_expand_state *e_state)
 {
 	char	*quote_removed;
+	t_token	*q_removed;
+	t_token	*token;
 
+	q_removed = NULL;
 	quote_removed = ft_strdup("");
 	init_expand_state(e_state);
-	while (e_state->origin_token->content[e_state->current_pos])
+	token = (t_token *)e_state->token_list->content;
+	while (token->content[e_state->current_pos])
 	{
-		if (e_state->origin_token->content[e_state->current_pos] == '\'')
+		if (token->content[e_state->current_pos] == '\'')
 			update_state_with_quote(e_state, IN_QUOTE, &quote_removed);
-		else if (e_state->origin_token->content[e_state->current_pos] == '\"')
+		else if (token->content[e_state->current_pos] == '\"')
 			update_state_with_quote(e_state, IN_DQUOTE, &quote_removed);
 		else if (e_state->quote_state == NORMAL)
 			quote_removed = ft_strjoin(quote_removed,
-					ft_substr(e_state->origin_token->content,
+					ft_substr(token->content,
 						e_state->current_pos, 1));
 		e_state->current_pos++;
 	}
-	e_state->origin_token->content = quote_removed;
+	q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed), token->attr);
+	return (q_removed);
 }
 
 int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 {
+	t_token	*q_removed;
 	t_expand_state	e_state;
 
 	init_expand_state(&e_state);
@@ -62,10 +68,12 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 			e_state.origin_token->content = expand_env_vals(&e_state, envs);
 		else
 			ft_lstadd_node(&(e_state.token_list), e_state.origin_token);
-		remove_quote(&e_state);
-		// TODO: I want to use ft_lstadd_back instead of ft_lstadd_node function
-		if (ft_lstadd_node(expanded_list, e_state.origin_token) == FAIL)
-			return (FAIL);
+		while (e_state.token_list != NULL)
+		{
+			q_removed = remove_quote(&e_state);
+			ft_lstadd_node(expanded_list, q_removed);
+			e_state.token_list = e_state.token_list->next;
+		}
 		token_list = token_list->next;
 	}
 	return (SUCCESS);

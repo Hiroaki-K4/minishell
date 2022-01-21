@@ -132,48 +132,5 @@ char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
 		e_state->current_pos++;
 	}
 	check_diff_between_start_and_curernt_pos(e_state, &tmp);
-	printf("~~~after_tokenize~~~\n");
-	ft_lstiter(e_state->token_list, output_result);
 	return (tmp);
 }
-
-// char	*expand_env_vals(t_expand_state *e_state, t_envs *envs)
-// {
-// 	char	*name;
-// 	char	*value;
-// 	char	*expanded;
-
-// 	init_expand_state(e_state);
-// 	expanded = ft_strdup("");
-// 	while (e_state->origin_token->content[e_state->current_pos])
-// 	{
-// 		update_quote_state(&(e_state->quote_state),
-// 			e_state->origin_token->content[e_state->current_pos]);
-// 		if (e_state->origin_token->content[e_state->current_pos] == '$'
-// 			&& e_state->quote_state != IN_QUOTE)
-// 		{
-// 			check_diff_between_start_and_curernt_pos(e_state, &expanded);
-// 			e_state->current_pos++;
-// 			name = get_name_after_dollar(e_state, e_state->current_pos);
-// 			if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
-// 				expanded = ft_strjoin(expanded, name);
-// 			else
-// 			{
-// 				value = get_env(name, envs);
-// 				printf("value: %s\n", value);
-// 				if (value != NULL)
-// 				{
-// 					tokenize(value, &(e_state->token_list));
-// 					printf("~~~after_tokenize~~~\n");
-// 					ft_lstiter(e_state->token_list, output_result);
-// 					expanded = ft_strjoin(expanded, value);
-// 				}
-// 			}
-// 			e_state->start = e_state->current_pos;
-// 			continue ;
-// 		}
-// 		e_state->current_pos++;
-// 	}
-// 	check_diff_between_start_and_curernt_pos(e_state, &expanded);
-// 	return (expanded);
-// }
