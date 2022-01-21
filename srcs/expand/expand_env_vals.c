@@ -2,15 +2,15 @@
 
 char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 {
-	while (e_state->origin_token->content[e_state->current_pos]
-		&& e_state->origin_token->content[e_state->current_pos] != ' '
-		&& e_state->origin_token->content[e_state->current_pos] != '$'
-		&& e_state->origin_token->content[e_state->current_pos] != '\''
-		&& e_state->origin_token->content[e_state->current_pos] != '\"'
+	while (e_state->original_token->content[e_state->current_pos]
+		&& e_state->original_token->content[e_state->current_pos] != ' '
+		&& e_state->original_token->content[e_state->current_pos] != '$'
+		&& e_state->original_token->content[e_state->current_pos] != '\''
+		&& e_state->original_token->content[e_state->current_pos] != '\"'
 	)
 	{
 		e_state->current_pos++;
-		if (e_state->origin_token->content[e_state->current_pos - 1] == '?')
+		if (e_state->original_token->content[e_state->current_pos - 1] == '?')
 		{
 			// TODO: Correspond $?
 			printf("$? appeared\n");
@@ -19,7 +19,7 @@ char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 	}
 	if (e_state->current_pos == start)
 		return (ft_strdup("$"));
-	return (ft_substr(e_state->origin_token->content,
+	return (ft_substr(e_state->original_token->content,
 			start, e_state->current_pos - start));
 }
 
@@ -27,7 +27,7 @@ void	check_diff_between_start_and_curernt_pos(t_expand_state *e_state)
 {
 	if (e_state->start != e_state->current_pos)
 		ft_lstadd_word(&(e_state->token_list),
-			ft_substr(e_state->origin_token->content, e_state->start,
+			ft_substr(e_state->original_token->content, e_state->start,
 				e_state->current_pos - e_state->start));
 }
 
@@ -67,11 +67,11 @@ int	expand_env_vals(t_expand_state *e_state, t_envs *envs)
 	char	*name;
 
 	init_expand_state(e_state);
-	while (e_state->origin_token->content[e_state->current_pos])
+	while (e_state->original_token->content[e_state->current_pos])
 	{
 		update_quote_state(&(e_state->quote_state),
-			e_state->origin_token->content[e_state->current_pos]);
-		if (e_state->origin_token->content[e_state->current_pos] == '$'
+			e_state->original_token->content[e_state->current_pos]);
+		if (e_state->original_token->content[e_state->current_pos] == '$'
 			&& e_state->quote_state != IN_QUOTE)
 		{
 			check_diff_between_start_and_curernt_pos(e_state);

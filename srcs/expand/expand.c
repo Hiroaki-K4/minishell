@@ -61,14 +61,14 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs)
 	e_state.token_list = NULL;
 	while (token_list != NULL)
 	{
-		e_state.origin_token = (t_token *)malloc(sizeof(t_token));
-		e_state.origin_token->attr = ((t_token *)token_list->content)->attr;
-		e_state.origin_token->content
+		e_state.original_token = (t_token *)malloc(sizeof(t_token));
+		e_state.original_token->attr = ((t_token *)token_list->content)->attr;
+		e_state.original_token->content
 			= ((t_token *)token_list->content)->content;
-		if (ft_strchr(e_state.origin_token->content, '$') != NULL)
+		if (ft_strchr(e_state.original_token->content, '$') != NULL)
 			expand_env_vals(&e_state, envs);
 		else
-			ft_lstadd_node(&(e_state.token_list), e_state.origin_token);
+			ft_lstadd_node(&(e_state.token_list), e_state.original_token);
 		while (e_state.token_list != NULL)
 		{
 			q_removed = remove_quote(&e_state);
