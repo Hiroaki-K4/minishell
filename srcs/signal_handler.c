@@ -33,3 +33,28 @@ void	init_sigaction(
 	sa_sigint->sa_handler = sigint_handler;
 	sa_sigquit->sa_handler = sigquit_handler;
 }
+
+void	sigint_handler2(int sig)
+{
+	(void)sig;
+
+	write(1, "\n", 1);
+}
+
+void	sigquit_handler2(int sig)
+{
+	(void)sig;
+
+	write(1, "Quit: 3\n", ft_strlen("Quit: 3\n"));
+}
+
+void	init_sigaction2(
+	struct sigaction *sa_sigint,
+	struct sigaction *sa_sigquit
+)
+{
+	ft_bzero(sa_sigint, sizeof(*sa_sigint));
+	ft_bzero(sa_sigquit, sizeof(*sa_sigquit));
+	sa_sigint->sa_handler = sigint_handler2;
+	sa_sigquit->sa_handler = sigquit_handler2;
+}
