@@ -38,12 +38,12 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
 DEPS := $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.d))
 
 INCLUDE := -I./includes -I$(shell brew --prefix readline)/include
-LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
+LDFLAGS := -lasan libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 NAME := minishell
 
 CC := gcc
-CFLAGS := -g -Wall -Wextra -Werror -MMD -MP
+CFLAGS := -g -fsanitize=address -Wall -Wextra -Werror -MMD -MP
 
 LIBFT := libft
 

@@ -1,0 +1,87 @@
+Direct leak of 48 byte(s) in 2 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a22a2b in ft_lstnew (/home/hiroaki-k4/my_project/42/minishell/minishell+0xfa2b)
+    #2 0x55c2c1a17b6d in ft_lstadd_node srcs/operate_list.c:19
+    #3 0x55c2c1a2103e in expand srcs/expand/expand.c:97
+    #4 0x55c2c1a17334 in preprocess srcs/preprocess.c:28
+    #5 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #6 0x55c2c1a16fc8 in main srcs/main.c:90
+    #7 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Direct leak of 24 byte(s) in 1 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a22a2b in ft_lstnew (/home/hiroaki-k4/my_project/42/minishell/minishell+0xfa2b)
+    #2 0x55c2c1a17b6d in ft_lstadd_node srcs/operate_list.c:19
+    #3 0x55c2c1a1fdc4 in separate_by_null_char srcs/tokenize/separate.c:63
+    #4 0x55c2c1a1f0e7 in read_line srcs/tokenize/tokenize.c:23
+    #5 0x55c2c1a1f379 in tokenize srcs/tokenize/tokenize.c:47
+    #6 0x55c2c1a171a7 in preprocess srcs/preprocess.c:19
+    #7 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #8 0x55c2c1a16fc8 in main srcs/main.c:90
+    #9 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Direct leak of 12 byte(s) in 6 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a22303 in ft_substr (/home/hiroaki-k4/my_project/42/minishell/minishell+0xf303)
+    #2 0x55c2c1a20bc5 in remove_quote srcs/expand/expand.c:59
+    #3 0x55c2c1a2104c in expand srcs/expand/expand.c:100
+    #4 0x55c2c1a17334 in preprocess srcs/preprocess.c:28
+    #5 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #6 0x55c2c1a16fc8 in main srcs/main.c:90
+    #7 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Direct leak of 8 byte(s) in 2 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a223d5 in ft_strjoin (/home/hiroaki-k4/my_project/42/minishell/minishell+0xf3d5)
+    #2 0x55c2c1a20bd7 in remove_quote srcs/expand/expand.c:58
+    #3 0x55c2c1a2104c in expand srcs/expand/expand.c:100
+    #4 0x55c2c1a17334 in preprocess srcs/preprocess.c:28
+    #5 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #6 0x55c2c1a16fc8 in main srcs/main.c:90
+    #7 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Direct leak of 8 byte(s) in 1 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a22303 in ft_substr (/home/hiroaki-k4/my_project/42/minishell/minishell+0xf303)
+    #2 0x55c2c1a22552 in ft_strtrim (/home/hiroaki-k4/my_project/42/minishell/minishell+0xf552)
+    #3 0x55c2c1a1718a in preprocess srcs/preprocess.c:18
+    #4 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #5 0x55c2c1a16fc8 in main srcs/main.c:90
+    #6 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Direct leak of 5 byte(s) in 1 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a22303 in ft_substr (/home/hiroaki-k4/my_project/42/minishell/minishell+0xf303)
+    #2 0x55c2c1a17ae2 in make_token srcs/operate_list.c:10
+    #3 0x55c2c1a1f723 in separate_by_no_kind_sep_word srcs/tokenize/separate.c:14
+    #4 0x55c2c1a1efbc in read_line srcs/tokenize/tokenize.c:18
+    #5 0x55c2c1a1f379 in tokenize srcs/tokenize/tokenize.c:47
+    #6 0x55c2c1a171a7 in preprocess srcs/preprocess.c:19
+    #7 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #8 0x55c2c1a16fc8 in main srcs/main.c:90
+    #9 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Indirect leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a17ab5 in make_token srcs/operate_list.c:7
+    #2 0x55c2c1a1fdad in separate_by_null_char srcs/tokenize/separate.c:61
+    #3 0x55c2c1a1f0e7 in read_line srcs/tokenize/tokenize.c:23
+    #4 0x55c2c1a1f379 in tokenize srcs/tokenize/tokenize.c:47
+    #5 0x55c2c1a171a7 in preprocess srcs/preprocess.c:19
+    #6 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #7 0x55c2c1a16fc8 in main srcs/main.c:90
+    #8 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+Indirect leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7f2a8ff70bc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+    #1 0x55c2c1a22303 in ft_substr (/home/hiroaki-k4/my_project/42/minishell/minishell+0xf303)
+    #2 0x55c2c1a17ae2 in make_token srcs/operate_list.c:10
+    #3 0x55c2c1a1fdad in separate_by_null_char srcs/tokenize/separate.c:61
+    #4 0x55c2c1a1f0e7 in read_line srcs/tokenize/tokenize.c:23
+    #5 0x55c2c1a1f379 in tokenize srcs/tokenize/tokenize.c:47
+    #6 0x55c2c1a171a7 in preprocess srcs/preprocess.c:19
+    #7 0x55c2c1a16f56 in minishell srcs/main.c:74
+    #8 0x55c2c1a16fc8 in main srcs/main.c:90
+    #9 0x7f2a8fc480b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+SUMMARY: AddressSanitizer: 124 byte(s) leaked in 15 allocation(s).
