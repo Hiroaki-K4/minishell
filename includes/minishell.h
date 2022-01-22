@@ -26,8 +26,6 @@ typedef enum e_token_kind
 	TK_REDIRECT_OUT,
 	TK_REDIRECT_DLESS,
 	TK_REDIRECT_DGREAT,
-	TK_SINGLE_QUOTED = 8,
-	TK_DOUBLE_QUOTED,
 	TK_SEMICOLON,
 }	t_token_kind;
 
@@ -64,7 +62,8 @@ typedef struct s_expand_state
 	size_t			start;
 	size_t			current_pos;
 	t_quote_state	quote_state;
-	t_token			*expanded_token;
+	t_token			*original_token;
+	t_list			*token_list;
 }	t_expand_state;
 
 typedef struct s_node
@@ -115,6 +114,8 @@ int				is_separating_word(char *line, int pos);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
+int				ft_lstadd_word(t_list **lst, char *new_word);
+void			ft_lstadd_last(t_list **lst, t_list *new);
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
@@ -140,10 +141,12 @@ int				separate_by_null_char(char *line, t_list **token_list,
 
 int				check_syntax(t_list *token_list);
 
-char			*expand_env_vals(t_expand_state *expand_state, t_envs *envs);
+int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
+					int exit_status);
 
-int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs);
-void			init_expand_state(t_expand_state *expand_state);
+int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
+					int exit_status);
+void			init_expand_state(t_expand_state *e_state);
 
 t_node			*parse(t_list **token_list);
 int				is_command_token(t_list **token_list);
@@ -155,16 +158,16 @@ char			**construct_argv(t_list *tokens, t_global_state *state);
 
 char			*search(char *path, t_envs *envs);
 
-int				is_special_builtin_command(char **argv, t_envs **envs);
-int				is_builtin_command(char **argv, t_envs *envs);
+int				is_special_builtin_command(char **argv, t_envs **envs, int *exit_status);
+int				is_builtin_command(char **argv, t_envs *envs, int *exit_status);
 
-int				ft_echo(char **argv, t_envs *envs);
-int				ft_cd(char **argv, t_envs **envs);
-int				ft_pwd(char **argv, t_envs *envs);
-int				ft_export(char **argv, t_envs **envs);
-int				ft_unset(char **argv, t_envs **envs);
-int				ft_env(char **argv, t_envs *envs);
-int				ft_exit(char **argv, t_envs **envs);
+int				ft_echo(char **argv, t_envs *envs, int *exit_status);
+int				ft_cd(char **argv, t_envs **envs, int *exit_status);
+int				ft_pwd(char **argv, t_envs *envs, int *exit_status);
+int				ft_export(char **argv, t_envs **envs, int *exit_status);
+int				ft_unset(char **argv, t_envs **envs, int *exit_status);
+int				ft_env(char **argv, t_envs *envs, int *exit_status);
+int				ft_exit(char **argv, t_envs **envs, int *exit_status);
 
 void			exit_with_error(char *msg);
 

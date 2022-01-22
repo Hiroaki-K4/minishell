@@ -1,0 +1,7 @@
+minishell> $OUR_MINISHELL
+~~~~~After tokenize~~~~~
+content: $OUR_MINISHELL attr: 0
+~~~~~After expand~~~~~
+content: echo attr: 0
+content: Beatiful attr: 0
+minishell> 

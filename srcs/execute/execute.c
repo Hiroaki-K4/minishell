@@ -12,7 +12,7 @@ void	execute_command(char **argv, t_global_state *state)
 			dup2(state->redirects[i]->file_fd, state->redirects[i]->redirect_fd);
 		i++;
 	}
-	if (is_builtin_command(argv, state->envs))
+	if (is_builtin_command(argv, state->envs, &(state->last_command_exit_status)))
 		exit(errno);
 	else
 	{
@@ -52,7 +52,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
-	if (is_special_builtin_command(argv, &(state->envs)))
+	if (is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
 		return (SUCCESS);
 	pid = fork();
 	if (pid < 0)

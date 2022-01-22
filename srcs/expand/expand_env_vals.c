@@ -1,74 +1,92 @@
 #include "minishell.h"
 
-char	*get_name_after_dollar(t_expand_state *expand_state, size_t start)
+char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 {
-	while (expand_state->expanded_token->content[expand_state->current_pos]
-		&& expand_state->expanded_token
-		->content[expand_state->current_pos] != ' '
-		&& expand_state->expanded_token
-		->content[expand_state->current_pos] != '$'
-		&& expand_state->expanded_token
-		->content[expand_state->current_pos] != '\''
-		&& expand_state->expanded_token
-		->content[expand_state->current_pos] != '\"'
+	while (e_state->original_token->content[e_state->current_pos]
+		&& e_state->original_token->content[e_state->current_pos] != ' '
+		&& e_state->original_token->content[e_state->current_pos] != '$'
+		&& e_state->original_token->content[e_state->current_pos] != '\''
+		&& e_state->original_token->content[e_state->current_pos] != '\"'
 	)
 	{
-		expand_state->current_pos++;
-		if (expand_state->expanded_token->content[expand_state->current_pos - 1]
-			== '?')
-		{
-			// TODO: Correspond $?
-			printf("$? appeared\n");
-			continue ;
-		}
+		e_state->current_pos++;
+		if (e_state->original_token->content[e_state->current_pos - 1] == '?')
+			return (ft_strdup("$?"));
 	}
-	if (expand_state->current_pos == start)
+	if (e_state->current_pos == start)
 		return (ft_strdup("$"));
-	return (ft_substr(expand_state->expanded_token->content,
-			start, expand_state->current_pos - start));
+	return (ft_substr(e_state->original_token->content,
+			start, e_state->current_pos - start));
 }
 
-void	check_diff_between_start_and_curernt_pos(
-	t_expand_state *expand_state,
-	char **expanded
-)
+void	check_diff_between_start_and_curernt_pos(t_expand_state *e_state)
 {
-	if (expand_state->start != expand_state->current_pos)
-		*expanded = ft_strjoin(*expanded,
-				ft_substr(expand_state->expanded_token->content,
-					expand_state->start,
-					expand_state->current_pos - expand_state->start));
+	if (e_state->start != e_state->current_pos)
+		ft_lstadd_word(&(e_state->token_list),
+			ft_substr(e_state->original_token->content, e_state->start,
+				e_state->current_pos - e_state->start));
 }
 
-char	*expand_env_vals(t_expand_state *expand_state, t_envs *envs)
+void	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
+{
+	char	*value;
+	t_list	*tmp_list;
+
+	value = get_env(name, envs);
+	if (value != NULL)
+	{
+		if (e_state->quote_state == NORMAL)
+		{
+			tmp_list = NULL;
+			tokenize(value, &tmp_list);
+			ft_lstadd_last(&(e_state->token_list), tmp_list);
+		}
+		else
+			ft_lstadd_word(&(e_state->token_list), value);
+	}
+}
+
+int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
+	int exit_status)
+{
+	if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
+	{
+		if (ft_lstadd_word(&(e_state->token_list), name) == FAIL)
+			return (FAIL);
+	}
+	else if (ft_strncmp(name, "$?", ft_strlen(name) + 1) == 0)
+	{
+		if (ft_lstadd_word(&(e_state->token_list),
+				ft_itoa(exit_status)) == FAIL)
+			return (FAIL);
+	}
+	else
+		get_value_and_insert(name, envs, e_state);
+	return (SUCCESS);
+}
+
+int	expand_env_vals(t_expand_state *e_state, t_envs *envs, int exit_status)
 {
 	char	*name;
-	char	*value;
-	char	*expanded;
 
-	init_expand_state(expand_state);
-	expanded = ft_strdup("");
-	while (expand_state->expanded_token->content[expand_state->current_pos])
+	init_expand_state(e_state);
+	while (e_state->original_token->content[e_state->current_pos])
 	{
-		if (expand_state->expanded_token
-			->content[expand_state->current_pos] == '$')
+		update_quote_state(&(e_state->quote_state),
+			e_state->original_token->content[e_state->current_pos]);
+		if (e_state->original_token->content[e_state->current_pos] == '$'
+			&& e_state->quote_state != IN_QUOTE)
 		{
-			check_diff_between_start_and_curernt_pos(expand_state, &expanded);
-			expand_state->current_pos++;
-			name = get_name_after_dollar(expand_state, expand_state->current_pos);
-			if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
-				expanded = ft_strjoin(expanded, name);
-			else
-			{
-				value = get_env(name, envs);
-				if (value != NULL)
-					expanded = ft_strjoin(expanded, value);
-			}
-			expand_state->start = expand_state->current_pos;
+			check_diff_between_start_and_curernt_pos(e_state);
+			e_state->current_pos++;
+			name = get_name_after_dollar(e_state, e_state->current_pos);
+			if (check_name(name, envs, e_state, exit_status) == FAIL)
+				return (FAIL);
+			e_state->start = e_state->current_pos;
 			continue ;
 		}
-		expand_state->current_pos++;
+		e_state->current_pos++;
 	}
-	check_diff_between_start_and_curernt_pos(expand_state, &expanded);
-	return (expanded);
+	check_diff_between_start_and_curernt_pos(e_state);
+	return (SUCCESS);
 }

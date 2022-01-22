@@ -1,0 +1,4 @@
+export OUR_MINISHELL="echo Beatiful"
+echo '$OUR_MINISHELL' | ./minishell
+# export OUR_MINISHELL="cat test1.txt | cat > test2.txt"
+# echo '$OUR_MINISHELL' | ./minishell
