@@ -12,17 +12,18 @@ int	ft_pwd(char **argv, t_envs *envs, int *exit_status)
 	(void)envs;
 	(void)exit_status;
 	count = 1;
-	while (TRUE)
+	buf = NULL;
+	fp = getcwd(buf, 0);
+	if (fp == NULL)
 	{
-		buf = (char *)malloc(sizeof(char) * (BUF_SIZE * count));
-		if (buf == NULL)
-			return (FAIL);
-		fp = getcwd(buf, BUF_SIZE * count);
-		if (fp != NULL)
-			break ;
-		free(buf);
-		count++;
+		fp = get_env("PWD", envs);
+		printf("%s\n", fp);
 	}
-	printf("%s\n", fp);
+	else
+	{
+		set_env("PWD", fp, &envs);
+		printf("%s\n", fp);
+		free(fp);
+	}
 	return (SUCCESS);
 }
