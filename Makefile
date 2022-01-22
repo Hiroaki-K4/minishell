@@ -59,7 +59,7 @@ $(NAME): $(OBJS)
 
 clean:
 	@make clean -C $(LIBFT)
-	$(RM) $(OBJS) $(DEPS)
+	$(RM) -rf $(OBJ_DIR)
 
 fclean: clean
 	$(RM) libft/libft.a
