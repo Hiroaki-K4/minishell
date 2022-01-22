@@ -107,6 +107,9 @@ void			output_result(void *content);
 void			init_sigaction(struct sigaction *si, struct sigaction *sq);
 void			sigint_handler(int sig);
 void			sigquit_handler(int sig);
+void			init_sigaction2(struct sigaction *si, struct sigaction *sq);
+void			sigint_handler2(int sig);
+void			sigquit_handler2(int sig);
 
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);

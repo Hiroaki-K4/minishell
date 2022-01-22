@@ -38,7 +38,15 @@ void	wait_all_processes(t_global_state *state)
 		if (finished_pid < 0)
 		{
 			if (WIFSIGNALED(status))
-				exit_with_error("wait error");
+			{
+				int j = 0;
+				while (state->pids[j])
+				{
+					kill(state->pids[j], SIGINT);
+					j++;
+				}
+			}
+			continue;
 		}
 		i++;
 	}
@@ -49,6 +57,16 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	int			i;
 	pid_t		pid;
 	char		**argv;
+
+	struct sigaction	sa_sigint;
+	struct sigaction	sa_sigquit;
+	init_sigaction2(&sa_sigint, &sa_sigquit);
+	if (sigaction(SIGINT, &sa_sigint, NULL) < 0
+		|| sigaction(SIGQUIT, &sa_sigquit, NULL) < 0)
+	{
+		printf("Error\n");
+		exit(FAIL);
+	}
 
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
