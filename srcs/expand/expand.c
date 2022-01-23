@@ -96,6 +96,6 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 		free(e_state.original_token);
 		token_list = token_list->next;
 	}
-	ft_lstdelone(e_state.token_list, free);
+	ft_lstall(&(e_state.token_list), free);
 	return (SUCCESS);
 }

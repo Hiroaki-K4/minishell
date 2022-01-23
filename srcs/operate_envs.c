@@ -72,7 +72,11 @@ char	*get_env(char *name, t_envs *envs)
 	{
 		get_env_name_and_value(&env_name, &env_value, envs->content[i]);
 		if (ft_strncmp(env_name, name, ft_strlen(env_name) + 1) == 0)
+		{
+			free(env_name);
 			return (env_value);
+		}
+		free(env_name);
 		i++;
 	}
 	return (NULL);

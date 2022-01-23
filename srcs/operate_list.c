@@ -72,3 +72,22 @@ void	ft_lstadd_last(t_list **lst, t_list *new)
 	else
 		last_lst->next = NULL;
 }
+
+void	ft_lstall(t_list **lst, void (*del)(void*))
+{
+	t_list	*tmp;
+	t_token	*content;
+
+	if (!del)
+		return ;
+	while (*lst)
+	{
+		content = (*lst)->content;
+		(*del)(content->content);
+		(*del)(content);
+		tmp = *lst;
+		*lst = tmp->next;
+		free(tmp);
+	}
+	*lst = NULL;
+}

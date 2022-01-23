@@ -119,6 +119,7 @@ t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
 int				ft_lstadd_word(t_list **lst, char *new_word);
 void			ft_lstadd_last(t_list **lst, t_list *new);
+void			ft_lstall(t_list **lst, void (*del)(void*));
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
