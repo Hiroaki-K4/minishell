@@ -74,6 +74,7 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 {
 	t_token			*q_removed;
 	t_expand_state	e_state;
+	t_list			*tmp_list;
 
 	init_expand_state(&e_state);
 	e_state.token_list = NULL;
@@ -84,18 +85,25 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 		e_state.original_token->content
 			= ((t_token *)token_list->content)->content;
 		if (ft_strchr(e_state.original_token->content, '$') != NULL)
-			expand_env_vals(&e_state, envs, exit_status);
+		{
+			if (expand_env_vals(&e_state, envs, exit_status) == FAIL)
+				return (FAIL);
+			free(e_state.original_token);
+		}
 		else
 			ft_lstadd_node(&(e_state.token_list), e_state.original_token);
 		while (e_state.token_list != NULL)
 		{
 			q_removed = remove_quote(&e_state);
 			ft_lstadd_node(expanded_list, q_removed);
-			e_state.token_list = e_state.token_list->next;
+			// e_state.token_list = e_state.token_list->next;
+			tmp_list = e_state.token_list->next;
+			ft_lstdelone(e_state.token_list, free);
+			e_state.token_list = tmp_list;
 		}
-		free(e_state.original_token);
+		// free(e_state.original_token);
+		// e_state.original_token = NULL;
 		token_list = token_list->next;
 	}
-	ft_lstall(&(e_state.token_list), free);
 	return (SUCCESS);
 }

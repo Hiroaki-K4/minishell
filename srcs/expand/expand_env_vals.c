@@ -21,10 +21,14 @@ char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 
 void	check_diff_between_start_and_curernt_pos(t_expand_state *e_state)
 {
+	char	*add_word;
+
 	if (e_state->start != e_state->current_pos)
-		ft_lstadd_word(&(e_state->token_list),
-			ft_substr(e_state->original_token->content, e_state->start,
-				e_state->current_pos - e_state->start));
+	{
+		add_word = ft_substr(e_state->original_token->content, e_state->start, e_state->current_pos - e_state->start); 
+		ft_lstadd_word(&(e_state->token_list), add_word);
+		free(add_word);
+	}
 }
 
 int	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
@@ -40,6 +44,7 @@ int	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 			tmp_list = NULL;
 			tokenize(value, &tmp_list);
 			ft_lstadd_last(&(e_state->token_list), tmp_list);
+			// ft_lstclear_all(&tmp_list, free);
 		}
 		else
 		{
@@ -54,6 +59,8 @@ int	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
 	int exit_status)
 {
+	char	*status;
+
 	if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
 	{
 		if (ft_lstadd_word(&(e_state->token_list), name) == FAIL)
@@ -61,13 +68,16 @@ int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
 	}
 	else if (ft_strncmp(name, "$?", ft_strlen(name) + 1) == 0)
 	{
-		if (ft_lstadd_word(&(e_state->token_list),
-				ft_itoa(exit_status)) == FAIL)
+		status = ft_itoa(exit_status);
+		if (ft_lstadd_word(&(e_state->token_list), status) == FAIL)
 			return (FAIL);
+		free(status);
 	}
 	else
-	if (get_value_and_insert(name, envs, e_state) == FAIL)
-		return (FAIL);
+	{
+		if (get_value_and_insert(name, envs, e_state) == FAIL)
+			return (FAIL);
+	}
 	return (SUCCESS);
 }
 

@@ -47,14 +47,12 @@ make > /dev/null
 rm -rf test/result/expand
 mkdir -p test/result/expand
 for fp in `ls test/case/expand`; do
+	if [ $fp = "check_second_tokenize.txt" ]; then
+		continue
+	fi
 	if [ $fp = "env_val_with_quote.txt" ]; then
 		continue
 	fi
-
-	if [ $fp = "env_val_without_quote.txt" ]; then
-		continue
-	fi
-
 	while read line
 	do
 		eval ${line} >> test/result/expand/$fp

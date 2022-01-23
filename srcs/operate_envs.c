@@ -77,6 +77,7 @@ char	*get_env(char *name, t_envs *envs)
 			return (env_value);
 		}
 		free(env_name);
+		free(env_value);
 		i++;
 	}
 	return (NULL);
