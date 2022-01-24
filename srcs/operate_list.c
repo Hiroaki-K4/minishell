@@ -25,6 +25,7 @@ int	ft_lstadd_node(t_list **token_list, t_token *new_token)
 
 int	ft_lstadd_word(t_list **lst, char *new_word)
 {
+	char	*tmp;
 	t_list	*last_lst;
 	t_token	*new_token;
 	t_token	*last_token;
@@ -40,7 +41,9 @@ int	ft_lstadd_word(t_list **lst, char *new_word)
 	{
 		last_lst = ft_lstlast(*lst);
 		last_token = (t_token *)last_lst->content;
-		last_token->content = ft_strjoin(last_token->content, new_word);
+		tmp = ft_strjoin(last_token->content, new_word);
+		free(last_token->content);
+		last_token->content = tmp;
 		if (last_token->content == NULL)
 			return (FAIL);
 	}
@@ -50,6 +53,7 @@ int	ft_lstadd_word(t_list **lst, char *new_word)
 void	ft_lstadd_last(t_list **lst, t_list *new)
 {
 	char	*new_word;
+	char	*tmp;
 	t_token	*new_token;
 	t_token	*last_token;
 	t_list	*last_lst;
@@ -63,7 +67,9 @@ void	ft_lstadd_last(t_list **lst, t_list *new)
 	new_token = (t_token *)new->content;
 	new_word = new_token->content;
 	last_token = (t_token *)last_lst->content;
-	last_token->content = ft_strjoin(last_token->content, new_word);
+	tmp = ft_strjoin(last_token->content, new_word);
+	free(last_token->content);
+	last_token->content = tmp;
 	if (new->next != NULL)
 	{
 		new->next->prev = last_lst;
@@ -71,4 +77,24 @@ void	ft_lstadd_last(t_list **lst, t_list *new)
 	}
 	else
 		last_lst->next = NULL;
+	ft_lstclear_all(&new, free);
+}
+
+void	ft_lstclear_all(t_list **lst, void (*del)(void*))
+{
+	t_list	*tmp;
+	t_token	*content;
+
+	if (!del)
+		return ;
+	while (*lst)
+	{
+		content = (*lst)->content;
+		(*del)(content->content);
+		(*del)(content);
+		tmp = *lst;
+		*lst = tmp->next;
+		free(tmp);
+	}
+	*lst = NULL;
 }
