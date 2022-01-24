@@ -110,6 +110,7 @@ void			set_sigaction(struct sigaction *sa, void (*handler)(int));
 void			sigint_handler(int sig);
 void			sigint_handler2(int sig);
 void			sigquit_handler2(int sig);
+void			nop_handler(int sig);
 
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);

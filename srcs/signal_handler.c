@@ -31,3 +31,8 @@ void	sigquit_handler2(int sig)
 
 	write(1, "Quit: 3\n", ft_strlen("Quit: 3\n"));
 }
+
+void	nop_handler(int sig)
+{
+	(void)sig;
+}
