@@ -44,7 +44,6 @@ int	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 			tmp_list = NULL;
 			tokenize(value, &tmp_list);
 			ft_lstadd_last(&(e_state->token_list), tmp_list);
-			// ft_lstclear_all(&tmp_list, free);
 		}
 		else
 		{

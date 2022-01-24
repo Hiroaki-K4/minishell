@@ -23,36 +23,30 @@ make fclean > /dev/null
 check_result "make fclean"
 
 # Test Tokenize
-# rm -rf test/result/tokenize
-# mkdir -p test/result/tokenize
+rm -rf test/result/tokenize
+mkdir -p test/result/tokenize
 make > /dev/null
-# for fp in `ls test/case/tokenize`; do
-# 	if [ $fp = "simple_error.txt" ]; then
-# 		continue
-# 	fi
+for fp in `ls test/case/tokenize`; do
+	if [ $fp = "simple_error.txt" ]; then
+		continue
+	fi
 
-# 	if [ $fp = "simple_command_error.txt" ]; then
-# 		continue
-# 	fi
+	if [ $fp = "simple_command_error.txt" ]; then
+		continue
+	fi
 
-# 	while read line
-# 	do
-# 		eval ${line} >> test/result/tokenize/$fp
-# 	done < test/case/tokenize/$fp
-# 	diff test/result/tokenize/$fp test/answer/tokenize/$fp
-# 	check_result "tokenize" $fp
-# done
+	while read line
+	do
+		eval ${line} >> test/result/tokenize/$fp
+	done < test/case/tokenize/$fp
+	diff test/result/tokenize/$fp test/answer/tokenize/$fp
+	check_result "tokenize" $fp
+done
 
 # Test Expand
 rm -rf test/result/expand
 mkdir -p test/result/expand
 for fp in `ls test/case/expand`; do
-	if [ $fp = "check_second_tokenize.txt" ]; then
-		continue
-	fi
-	if [ $fp = "env_val_with_quote.txt" ]; then
-		continue
-	fi
 	while read line
 	do
 		eval ${line} >> test/result/expand/$fp

@@ -96,13 +96,10 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 		{
 			q_removed = remove_quote(&e_state);
 			ft_lstadd_node(expanded_list, q_removed);
-			// e_state.token_list = e_state.token_list->next;
 			tmp_list = e_state.token_list->next;
 			ft_lstdelone(e_state.token_list, free);
 			e_state.token_list = tmp_list;
 		}
-		// free(e_state.original_token);
-		// e_state.original_token = NULL;
 		token_list = token_list->next;
 	}
 	return (SUCCESS);
