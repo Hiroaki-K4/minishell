@@ -31,7 +31,6 @@ int	ft_unset(char **argv, t_envs **envs, int *exit_status)
 	int	index;
 	size_t	i;
 
-	(void)exit_status;
 	if (argv[1] != NULL)
 	{
 		i = 1;
@@ -41,10 +40,14 @@ int	ft_unset(char **argv, t_envs **envs, int *exit_status)
 			if (index != -1)
 			{
 				if (remove_env(index, envs) == FAIL)
+				{
+					*exit_status = 1;
 					return (FAIL);
+				}
 			}
 			i++;
 		}
 	}
+	*exit_status = 0;
 	return (SUCCESS);
 }
