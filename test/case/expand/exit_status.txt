@@ -1,9 +1,0 @@
-ls Makefile
-echo 'echo $?' | ./minishell
-cd Minishell
-echo 'echo $?' | ./minishell
-minishell
-echo 'echo $?' | ./minishell
-cd Minishell | echo aaa | minishell
-echo 'echo $?' | ./minishell
-echo 'ls aaaa | echo $?' | ./minishell

@@ -47,12 +47,26 @@ done
 rm -rf test/result/expand
 mkdir -p test/result/expand
 for fp in `ls test/case/expand`; do
+	if [ $fp = "exit_status" ]; then
+		continue
+	fi
+
 	while read line
 	do
 		eval ${line} >> test/result/expand/$fp
 	done < test/case/expand/$fp
 	diff test/result/expand/$fp test/answer/expand/$fp
 	check_result "expand" $fp
+done
+
+# Test Exit status
+rm -rf test/result/expand/exit_status
+mkdir -p test/result/expand/exit_status
+for fp in `ls test/case/expand/exit_status`; do
+	content=`cat test/case/expand/exit_status/$fp`
+	eval "${content}" >> test/result/expand/exit_status/$fp
+	diff test/result/expand/exit_status/$fp test/answer/expand/exit_status/$fp
+	check_result "exit_status" $fp
 done
 
 # Test Syntax checker

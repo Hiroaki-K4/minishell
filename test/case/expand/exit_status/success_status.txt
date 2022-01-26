@@ -1,0 +1,2 @@
+echo 'ls Makefile
+echo $?' | ./minishell execute
