@@ -4,11 +4,11 @@ content: aaaa attr: 0
 ~~~~~After expand~~~~~
 content: aaaa attr: 0
 minishell> echo $?
-0
+127
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $? attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
-content: 0 attr: 0
+content: 127 attr: 0
 minishell> 
