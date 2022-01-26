@@ -20,7 +20,10 @@ void	execute_command(char **argv, t_global_state *state)
 		if (execve(path, argv, state->envs->content) == -1)
 		{
 			printf("minishell: %s: command not found\n", argv[0]);
+			state->last_command_exit_status = 127;
+			// printf("exit_status1: %d\n", state->last_command_exit_status);
 			exit(errno);
+			// exit(127);
 		}
 	}
 }
@@ -35,6 +38,11 @@ void	wait_all_processes(t_global_state *state)
 	while (i < state->process_count)
 	{
 		finished_pid = waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+		{
+			state->last_command_exit_status = WEXITSTATUS(status);
+			printf("exit_status2: %d\n", state->last_command_exit_status);
+		}
 		if (finished_pid < 0)
 		{
 			if (WIFSIGNALED(status))
@@ -93,7 +101,10 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		}
 		state->redirect_num = 0;
 		if (node->is_furthest_right)
+		{
 			wait_all_processes(state);
+			// printf("[parent process]exit_status: %d\n", state->last_command_exit_status);
+		}
 	}
 	return (SUCCESS);
 }
