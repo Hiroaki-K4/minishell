@@ -1,10 +1,9 @@
 #include "minishell.h"
 
-int	ft_env(char **argv, t_envs *envs, int *exit_status)
+int	ft_env(char **argv, t_envs *envs)
 {
 	size_t	i;
 
-	(void)exit_status;
 	if (argv[1] == NULL)
 	{
 		i = 0;

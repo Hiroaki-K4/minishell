@@ -12,7 +12,7 @@ void	execute_command(char **argv, t_global_state *state)
 			dup2(state->redirects[i]->file_fd, state->redirects[i]->redirect_fd);
 		i++;
 	}
-	if (is_builtin_command(argv, state->envs, &(state->last_command_exit_status)))
+	if (is_builtin_command(argv, state->envs))
 		exit(errno);
 	else
 	{
