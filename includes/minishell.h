@@ -124,6 +124,7 @@ void			ft_lstclear_all(t_list **lst, void (*del)(void*));
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
+void			close_parent_pipe(int pipes[2], t_node *node, t_global_state *state);
 
 void			init_redirect(t_redirect *redirect);
 int				is_redirect_token(t_token *token);

@@ -90,6 +90,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	}
 	else
 	{
+		close_parent_pipe(pipes, node, state);
 		state->process_count++;
 		state->pids[state->process_count - 1] = pid;
 		i = 0;
@@ -101,7 +102,10 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		}
 		state->redirect_num = 0;
 		if (node->is_furthest_right)
+		{
+			close(pipes[0]);
 			wait_all_processes(state);
+		}
 	}
 	return (SUCCESS);
 }
