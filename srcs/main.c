@@ -2,6 +2,14 @@
 
 void	init_global_state(t_global_state *state, char **envp)
 {
+	set_sigaction(&state->sa_sigint, sigint_handler);
+	set_sigaction(&state->sa_sigquit, SIG_IGN);
+	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
+		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
+	{
+		printf("Error\n");
+		exit(FAIL);
+	}
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
@@ -27,6 +35,14 @@ void	refresh_global_state(t_global_state *state)
 {
 	int	i;
 
+	set_sigaction(&state->sa_sigint, sigint_handler);
+	set_sigaction(&state->sa_sigquit, SIG_IGN);
+	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
+		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
+	{
+		printf("Error\n");
+		exit(FAIL);
+	}
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
@@ -50,22 +66,13 @@ void	refresh_global_state(t_global_state *state)
 void	minishell(char *envp[])
 {
 	char				*input;
-	struct sigaction	sa_sigint;
-	struct sigaction	sa_sigquit;
 	t_node				*ast;
 	t_global_state		state;
 
 	input = NULL;
-	init_sigaction(&sa_sigint, &sa_sigquit);
 	init_global_state(&state, envp);
 	while (TRUE)
 	{
-		if (sigaction(SIGINT, &sa_sigint, NULL) < 0
-			|| sigaction(SIGQUIT, &sa_sigquit, NULL) < 0)
-		{
-			printf("Error\n");
-			exit(FAIL);
-		}
 		input = readline("minishell> ");
 		if (input == NULL)
 			exit(SUCCESS);  // TODO: when exitting, echo "exit"

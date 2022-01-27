@@ -93,23 +93,24 @@ typedef struct s_envs
 
 typedef struct s_global_state
 {
-	int			old_pipes[2];
-	int			process_count;
-	pid_t		*pids;
-	int			last_command_exit_status;
-	t_redirect	**redirects;
-	int			redirect_num;
-	t_envs		*envs;
+	int					old_pipes[2];
+	int					process_count;
+	pid_t				*pids;
+	int					last_command_exit_status;
+	t_redirect			**redirects;
+	int					redirect_num;
+	t_envs				*envs;
+	struct sigaction	sa_sigint;
+	struct sigaction	sa_sigquit;
 }	t_global_state;
 
 void			output_result(void *content);
 
-void			init_sigaction(struct sigaction *si, struct sigaction *sq);
+void			set_sigaction(struct sigaction *sa, void (*handler)(int));
 void			sigint_handler(int sig);
-void			sigquit_handler(int sig);
-void			init_sigaction2(struct sigaction *si, struct sigaction *sq);
 void			sigint_handler2(int sig);
 void			sigquit_handler2(int sig);
+void			nop_handler(int sig);
 
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
@@ -123,6 +124,7 @@ void			ft_lstclear_all(t_list **lst, void (*del)(void*));
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
+void			close_parent_pipe(int pipes[2], t_node *node, t_global_state *state);
 
 void			init_redirect(t_redirect *redirect);
 int				is_redirect_token(t_token *token);
@@ -183,5 +185,6 @@ int				init_envs(t_envs **envs, char **envp);
 char			**sort_envs(char **dup_env);
 void			get_env_name_and_value(char **name, char **value, char *env);
 char			*get_env(char *name, t_envs *envs);
+int				set_env(char *name, char *value, t_envs **envs);
 
 #endif
