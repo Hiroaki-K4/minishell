@@ -39,6 +39,8 @@ void	close_pipes(int pipes[2], t_node *node, t_global_state *state)
 
 void	close_parent_pipe(int pipes[2], t_node *node, t_global_state *state)
 {
+	if (pipes == NULL)
+		return ;
 	if (state->old_pipes[0] > 0)
 		close(state->old_pipes[0]);
 	if (state->old_pipes[1] > 0)

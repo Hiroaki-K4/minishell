@@ -102,10 +102,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		}
 		state->redirect_num = 0;
 		if (node->is_furthest_right)
-		{
-			close(pipes[0]);
 			wait_all_processes(state);
-		}
 	}
 	return (SUCCESS);
 }
