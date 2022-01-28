@@ -66,6 +66,9 @@ for fp in `ls test/case/expand/exit_status`; do
 	if [ $fp = "fail_1_status.txt" ]; then
 		continue
 	fi
+	if [ $fp = "success_status_with_pipe.txt" ]; then
+		continue
+	fi
 	content=`cat test/case/expand/exit_status/$fp`
 	eval "${content}" >> test/result/expand/exit_status/$fp
 	diff test/result/expand/exit_status/$fp test/answer/expand/exit_status/$fp
