@@ -1,6 +1,6 @@
 export OUR_MINISHELL=Beatiful
-echo 'echo "$OUR_MINISHELL"' | ./minishell
-echo 'echo "$"OUR_MINISHELL' | ./minishell
-# echo "echo '$OUR_MINISHELL'" | ./minishell
-echo 'echo "$OUR_MINISHELL$OUR_MINISHELL"' | ./minishell
-echo 'echo " $OUR_MINISHELL $OUR_MINISHELL "' | ./minishell
+echo 'echo "$OUR_MINISHELL"' | ./minishell tokenize
+echo 'echo "$"OUR_MINISHELL' | ./minishell tokenize
+# echo "echo '$OUR_MINISHELL'" | ./minishell tokenize
+echo 'echo "$OUR_MINISHELL$OUR_MINISHELL"' | ./minishell tokenize
+echo 'echo " $OUR_MINISHELL $OUR_MINISHELL "' | ./minishell tokenize

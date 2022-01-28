@@ -1,2 +1,2 @@
 echo 'ls aaaa
-echo $?' | ./minishell execute
+echo $?' | ./minishell

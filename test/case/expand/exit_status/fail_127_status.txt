@@ -1,2 +1,2 @@
 echo 'aaaa
-echo $?' | ./minishell execute
+echo $?' | ./minishell

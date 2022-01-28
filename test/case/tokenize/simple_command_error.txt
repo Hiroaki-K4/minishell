@@ -1,5 +1,5 @@
 # simple command error pattern
-echo 'echo abc"' | ./minishell
-echo 'echo "abc' | ./minishell
-echo "echo 'abc" | ./minishell
-echo "echo abc'" | ./minishell
+echo 'echo abc"' | ./minishell tokenize
+echo 'echo "abc' | ./minishell tokenize
+echo "echo 'abc" | ./minishell tokenize
+echo "echo abc'" | ./minishell tokenize

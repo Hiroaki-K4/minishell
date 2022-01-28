@@ -1,6 +1,6 @@
-echo '"aaa""bbb"' | ./minishell
-echo "'aaa''bbb'" | ./minishell
-echo '""aaa" "bbb""' | ./minishell
-# echo ''"aaa" "bbb"'' | ./minishell
-# echo "' "aaa>" "bbb" '" | ./minishell
-echo '" "aaa>" "bbb" "' | ./minishell
+echo '"aaa""bbb"' | ./minishell tokenize
+echo "'aaa''bbb'" | ./minishell tokenize
+echo '""aaa" "bbb""' | ./minishell tokenize
+# echo ''"aaa" "bbb"'' | ./minishell tokenize
+# echo "' "aaa>" "bbb" '" | ./minishell tokenize
+echo '" "aaa>" "bbb" "' | ./minishell tokenize

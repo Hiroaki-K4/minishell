@@ -104,6 +104,7 @@ int	set_new_env_to_envs(char **argv, t_envs **envs)
 
 int	ft_export(char **argv, t_envs **envs, int *exit_status)
 {
+	*exit_status = 0;
 	if (argv[1] == NULL)
 	{
 		if (print_envs(*envs) == FAIL)
@@ -120,6 +121,5 @@ int	ft_export(char **argv, t_envs **envs, int *exit_status)
 			return (FAIL);
 		}
 	}
-	*exit_status = 0;
 	return (SUCCESS);
 }

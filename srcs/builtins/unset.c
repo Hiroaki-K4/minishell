@@ -31,6 +31,7 @@ int	ft_unset(char **argv, t_envs **envs, int *exit_status)
 	int	index;
 	size_t	i;
 
+	*exit_status = 0;
 	if (argv[1] != NULL)
 	{
 		i = 1;
@@ -48,6 +49,5 @@ int	ft_unset(char **argv, t_envs **envs, int *exit_status)
 			i++;
 		}
 	}
-	*exit_status = 0;
 	return (SUCCESS);
 }

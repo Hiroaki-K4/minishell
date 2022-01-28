@@ -1,2 +1,2 @@
 echo 'ls aaaa | ls Makefile
-echo $?' | ./minishell execute
+echo $?' | ./minishell
