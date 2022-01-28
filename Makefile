@@ -38,14 +38,12 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
 DEPS := $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.d))
 
 INCLUDE := -I./includes -I$(shell brew --prefix readline)/include
-# LDFLAGS := -lasan libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhistory
 
 NAME := minishell
 
 CC := gcc
-# CFLAGS := -g -fsanitize=address -Wall -Wextra -Werror -MMD -MP
-CFLAGS := -g -Wall -Wextra -Werror -MMD -MP
+CFLAGS := -g  -Wall -Wextra -Werror -MMD -MP
 
 LIBFT := libft
 
@@ -61,7 +59,7 @@ $(NAME): $(OBJS)
 
 clean:
 	@make clean -C $(LIBFT)
-	$(RM) $(OBJS) $(DEPS)
+	$(RM) -rf $(OBJ_DIR)
 
 fclean: clean
 	$(RM) libft/libft.a
@@ -71,6 +69,10 @@ re: fclean all
 
 test: all
 	@bash test.sh
+
+debug: CFLAGS += -fsanitize=address
+debug: LDFLAGS += -lasan
+debug: re
 
 dot: all
 	@dot -Tsvg ast.dot > ast.svg

@@ -32,6 +32,8 @@ void	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 	if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_OUT)
 	{
 		*tokens = (*tokens)->next;
+		if (*tokens == NULL)
+			return ;
 		redirect->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
 		if (redirect->file_fd < 0)
 			exit_with_error(((t_token *)((*tokens)->content))->content);
@@ -41,6 +43,8 @@ void	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_IN)
 	{
 		*tokens = (*tokens)->next;
+		if (*tokens == NULL)
+			return ;
 		redirect->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDONLY);
 		if (redirect->file_fd < 0)
 			exit_with_error(((t_token *)((*tokens)->content))->content);
@@ -50,6 +54,8 @@ void	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DGREAT)
 	{
 		*tokens = (*tokens)->next;
+		if (*tokens == NULL)
+			return ;
 		redirect->file_fd = open(((t_token *)((*tokens)->content))->content, O_RDWR | O_CREAT | O_APPEND, 0666);
 		if (redirect->file_fd < 0)
 			exit_with_error(((t_token *)((*tokens)->content))->content);
@@ -59,6 +65,8 @@ void	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 	else if (((t_token *)((*tokens)->content))->attr == TK_REDIRECT_DLESS)
 	{
 		*tokens = (*tokens)->next;
+		if (*tokens == NULL)
+			return ;
 		redirect->here_delimiter = ((t_token *)((*tokens)->content))->content;
 		input = readline("> ");
 		redirect->here_document = input;

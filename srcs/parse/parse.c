@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2022/01/23 12:21:48 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/01/26 23:06:11 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,19 +99,19 @@ void	print_ast(t_node *node, FILE *fp)
 
 t_node	*parse(t_list **token_list)
 {
-	FILE	*fp;
+	// FILE	*fp;
 	t_node	*node;
 
 	node = parse_pipe_sequence(token_list);
 	node->is_top = TRUE;
-	if ((fp = fopen("ast.dot", "w+")) == NULL)
-	{
-		printf("failed open file\n");
-		exit(EXIT_FAILURE);
-	}
-	fputs("digraph graph_name {\n", fp);
-	// print_ast(node, fp);
-	fputs("}", fp);
-	fclose(fp);
+	// if ((fp = fopen("ast.dot", "w+")) == NULL)
+	// {
+	// 	printf("failed open file\n");
+	// 	exit(EXIT_FAILURE);
+	// }
+	// fputs("digraph graph_name {\n", fp);
+	// // print_ast(node, fp);
+	// fputs("}", fp);
+	// fclose(fp);
 	return (node);
 }
