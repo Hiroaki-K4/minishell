@@ -74,6 +74,7 @@ void	set_curpath(char **argv, t_envs **envs, char **curpath)
 			}
 			else
 				concat_cdpath(argv, curpath, cdpath);
+			free(cdpath);
 		}
 		if (*curpath == NULL)
 			*curpath = ft_strdup(argv[1]);
