@@ -56,7 +56,6 @@ int	ft_cd(char **argv, t_envs **envs, int *exit_status)
 {
 	char	*curpath;
 
-	(void)envs;
 	*exit_status = 0;
 	curpath = NULL;
 	if (argv[1] == NULL && set_home(argv, *envs) == FAIL)
