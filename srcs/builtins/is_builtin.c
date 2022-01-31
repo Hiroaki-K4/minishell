@@ -5,7 +5,7 @@ int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
 	int		ret;
 	size_t	i;
 	char *builtins[] = {"cd", "export", "unset", "exit", NULL};
-	int (*builtin_funcs[])(char **, t_envs **, int *) = {ft_cd, ft_export, ft_unset, ft_exit};
+	int (*builtin_funcs[])(char **, t_envs **) = {ft_cd, ft_export, ft_unset, ft_exit};
 
 	i = 0;
 	if (argv[0] == NULL)
@@ -14,8 +14,8 @@ int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
 	{
 		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
 		{
-			ret = builtin_funcs[i](argv, envs, exit_status);
-			(void)ret;  // TODO: use ret value
+			ret = builtin_funcs[i](argv, envs);
+			*exit_status = ret;
 			return (TRUE);
 		}
 		i++;

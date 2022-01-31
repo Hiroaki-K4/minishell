@@ -16,6 +16,9 @@
 # define FALSE 0
 # define SUCCESS 0
 # define FAIL -1
+# define EXIT_SUCCESS 0
+# define EXIT_FAIL 1
+
 
 typedef enum e_token_kind
 {
@@ -170,10 +173,10 @@ int				is_builtin_command(char **argv, t_envs *envs);
 int				ft_echo(char **argv, t_envs *envs);
 int				ft_pwd(char **argv, t_envs *envs);
 int				ft_env(char **argv, t_envs *envs);
-int				ft_cd(char **argv, t_envs **envs, int *exit_status);
-int				ft_export(char **argv, t_envs **envs, int *exit_status);
-int				ft_unset(char **argv, t_envs **envs, int *exit_status);
-int				ft_exit(char **argv, t_envs **envs, int *exit_status);
+int				ft_cd(char **argv, t_envs **envs);
+int				ft_export(char **argv, t_envs **envs);
+int				ft_unset(char **argv, t_envs **envs);
+int				ft_exit(char **argv, t_envs **envs);
 
 void			exit_with_error(char *msg);
 
