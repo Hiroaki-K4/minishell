@@ -12,6 +12,7 @@ SRC := main.c \
 	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
+	   builtins/cd_utils.c \
 	   builtins/pwd.c \
 	   builtins/export.c \
 	   builtins/print_envs.c \
