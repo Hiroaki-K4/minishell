@@ -3,7 +3,6 @@ minishell> aaaa
 content: aaaa attr: 0
 ~~~~~After expand~~~~~
 content: aaaa attr: 0
-minishell: aaaa: command not found
 ~~~~~After tokenize~~~~~
 content: aaaa attr: 0
 ~~~~~After expand~~~~~
