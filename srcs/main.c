@@ -63,7 +63,7 @@ void	refresh_global_state(t_global_state *state)
 	state->redirect_num = 0;
 }
 
-void	minishell(char *envp[])
+void	minishell(char *envp[], int tokenize)
 {
 	char				*input;
 	t_node				*ast;
@@ -82,7 +82,8 @@ void	minishell(char *envp[])
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			// execute(ast, &state);
+			if (tokenize == FALSE)
+				execute(ast, &state);
 			add_history(input);
 		}
 		free(input);
@@ -94,6 +95,9 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	(void)argv;
 	if (argc == 1)
-		minishell(envp);
+		minishell(envp, FALSE);
+	// We must delete this if-sentence when submitting the code.
+	if (argc == 2 && ft_strncmp(argv[1], "tokenize", ft_strlen(argv[1]) + 1) == 0)
+		minishell(envp, TRUE);
 	return (EXIT_SUCCESS);
 }

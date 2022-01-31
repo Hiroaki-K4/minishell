@@ -1,0 +1,29 @@
+minishell> ls aaaa | ls Makefile
+Makefile
+~~~~~After tokenize~~~~~
+content: ls attr: 0
+content: aaaa attr: 0
+content: | attr: 2
+content: ls attr: 0
+content: Makefile attr: 0
+~~~~~After expand~~~~~
+content: ls attr: 0
+content: aaaa attr: 0
+content: | attr: 2
+content: ls attr: 0
+content: Makefile attr: 0
+minishell> echo $?
+0
+~~~~~After tokenize~~~~~
+content: echo attr: 0
+content: $? attr: 0
+~~~~~After expand~~~~~
+content: echo attr: 0
+content: 0 attr: 0
+~~~~~After tokenize~~~~~
+content: echo attr: 0
+content: $? attr: 0
+~~~~~After expand~~~~~
+content: echo attr: 0
+content: 0 attr: 0
+minishell> 

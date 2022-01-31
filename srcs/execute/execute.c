@@ -12,7 +12,7 @@ void	execute_command(char **argv, t_global_state *state)
 			dup2(state->redirects[i]->file_fd, state->redirects[i]->redirect_fd);
 		i++;
 	}
-	if (is_builtin_command(argv, state->envs, &(state->last_command_exit_status)))
+	if (is_builtin_command(argv, state->envs))
 		exit(errno);
 	else
 	{
@@ -20,7 +20,7 @@ void	execute_command(char **argv, t_global_state *state)
 		if (execve(path, argv, state->envs->content) == -1)
 		{
 			printf("minishell: %s: command not found\n", argv[0]);
-			exit(errno);
+			exit(127);
 		}
 	}
 }
@@ -44,6 +44,8 @@ void	wait_all_processes(t_global_state *state)
 	while (i < state->process_count)
 	{
 		finished_pid = waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+			state->last_command_exit_status = WEXITSTATUS(status);
 		if (finished_pid < 0)
 		{
 			if (WIFSIGNALED(status))

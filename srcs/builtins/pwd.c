@@ -2,14 +2,13 @@
 
 #define BUF_SIZE 1024
 
-int	ft_pwd(char **argv, t_envs *envs, int *exit_status)
+int	ft_pwd(char **argv, t_envs *envs)
 {
 	char	*buf;
 	char	*fp;
 
 	(void)argv;
 	(void)envs;
-	(void)exit_status;
 	buf = NULL;
 	fp = getcwd(buf, 0);
 	if (fp == NULL)

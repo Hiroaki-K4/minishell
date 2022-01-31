@@ -1,0 +1,2 @@
+echo 'ls aaaa | ls Makefile
+echo $?' | ./minishell
