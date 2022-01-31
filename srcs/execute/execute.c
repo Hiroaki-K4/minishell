@@ -19,7 +19,7 @@ void	execute_command(char **argv, t_global_state *state)
 		path = search(argv[0], state->envs);
 		if (execve(path, argv, state->envs->content) == -1)
 		{
-			printf("minishell: %s: command not found\n", argv[0]);
+			print_command_error(argv[0], "command not found");
 			exit(127);
 		}
 	}

@@ -177,6 +177,7 @@ int				ft_unset(char **argv, t_envs **envs, int *exit_status);
 int				ft_exit(char **argv, t_envs **envs, int *exit_status);
 
 void			exit_with_error(char *msg);
+void			print_command_error(char *command, char *msg);
 
 int				print_envs(t_envs *envs);
 int				get_env_pos(char *env_name, t_envs *envs);
