@@ -78,7 +78,7 @@ void	minishell(char *envp[], int tokenize)
 			exit(SUCCESS);  // TODO: when exitting, echo "exit"
 		else if (ft_strlen(input) > 0)
 		{
-			ast = preprocess(input, &state);
+			ast = preprocess(input, &state, tokenize);
 			if (ast == NULL)
 				continue ;
 			(void)envp;

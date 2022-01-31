@@ -133,7 +133,7 @@ void			init_redirect(t_redirect *redirect);
 int				is_redirect_token(t_token *token);
 void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
 
-t_node			*preprocess(char *input, t_global_state *state);
+t_node			*preprocess(char *input, t_global_state *state, int debug);
 
 t_token_kind	get_token_kind(char *line, int pos, size_t *i);
 t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
