@@ -12,6 +12,7 @@ SRC := main.c \
 	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
+	   builtins/cd_utils.c \
 	   builtins/pwd.c \
 	   builtins/export.c \
 	   builtins/print_envs.c \
@@ -68,7 +69,7 @@ fclean: clean
 re: fclean all
 
 test: all
-	@bash test.sh
+	@bash test.sh 2> /dev/null
 
 debug: CFLAGS += -fsanitize=address
 debug: LDFLAGS += -lasan
