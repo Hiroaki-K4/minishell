@@ -2,14 +2,16 @@
 
 void	execute_command(char **argv, t_global_state *state)
 {
-	int		i;
-	char	*path;
+	int			i;
+	char		*path;
+	t_redirect	*redirect;
 
 	i = 0;
 	while (i < state->redirect_num)
 	{
-		if (state->redirects[i]->file_fd)
-			dup2(state->redirects[i]->file_fd, state->redirects[i]->redirect_fd);
+		redirect = state->redirects[i];
+		if (redirect->file_fd)
+			dup2(redirect->file_fd, redirect->redirect_fd);
 		i++;
 	}
 	if (is_builtin_command(argv, state->envs))
@@ -19,7 +21,7 @@ void	execute_command(char **argv, t_global_state *state)
 		path = search(argv[0], state->envs);
 		if (execve(path, argv, state->envs->content) == -1)
 		{
-			printf("minishell: %s: command not found\n", argv[0]);
+			print_command_error(argv[0], "command not found");
 			exit(127);
 		}
 	}
@@ -37,10 +39,7 @@ void	wait_all_processes(t_global_state *state)
 	set_sigaction(&state->sa_sigquit, sigquit_handler2);
 	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
 		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
-	{
-		printf("Error\n");
-		exit(FAIL);
-	}
+		exit_with_error("sigaction error");
 	while (i < state->process_count)
 	{
 		finished_pid = waitpid(-1, &status, 0);
@@ -57,7 +56,7 @@ void	wait_all_processes(t_global_state *state)
 					j++;
 				}
 			}
-			continue;
+			continue ;
 		}
 		i++;
 	}
@@ -73,11 +72,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	set_sigaction(&state->sa_sigquit, nop_handler);
 	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
 		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
-	{
-		printf("Error\n");
-		exit(FAIL);
-	}
-
+		exit_with_error("sigaction error");
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
 	if (is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
