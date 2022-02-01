@@ -52,11 +52,10 @@ static void	convert_curpath_to_canonical_form(char **curpath)
 	return ;
 }
 
-int	ft_cd(char **argv, t_envs **envs, int *exit_status)
+int	ft_cd(char **argv, t_envs **envs)
 {
 	char	*curpath;
 
-	*exit_status = 0;
 	curpath = NULL;
 	if (argv[1] == NULL && set_home(argv, *envs) == FAIL)
 	{
@@ -70,7 +69,6 @@ int	ft_cd(char **argv, t_envs **envs, int *exit_status)
 	{
 		print_error(argv[1]);
 		free(curpath);
-		*exit_status = 1;
 		return (1);
 	}
 	set_env("OLDPWD", get_env("PWD", *envs), envs);

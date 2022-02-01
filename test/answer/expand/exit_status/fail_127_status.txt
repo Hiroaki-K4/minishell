@@ -1,5 +1,4 @@
 minishell> aaaa
-minishell: aaaa: command not found
 minishell> echo $?
 127
 minishell> 
