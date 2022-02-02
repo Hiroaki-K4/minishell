@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
+int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status, int *pipes)
 {
 	int		ret;
 	size_t	i;
@@ -14,6 +14,8 @@ int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
 	{
 		if (!ft_strncmp(argv[0], builtins[i], ft_strlen(builtins[i]) + 1))
 		{
+			if (pipes != NULL)
+				return (TRUE);
 			ret = builtin_funcs[i](argv, envs);
 			*exit_status = ret;
 			return (TRUE);
