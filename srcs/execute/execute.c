@@ -75,7 +75,6 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		exit_with_error("sigaction error");
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
-	// TODO: Resolve issue85
 	if (pipes == NULL && is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
 		return (SUCCESS);
 	pid = fork();

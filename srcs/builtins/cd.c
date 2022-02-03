@@ -71,7 +71,7 @@ int	ft_cd(char **argv, t_envs **envs)
 	if (argv[1] == NULL && set_home(argv, *envs) == FAIL)
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-		return (EXIT_FAIL);
+		return (EXIT_FAILURE);
 	}
 	set_curpath(argv, envs, &curpath);
 	concat_pwd(envs, &curpath);
@@ -80,7 +80,7 @@ int	ft_cd(char **argv, t_envs **envs)
 	{
 		print_error(argv[1]);
 		free(curpath);
-		return (EXIT_FAIL);
+		return (EXIT_FAILURE);
 	}
 	set_env("OLDPWD", get_env("PWD", *envs), envs);
 	set_env("PWD", curpath, envs);

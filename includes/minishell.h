@@ -16,9 +16,6 @@
 # define FALSE 0
 # define SUCCESS 0
 # define FAIL -1
-# define EXIT_SUCCESS 0
-# define EXIT_FAIL 1
-
 
 typedef enum e_token_kind
 {

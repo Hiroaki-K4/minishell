@@ -9,7 +9,7 @@ int	ft_exit(char **argv, t_envs **envs)
 	else if (argv[2] != NULL)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 1);
-		return (EXIT_FAIL);
+		return (EXIT_FAILURE);
 	}
 	exit(ft_atoi(argv[1]));
 }

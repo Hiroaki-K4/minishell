@@ -41,7 +41,7 @@ int	ft_unset(char **argv, t_envs **envs)
 			{
 				if (remove_env(index, envs) == FAIL)
 				{
-					return (EXIT_FAIL);
+					return (EXIT_FAILURE);
 				}
 			}
 			i++;
