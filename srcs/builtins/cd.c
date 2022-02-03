@@ -2,12 +2,23 @@
 
 static void	print_error(char *path)
 {
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd("cd: ", 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(strerror(errno), 2);
-	ft_putstr_fd("\n", 2);
+	char	*tmp;
+	char	*err_msg;
+	
+	tmp = ft_strdup("minishell: cd: ");
+	err_msg = ft_strjoin(tmp, path);
+	free(tmp);
+	tmp = err_msg;
+	err_msg = ft_strjoin(tmp, ": ");
+	free(tmp);
+	tmp = err_msg;
+	err_msg = ft_strjoin(tmp, strerror(errno));
+	free(tmp);
+	tmp = err_msg;
+	err_msg = ft_strjoin(tmp, "\n");
+	ft_putstr_fd(err_msg, 2);
+	free(tmp);
+	free(err_msg);
 }
 
 static int	set_home(char **argv, t_envs *envs)
