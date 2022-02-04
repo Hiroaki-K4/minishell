@@ -43,7 +43,7 @@ void	wait_all_processes(t_global_state *state)
 	while (i < state->process_count)
 	{
 		finished_pid = waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && finished_pid == state->pids[state->process_count - 1])
 			state->last_command_exit_status = WEXITSTATUS(status);
 		if (finished_pid < 0)
 		{
