@@ -82,7 +82,7 @@ void	minishell(char *envp[], int is_debug_mode)
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			if (is_debug_mode == FALSE)
+			if (!is_debug_mode)
 				execute(ast, &state);
 			add_history(input);
 		}

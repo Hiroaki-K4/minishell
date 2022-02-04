@@ -23,7 +23,7 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 		return (NULL);
 	if (check_syntax(token_list) == FAIL)
 		return (NULL);
-	if (is_debug_mode == TRUE)
+	if (is_debug_mode)
 	{
 		printf("~~~~~After tokenize~~~~~\n");
 		ft_lstiter(token_list, output_result);
@@ -32,7 +32,7 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 	expand(token_list, &expanded_list, state->envs,
 		state->last_command_exit_status);
 	ft_lstclear_all(&token_list, free);
-	if (is_debug_mode == TRUE)
+	if (is_debug_mode)
 	{
 		printf("~~~~~After expand~~~~~\n");
 		ft_lstiter(expanded_list, output_result);
