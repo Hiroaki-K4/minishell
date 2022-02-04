@@ -14,7 +14,7 @@ void	execute_command(char **argv, t_global_state *state)
 			dup2(redirect->file_fd, redirect->redirect_fd);
 		i++;
 	}
-	if (is_builtin_command(argv, state->envs))
+	if (is_builtin_command(argv, state->envs) || is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
 		exit(errno);
 	else
 	{
@@ -43,7 +43,7 @@ void	wait_all_processes(t_global_state *state)
 	while (i < state->process_count)
 	{
 		finished_pid = waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && finished_pid == state->pids[state->process_count - 1])
 			state->last_command_exit_status = WEXITSTATUS(status);
 		if (finished_pid < 0)
 		{
@@ -75,7 +75,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		exit_with_error("sigaction error");
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
-	if (is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
+	if (pipes == NULL && is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
 		return (SUCCESS);
 	pid = fork();
 	if (pid < 0)

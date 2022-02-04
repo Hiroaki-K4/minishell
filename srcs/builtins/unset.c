@@ -26,12 +26,11 @@ int	remove_env(int index, t_envs **envs)
 	return (SUCCESS);
 }
 
-int	ft_unset(char **argv, t_envs **envs, int *exit_status)
+int	ft_unset(char **argv, t_envs **envs)
 {
 	int	index;
 	size_t	i;
 
-	*exit_status = 0;
 	if (argv[1] != NULL)
 	{
 		i = 1;
@@ -42,12 +41,11 @@ int	ft_unset(char **argv, t_envs **envs, int *exit_status)
 			{
 				if (remove_env(index, envs) == FAIL)
 				{
-					*exit_status = 1;
-					return (FAIL);
+					return (EXIT_FAILURE);
 				}
 			}
 			i++;
 		}
 	}
-	return (SUCCESS);
+	return (EXIT_SUCCESS);
 }

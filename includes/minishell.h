@@ -130,7 +130,7 @@ void			init_redirect(t_redirect *redirect);
 int				is_redirect_token(t_token *token);
 void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
 
-t_node			*preprocess(char *input, t_global_state *state);
+t_node			*preprocess(char *input, t_global_state *state, int debug);
 
 t_token_kind	get_token_kind(char *line, int pos, size_t *i);
 t_token_kind	get_token_kind_about_quote(t_quote_state state, char c);
@@ -170,11 +170,11 @@ int				is_builtin_command(char **argv, t_envs *envs);
 int				ft_echo(char **argv, t_envs *envs);
 int				ft_pwd(char **argv, t_envs *envs);
 int				ft_env(char **argv, t_envs *envs);
-int				ft_cd(char **argv, t_envs **envs, int *exit_status);
+int				ft_cd(char **argv, t_envs **envs);
 void			set_curpath(char **argv, t_envs **envs, char **curpath);
-int				ft_export(char **argv, t_envs **envs, int *exit_status);
-int				ft_unset(char **argv, t_envs **envs, int *exit_status);
-int				ft_exit(char **argv, t_envs **envs, int *exit_status);
+int				ft_export(char **argv, t_envs **envs);
+int				ft_unset(char **argv, t_envs **envs);
+int				ft_exit(char **argv, t_envs **envs);
 
 void			exit_with_error(char *msg);
 void			print_command_error(char *command, char *msg);

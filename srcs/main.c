@@ -63,7 +63,7 @@ void	refresh_global_state(t_global_state *state)
 	state->redirect_num = 0;
 }
 
-void	minishell(char *envp[], int tokenize)
+void	minishell(char *envp[], int is_debug_mode)
 {
 	char				*input;
 	t_node				*ast;
@@ -78,11 +78,11 @@ void	minishell(char *envp[], int tokenize)
 			exit(SUCCESS);  // TODO: when exitting, echo "exit"
 		else if (ft_strlen(input) > 0)
 		{
-			ast = preprocess(input, &state);
+			ast = preprocess(input, &state, is_debug_mode);
 			if (ast == NULL)
 				continue ;
 			(void)envp;
-			if (tokenize == FALSE)
+			if (!is_debug_mode)
 				execute(ast, &state);
 			add_history(input);
 		}
