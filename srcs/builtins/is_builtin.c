@@ -21,7 +21,7 @@ int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
 	return (TRUE);
 }
 
-int	is_builtin_command(char **argv, t_envs *envs)
+int	is_builtin_command(char **argv, t_envs *envs, int *exit_status)
 {
 	int		ret;
 
@@ -34,5 +34,6 @@ int	is_builtin_command(char **argv, t_envs *envs)
 		ret = ft_env(argv, envs);
 	else
 		return (FALSE);
+	*exit_status = ret;
 	return (TRUE);
 }

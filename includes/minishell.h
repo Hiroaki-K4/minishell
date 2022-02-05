@@ -165,7 +165,7 @@ char			**construct_argv(t_list *tokens, t_global_state *state);
 char			*search(char *path, t_envs *envs);
 
 int				is_special_builtin_command(char **argv, t_envs **envs, int *exit_status);
-int				is_builtin_command(char **argv, t_envs *envs);
+int				is_builtin_command(char **argv, t_envs *envs, int *exit_status);
 
 int				ft_echo(char **argv, t_envs *envs);
 int				ft_pwd(char **argv, t_envs *envs);

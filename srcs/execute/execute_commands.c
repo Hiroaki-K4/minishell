@@ -15,9 +15,9 @@ static void	execute_command(char **argv, t_global_state *state)
 		i++;
 	}
 	i = state->last_command_exit_status;
-	if (is_builtin_command(argv, state->envs)
+	if (is_builtin_command(argv, state->envs, &i)
 		|| is_special_builtin_command(argv, &(state->envs), &i))
-		exit(errno);
+		exit(i);
 	else
 	{
 		path = search(argv[0], state->envs);
