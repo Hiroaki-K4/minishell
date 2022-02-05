@@ -44,7 +44,7 @@ LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhist
 NAME := minishell
 
 CC := gcc
-CFLAGS := -g  -Wall -Wextra -Werror -MMD -MP
+CFLAGS := -g -Wall -Wextra -Werror -MMD -MP
 
 LIBFT := libft
 
@@ -72,7 +72,7 @@ test: all
 	@bash test.sh 2> /dev/null
 
 debug: CFLAGS += -fsanitize=address
-debug: LDFLAGS += -lasan
+debug: LDFLAGS += -fsanitize=address
 debug: re
 
 dot: all
