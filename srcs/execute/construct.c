@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int	construct_redirects(t_list **tokens, t_global_state *state)
+static int	construct_redirects(t_list **tokens, t_global_state *state)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < state->redirect_num - 1)
@@ -13,6 +13,23 @@ int	construct_redirects(t_list **tokens, t_global_state *state)
 	init_redirect(state->redirects[i]);
 	set_redirect(tokens, state->redirects[i], state->envs);
 	return (SUCCESS);
+}
+
+static size_t	consume_words(t_list **tokens, char **argv, size_t start)
+{
+	size_t	i;
+
+	i = 0;
+	while (TRUE)
+	{
+		if (*tokens == NULL
+			|| is_redirect_token((t_token *)((*tokens)->content)))
+			break ;
+		argv[start + i] = (((t_token *)((*tokens)->content))->content);
+		*tokens = (*tokens)->next;
+		i++;
+	}
+	return (i);
 }
 
 char	**construct_argv(t_list *tokens, t_global_state *state)
@@ -26,28 +43,19 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		return (NULL);
 	while (TRUE)
 	{
-		while (TRUE)
-		{
-			if (tokens == NULL
-				|| is_redirect_token((t_token *)(tokens->content)))
-				break ;
-			argv[idx] = (((t_token *)(tokens->content))->content);
-			tokens = tokens->next;
-			idx++;
-		}
+		idx += consume_words(&tokens, argv, idx);
 		if (tokens == NULL)
 			break ;
 		state->redirect_num++;
-		if (construct_redirects(&tokens, state) == FAIL)
+		if (construct_redirects(&tokens, state) == SUCCESS)
+			continue ;
+		while (*argv)
 		{
-			while (*argv)
-			{
-				free(*argv);
-				argv++;
-			}
-			free(argv);
-			return (NULL);
+			free(*argv);
+			argv++;
 		}
+		free(argv);
+		return (NULL);
 	}
 	argv[idx] = NULL;
 	return (argv);
