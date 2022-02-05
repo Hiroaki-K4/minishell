@@ -4,7 +4,7 @@ static void	print_error(char *path)
 {
 	char	*tmp;
 	char	*err_msg;
-	
+
 	tmp = ft_strdup("minishell: cd: ");
 	err_msg = ft_strjoin(tmp, path);
 	free(tmp);

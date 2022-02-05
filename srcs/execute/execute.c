@@ -2,11 +2,13 @@
 
 void	execute_command(char **argv, t_global_state *state)
 {
-	int			i;
+	size_t		i;
+	int			*status;
 	char		*path;
 	t_redirect	*redirect;
 
 	i = 0;
+	status = &(state->last_command_exit_status);
 	while (i < state->redirect_num)
 	{
 		redirect = state->redirects[i];
@@ -14,7 +16,8 @@ void	execute_command(char **argv, t_global_state *state)
 			dup2(redirect->file_fd, redirect->redirect_fd);
 		i++;
 	}
-	if (is_builtin_command(argv, state->envs) || is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
+	if (is_builtin_command(argv, state->envs)
+		|| is_special_builtin_command(argv, &(state->envs), status))
 		exit(errno);
 	else
 	{
@@ -64,7 +67,7 @@ void	wait_all_processes(t_global_state *state)
 
 int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 {
-	int			i;
+	size_t		i;
 	pid_t		pid;
 	char		**argv;
 

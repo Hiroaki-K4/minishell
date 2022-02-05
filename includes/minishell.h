@@ -98,7 +98,7 @@ typedef struct s_global_state
 	pid_t				*pids;
 	int					last_command_exit_status;
 	t_redirect			**redirects;
-	int					redirect_num;
+	size_t				redirect_num;
 	t_envs				*envs;
 	struct sigaction	sa_sigint;
 	struct sigaction	sa_sigquit;

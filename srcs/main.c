@@ -33,7 +33,7 @@ void	init_global_state(t_global_state *state, char **envp)
 
 void	refresh_global_state(t_global_state *state)
 {
-	int	i;
+	size_t	i;
 
 	set_sigaction(&state->sa_sigint, sigint_handler);
 	set_sigaction(&state->sa_sigquit, SIG_IGN);
