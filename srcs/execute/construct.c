@@ -11,7 +11,17 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 	if (state->redirects[i] == NULL)
 		return (FAIL);
 	init_redirect(state->redirects[i]);
-	set_redirect(tokens, state->redirects[i], state->envs);
+	if (((t_token *)((*tokens)->content))->attr == TK_IO_NUMBER)
+	{
+		state->redirects[i]->redirect_fd
+			= ft_atoi(((t_token *)((*tokens)->content))->content);
+		*tokens = (*tokens)->next;
+	}
+	if (set_redirect(tokens, state->redirects[i], state->envs) == FAIL)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `newline`", 2);
+		return (FAIL);
+	}
 	return (SUCCESS);
 }
 

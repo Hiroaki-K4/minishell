@@ -128,7 +128,7 @@ void			close_parent_pipe(int pipes[2], t_node *node, t_global_state *state);
 
 void			init_redirect(t_redirect *redirect);
 int				is_redirect_token(t_token *token);
-void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
+int				set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
 
 t_node			*preprocess(char *input, t_global_state *state, int debug);
 
