@@ -2,14 +2,7 @@
 
 void	init_global_state(t_global_state *state, char **envp)
 {
-	set_sigaction(&state->sa_sigint, sigint_handler);
-	set_sigaction(&state->sa_sigquit, SIG_IGN);
-	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
-		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
-	{
-		printf("Error\n");
-		exit(FAIL);
-	}
+	set_handlers(state);
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
@@ -33,16 +26,9 @@ void	init_global_state(t_global_state *state, char **envp)
 
 void	refresh_global_state(t_global_state *state)
 {
-	int	i;
+	size_t	i;
 
-	set_sigaction(&state->sa_sigint, sigint_handler);
-	set_sigaction(&state->sa_sigquit, SIG_IGN);
-	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
-		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
-	{
-		printf("Error\n");
-		exit(FAIL);
-	}
+	set_handlers(state);
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
