@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+static int	is_redirect_token(t_token *token)
+{
+	return (token->attr == TK_IO_NUMBER
+		|| token->attr == TK_REDIRECT_IN
+		|| token->attr == TK_REDIRECT_OUT
+		|| token->attr == TK_REDIRECT_DGREAT
+		|| token->attr == TK_REDIRECT_DLESS);
+}
+
+static void	init_redirect(t_redirect *redirect)
+{
+	redirect->redirect_fd = -1;
+	redirect->file_fd = -1;
+	redirect->here_delimiter = NULL;
+	redirect->here_document = NULL;
+}
+
 static int	construct_redirects(t_list **tokens, t_global_state *state)
 {
 	char	*error_msg;

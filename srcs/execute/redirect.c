@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-int	is_redirect_token(t_token *token)
-{
-	return (token->attr == TK_IO_NUMBER
-		|| token->attr == TK_REDIRECT_IN
-		|| token->attr == TK_REDIRECT_OUT
-		|| token->attr == TK_REDIRECT_DGREAT
-		|| token->attr == TK_REDIRECT_DLESS);
-}
-
-void	init_redirect(t_redirect *redirect)
-{
-	redirect->redirect_fd = -1;
-	redirect->file_fd = -1;
-	redirect->here_delimiter = NULL;
-	redirect->here_document = NULL;
-}
-
 static void	handle_pattern1(
 	t_redirect *redirect,
 	char *content,
@@ -47,23 +30,20 @@ static void	handle_pattern1(
 		exit_with_error(content);
 }
 
-static void	handle_pattern2(
-	t_redirect *redirect,
-	char *content,
-	t_envs *envs
-)
+static void	read_heredocument(t_redirect *redirect, char *content)
 {
+	size_t	len;
 	char	*input;
 	char	*tmp;
-	char	*tmp_fp;
 
+	len = ft_strlen(content);
 	redirect->here_delimiter = content;
 	input = readline("> ");
 	redirect->here_document = input;
-	while (ft_strncmp(input, redirect->here_delimiter, ft_strlen(redirect->here_delimiter) + 1))
+	while (ft_strncmp(input, redirect->here_delimiter, len + 1))
 	{
 		input = readline("> ");
-		if (!ft_strncmp(input, redirect->here_delimiter, ft_strlen(redirect->here_delimiter) + 1))
+		if (!ft_strncmp(input, redirect->here_delimiter, len + 1))
 			break ;
 		tmp = ft_strjoin(redirect->here_document, "\n");
 		free(redirect->here_document);
@@ -72,11 +52,25 @@ static void	handle_pattern2(
 	tmp = ft_strjoin(redirect->here_document, "\n");
 	free(redirect->here_document);
 	redirect->here_document = tmp;
+}
+
+static void	handle_pattern2(
+	t_redirect *redirect,
+	char *content,
+	t_envs *envs
+)
+{
+	size_t	len;
+	char	*tmp;
+	char	*tmp_fp;
+
+	read_heredocument(redirect, content);
 	tmp = get_env("PWD", envs);
 	tmp_fp = ft_strjoin(tmp, "/minishell_tmp");
 	free(tmp);
 	redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
-	write(redirect->file_fd, redirect->here_document, ft_strlen(redirect->here_document));
+	len = ft_strlen(redirect->here_document);
+	write(redirect->file_fd, redirect->here_document, len);
 	close(redirect->file_fd);
 	redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
 	unlink(tmp_fp);

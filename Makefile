@@ -20,6 +20,8 @@ SRC := main.c \
 	   builtins/env.c \
 	   builtins/exit.c \
 	   execute/execute.c \
+	   execute/execute_pipe.c \
+	   execute/execute_commands.c \
 	   execute/construct.c \
 	   execute/search.c \
 	   execute/pipe.c \
