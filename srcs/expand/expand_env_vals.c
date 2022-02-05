@@ -25,7 +25,8 @@ void	check_diff_between_start_and_curernt_pos(t_expand_state *e_state)
 
 	if (e_state->start != e_state->current_pos)
 	{
-		add_word = ft_substr(e_state->original_token->content, e_state->start, e_state->current_pos - e_state->start); 
+		add_word = ft_substr(e_state->original_token->content, e_state->start,
+				e_state->current_pos - e_state->start);
 		ft_lstadd_word(&(e_state->token_list), add_word);
 		free(add_word);
 	}
