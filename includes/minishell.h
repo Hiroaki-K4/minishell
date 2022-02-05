@@ -98,7 +98,7 @@ typedef struct s_global_state
 	pid_t				*pids;
 	int					last_command_exit_status;
 	t_redirect			**redirects;
-	int					redirect_num;
+	size_t				redirect_num;
 	t_envs				*envs;
 	struct sigaction	sa_sigint;
 	struct sigaction	sa_sigquit;
@@ -111,6 +111,9 @@ void			sigint_handler(int sig);
 void			sigint_handler2(int sig);
 void			sigquit_handler2(int sig);
 void			nop_handler(int sig);
+void			set_handlers(t_global_state *state);
+void			set_handlers2(t_global_state *state);
+void			set_handlers3(t_global_state *state);
 
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
@@ -126,9 +129,7 @@ void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
 void			close_parent_pipe(int pipes[2], t_node *node, t_global_state *state);
 
-void			init_redirect(t_redirect *redirect);
-int				is_redirect_token(t_token *token);
-void			set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
+int				set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
 
 t_node			*preprocess(char *input, t_global_state *state, int debug);
 
@@ -159,13 +160,15 @@ int				is_command_token(t_list **token_list);
 t_node			*new_node(t_node *lhs, t_node *rhs, t_node_kind attr);
 int				consume_token(t_list **token_list, t_token_kind kind);
 
+int				execute_commands(t_node *node, int pipes[2], t_global_state *s);
+int				execute_pipe(t_node *ast, t_global_state *state);
 int				execute(t_node *ast, t_global_state *state);
 char			**construct_argv(t_list *tokens, t_global_state *state);
 
 char			*search(char *path, t_envs *envs);
 
 int				is_special_builtin_command(char **argv, t_envs **envs, int *exit_status);
-int				is_builtin_command(char **argv, t_envs *envs);
+int				is_builtin_command(char **argv, t_envs *envs, int *exit_status);
 
 int				ft_echo(char **argv, t_envs *envs);
 int				ft_pwd(char **argv, t_envs *envs);

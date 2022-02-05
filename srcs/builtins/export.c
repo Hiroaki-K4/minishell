@@ -22,7 +22,7 @@ int	get_env_pos(char *env_name, t_envs *envs)
 
 int	set_env(char *name, char *val, t_envs **envs)
 {
-	int	env_pos;
+	int		env_pos;
 	size_t	i;
 	char	**new_envs;
 

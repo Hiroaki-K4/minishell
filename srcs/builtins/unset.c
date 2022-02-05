@@ -28,7 +28,7 @@ int	remove_env(int index, t_envs **envs)
 
 int	ft_unset(char **argv, t_envs **envs)
 {
-	int	index;
+	int		index;
 	size_t	i;
 
 	if (argv[1] != NULL)
