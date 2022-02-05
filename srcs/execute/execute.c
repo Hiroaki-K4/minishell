@@ -15,7 +15,10 @@ void	execute_command(char **argv, t_global_state *state)
 		i++;
 	}
 	if (is_builtin_command(argv, state->envs) || is_special_builtin_command(argv, &(state->envs), &(state->last_command_exit_status)))
+	{
+		free(argv);
 		exit(errno);
+	}
 	else
 	{
 		path = search(argv[0], state->envs);
@@ -100,6 +103,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		state->redirect_num = 0;
 		if (node->is_furthest_right)
 			wait_all_processes(state);
+		free(argv);
 	}
 	return (SUCCESS);
 }
