@@ -60,11 +60,7 @@ static void	wait_all_processes(t_global_state *state)
 	int	i;
 
 	i = 0;
-	set_sigaction(&state->sa_sigint, sigint_handler2);
-	set_sigaction(&state->sa_sigquit, sigquit_handler2);
-	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
-		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
-		exit_with_error("sigaction error");
+	set_handlers3(state);
 	while (i < state->process_count)
 	{
 		if (wait_process(state) == FAIL)
@@ -102,11 +98,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	pid_t	pid;
 	char	**argv;
 
-	set_sigaction(&state->sa_sigint, nop_handler);
-	set_sigaction(&state->sa_sigquit, nop_handler);
-	if (sigaction(SIGINT, &state->sa_sigint, NULL) < 0
-		|| sigaction(SIGQUIT, &state->sa_sigquit, NULL) < 0)
-		exit_with_error("sigaction error");
+	set_handlers2(state);
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
 	if (pipes == NULL
