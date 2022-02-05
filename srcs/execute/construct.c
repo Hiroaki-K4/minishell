@@ -2,6 +2,7 @@
 
 static int	construct_redirects(t_list **tokens, t_global_state *state)
 {
+	char	*error_msg;
 	size_t	i;
 
 	i = 0;
@@ -19,7 +20,8 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 	}
 	if (set_redirect(tokens, state->redirects[i], state->envs) == FAIL)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline`", 2);
+		error_msg = "minishell: syntax error near unexpected token `newline`";
+		ft_putstr_fd(error_msg, 2);
 		return (FAIL);
 	}
 	return (SUCCESS);

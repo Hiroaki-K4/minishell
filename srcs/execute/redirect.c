@@ -54,6 +54,7 @@ static void	handle_pattern2(
 )
 {
 	char	*input;
+	char	*tmp;
 	char	*tmp_fp;
 
 	redirect->here_delimiter = content;
@@ -64,15 +65,22 @@ static void	handle_pattern2(
 		input = readline("> ");
 		if (!ft_strncmp(input, redirect->here_delimiter, ft_strlen(redirect->here_delimiter) + 1))
 			break ;
-		redirect->here_document = ft_strjoin(redirect->here_document, ft_strjoin(ft_strdup("\n"), input));
+		tmp = ft_strjoin(redirect->here_document, "\n");
+		free(redirect->here_document);
+		redirect->here_document = ft_strjoin(tmp, input);
 	}
-	redirect->here_document = ft_strjoin(redirect->here_document, ft_strdup("\n"));
-	tmp_fp = ft_strjoin(get_env("PWD", envs), "/minishell_tmp");
+	tmp = ft_strjoin(redirect->here_document, "\n");
+	free(redirect->here_document);
+	redirect->here_document = tmp;
+	tmp = get_env("PWD", envs);
+	tmp_fp = ft_strjoin(tmp, "/minishell_tmp");
+	free(tmp);
 	redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
 	write(redirect->file_fd, redirect->here_document, ft_strlen(redirect->here_document));
 	close(redirect->file_fd);
 	redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
 	unlink(tmp_fp);
+	free(tmp_fp);
 	if (redirect->redirect_fd == -1)
 		redirect->redirect_fd = 0;
 }
