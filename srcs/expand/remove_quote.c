@@ -1,12 +1,5 @@
 #include "minishell.h"
 
-void	init_expand_state(t_expand_state *e_state)
-{
-	e_state->start = 0;
-	e_state->current_pos = 0;
-	e_state->quote_state = NORMAL;
-}
-
 char	*update_state_with_quote(t_expand_state *e_state, t_token *token,
 		t_quote_state quote_state, char *progress)
 {
@@ -30,7 +23,7 @@ char	*update_state_with_quote(t_expand_state *e_state, t_token *token,
 	return (ft_strdup(progress));
 }
 
-t_token	*remove_quote(t_expand_state *e_state)
+t_token	*remove_quote_core(t_expand_state *e_state)
 {
 	char	*quote_removed;
 	char	*tmp;
@@ -69,38 +62,20 @@ t_token	*remove_quote(t_expand_state *e_state)
 	return (q_removed);
 }
 
-int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
-	int exit_status)
+t_list	*remove_quote(t_expand_state *e_state)
 {
 	t_token			*q_removed;
-	t_expand_state	e_state;
 	t_list			*tmp_list;
+	t_list			*expanded_list;
 
-	init_expand_state(&e_state);
-	e_state.token_list = NULL;
-	while (token_list != NULL)
+	expanded_list = NULL;
+	while (e_state->token_list != NULL)
 	{
-		e_state.original_token = (t_token *)malloc(sizeof(t_token));
-		e_state.original_token->attr = ((t_token *)token_list->content)->attr;
-		e_state.original_token->content
-			= ((t_token *)token_list->content)->content;
-		if (ft_strchr(e_state.original_token->content, '$') != NULL)
-		{
-			if (expand_env_vals(&e_state, envs, exit_status) == FAIL)
-				return (FAIL);
-			free(e_state.original_token);
-		}
-		else
-			ft_lstadd_node(&(e_state.token_list), e_state.original_token);
-		while (e_state.token_list != NULL)
-		{
-			q_removed = remove_quote(&e_state);
-			ft_lstadd_node(expanded_list, q_removed);
-			tmp_list = e_state.token_list->next;
-			ft_lstdelone(e_state.token_list, free);
-			e_state.token_list = tmp_list;
-		}
-		token_list = token_list->next;
+		q_removed = remove_quote_core(e_state);
+		ft_lstadd_node(&expanded_list, q_removed);
+		tmp_list = e_state->token_list->next;
+		// ft_lstdelone(e_state.token_list, free);
+		e_state->token_list = tmp_list;
 	}
-	return (SUCCESS);
+	return (expanded_list);
 }
