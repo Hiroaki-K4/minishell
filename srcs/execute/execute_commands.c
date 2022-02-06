@@ -33,6 +33,7 @@ static int	wait_process(t_global_state *state)
 {
 	size_t	i;
 	int		status;
+	int		signal;
 	pid_t	finished_pid;
 
 	finished_pid = waitpid(-1, &status, 0);
@@ -41,18 +42,26 @@ static int	wait_process(t_global_state *state)
 		state->last_command_exit_status = WEXITSTATUS(status);
 	if (finished_pid < 0)
 	{
-		if (WIFSIGNALED(status))
+		i = 0;
+		while (state->pids[i])
 		{
-			i = 0;
-			while (state->pids[i])
-			{
-				kill(state->pids[i], SIGINT);
-				i++;
-			}
+			kill(state->pids[i], SIGINT);
+			i++;
 		}
 		return (FAIL);
 	}
-	return (SUCCESS);
+	else
+	{
+		if (WIFSIGNALED(status))
+		{
+			signal = WTERMSIG(status);
+			if (signal == SIGINT)
+				ft_putstr_fd("\n", 1);
+			if (signal == SIGQUIT)
+				ft_putendl_fd("Quit: 3", 1);
+		}
+		return (SUCCESS);
+	}
 }
 
 static void	wait_all_processes(t_global_state *state)
@@ -60,7 +69,6 @@ static void	wait_all_processes(t_global_state *state)
 	int	i;
 
 	i = 0;
-	set_handlers3(state);
 	while (i < state->process_count)
 	{
 		if (wait_process(state) == FAIL)
@@ -98,7 +106,6 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	pid_t	pid;
 	char	**argv;
 
-	set_handlers2(state);
 	argv = construct_argv(node->tokens, state);
 	close_pipes(pipes, node, state);
 	if (pipes == NULL
@@ -110,10 +117,14 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		exit_with_error("fork error");
 	else if (pid == 0)
 	{
+		set_child_handlers(state);
 		do_piping(pipes, node, state);
 		execute_command(argv, state);
 	}
 	else
+	{
+		set_parent_handlers(state);
 		execute_commands_parent(node, pipes, state, pid);
+	}
 	return (SUCCESS);
 }
