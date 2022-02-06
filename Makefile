@@ -75,7 +75,7 @@ test: all
 	@bash test.sh 2> /dev/null
 
 debug: CFLAGS += -fsanitize=address
-debug: LDFLAGS += -lasan
+debug: LDFLAGS += -fsanitize=address
 debug: re
 
 dot: all

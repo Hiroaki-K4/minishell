@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 19:43:33 by ychida            #+#    #+#             */
-/*   Updated: 2022/02/05 14:26:43 by ychida           ###   ########.fr       */
+/*   Updated: 2022/02/06 13:56:57 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,19 @@ t_node	*parse_command(t_list **token_list)
 
 t_node	*parse_pipe_sequence(t_list **token_list)
 {
+	t_list	*head;
 	t_node	*node;
 
 	node = parse_command(token_list);
 	while (TRUE)
 	{
+		head = *token_list;
 		if (consume_token(token_list, TK_PIPE))
+		{
+			head->next = NULL;
 			node = new_node(node, parse_command(token_list), ND_PIPE);
+			node->tokens = head;
+		}
 		else
 			return (node);
 	}

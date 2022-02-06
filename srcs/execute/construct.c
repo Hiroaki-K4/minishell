@@ -22,9 +22,7 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 	char	*error_msg;
 	size_t	i;
 
-	i = 0;
-	while (i < state->redirect_num - 1)
-		i++;
+	i = state->redirect_num - 1;
 	state->redirects[i] = (t_redirect *)malloc(sizeof(t_redirect));
 	if (state->redirects[i] == NULL)
 		return (FAIL);
@@ -54,7 +52,7 @@ static size_t	consume_words(t_list **tokens, char **argv, size_t start)
 		if (*tokens == NULL
 			|| is_redirect_token((t_token *)((*tokens)->content)))
 			break ;
-		argv[start + i] = (((t_token *)((*tokens)->content))->content);
+		argv[start + i] = ft_strdup(((t_token *)((*tokens)->content))->content);
 		*tokens = (*tokens)->next;
 		i++;
 	}

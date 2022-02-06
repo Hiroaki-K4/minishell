@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	free_strings(char **strings)
+void	free_strings(char **strings)
 {
 	size_t	i;
 
