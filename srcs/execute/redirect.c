@@ -35,7 +35,7 @@ static int	handle_pattern1(
 	return (SUCCESS);
 }
 
-static void	read_heredocument(t_redirect *redirect, char *content)
+static int	read_heredocument(t_redirect *redirect, char *content)
 {
 	size_t	len;
 	char	*input;
@@ -44,10 +44,14 @@ static void	read_heredocument(t_redirect *redirect, char *content)
 	len = ft_strlen(content);
 	redirect->here_delimiter = ft_strdup(content);
 	input = readline("> ");
+	if (input == NULL)
+		return (FAIL);
 	redirect->here_document = input;
 	while (ft_strncmp(input, redirect->here_delimiter, len + 1))
 	{
 		input = readline("> ");
+		if (input == NULL)
+			return (FAIL);
 		if (!ft_strncmp(input, redirect->here_delimiter, len + 1))
 			break ;
 		tmp = ft_strjoin(redirect->here_document, "\n");
@@ -58,6 +62,7 @@ static void	read_heredocument(t_redirect *redirect, char *content)
 	tmp = ft_strjoin(redirect->here_document, "\n");
 	free(redirect->here_document);
 	redirect->here_document = tmp;
+	return (SUCCESS);
 }
 
 static int	handle_pattern2(
@@ -70,7 +75,8 @@ static int	handle_pattern2(
 	char	*tmp;
 	char	*tmp_fp;
 
-	read_heredocument(redirect, content);
+	if (read_heredocument(redirect, content) == FAIL)
+		return (FAIL);
 	tmp = get_env("PWD", envs);
 	tmp_fp = ft_strjoin(tmp, "/minishell_tmp");
 	free(tmp);
