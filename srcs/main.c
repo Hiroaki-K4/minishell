@@ -2,7 +2,7 @@
 
 void	init_global_state(t_global_state *state, char **envp)
 {
-	set_handlers(state);
+	set_initial_handlers(state);
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
@@ -28,7 +28,7 @@ void	refresh_global_state(t_global_state *state)
 {
 	size_t	i;
 
-	set_handlers(state);
+	set_initial_handlers(state);
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
