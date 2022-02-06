@@ -107,6 +107,15 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	char	**argv;
 
 	argv = construct_argv(node->tokens, state);
+	if (argv == NULL)
+	{
+		if (errno && errno != EINTR)
+		{
+			ft_putstr_fd(strerror(errno), 2);
+			errno = 0;
+		}
+		return (FAIL);
+	}
 	close_pipes(pipes, node, state);
 	if (pipes == NULL
 		&& is_special_builtin_command(

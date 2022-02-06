@@ -8,6 +8,7 @@ SRC := main.c \
 	   operate_list.c \
 	   operate_envs.c \
 	   error.c \
+	   get_next_line.c \
 	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
