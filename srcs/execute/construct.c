@@ -54,7 +54,7 @@ static size_t	consume_words(t_list **tokens, char **argv, size_t start)
 		if (*tokens == NULL
 			|| is_redirect_token((t_token *)((*tokens)->content)))
 			break ;
-		argv[start + i] = (((t_token *)((*tokens)->content))->content);
+		argv[start + i] = ft_strdup(((t_token *)((*tokens)->content))->content);
 		*tokens = (*tokens)->next;
 		i++;
 	}
