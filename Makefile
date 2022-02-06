@@ -32,7 +32,7 @@ SRC := main.c \
 	   tokenize/get_token_kind.c \
 	   expand/expand.c \
 	   expand/expand_env_vals.c \
-	   expand/remove_quote.c \
+	   expand/check_quote.c \
 	   signal/signal_handler.c \
 	   signal/set_handlers.c
 SRCS := $(notdir $(SRC))

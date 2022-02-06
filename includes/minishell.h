@@ -118,6 +118,7 @@ void			set_handlers3(t_global_state *state);
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
 int				is_separating_word(char *line, int pos);
+int				is_quote(char c);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 int				ft_lstadd_node(t_list **token_list, t_token *new_token);
@@ -151,7 +152,7 @@ int				check_syntax(t_list *token_list);
 int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
 
-t_list			*remove_quote(t_expand_state *e_state);
+t_list			*check_quote(t_expand_state *e_state);
 
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);

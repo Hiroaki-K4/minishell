@@ -19,7 +19,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 		if (ft_strchr(e_state->original_token->content, '$') != NULL)
 		{
 			ft_lstadd_node(&(e_state->token_list), make_token(ft_strdup(""),
-						0, 0, TK_WORD));
+					0, 0, TK_WORD));
 			if (expand_env_vals(e_state, envs, exit_status) == FAIL)
 				return (NULL);
 			free(e_state->original_token);
@@ -69,6 +69,6 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 		last_lst->prev->next = NULL;
 		ft_lstdelone(last_lst, free);
 	}
-	*expanded_list = remove_quote(e_state);
+	*expanded_list = check_quote(e_state);
 	return (SUCCESS);
 }
