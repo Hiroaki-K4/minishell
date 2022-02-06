@@ -125,6 +125,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	{
 		set_parent_handlers(state);
 		execute_commands_parent(node, pipes, state, pid);
+	}
 	free_strings(argv);
 	return (SUCCESS);
 }
