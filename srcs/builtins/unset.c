@@ -21,6 +21,7 @@ int	remove_env(int index, t_envs **envs)
 		i++;
 	}
 	tmp[i] = NULL;
+	free_strings((*envs)->content);
 	(*envs)->content = tmp;
 	(*envs)->envs_num--;
 	return (SUCCESS);
