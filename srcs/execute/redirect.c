@@ -37,7 +37,7 @@ static void	read_heredocument(t_redirect *redirect, char *content)
 	char	*tmp;
 
 	len = ft_strlen(content);
-	redirect->here_delimiter = content;
+	redirect->here_delimiter = ft_strdup(content);
 	input = readline("> ");
 	redirect->here_document = input;
 	while (ft_strncmp(input, redirect->here_delimiter, len + 1))
@@ -48,6 +48,7 @@ static void	read_heredocument(t_redirect *redirect, char *content)
 		tmp = ft_strjoin(redirect->here_document, "\n");
 		free(redirect->here_document);
 		redirect->here_document = ft_strjoin(tmp, input);
+		free(tmp);
 	}
 	tmp = ft_strjoin(redirect->here_document, "\n");
 	free(redirect->here_document);
