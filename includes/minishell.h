@@ -108,12 +108,9 @@ void			output_result(void *content);
 
 void			set_sigaction(struct sigaction *sa, void (*handler)(int));
 void			sigint_handler(int sig);
-void			sigint_handler2(int sig);
-void			sigquit_handler2(int sig);
-void			nop_handler(int sig);
-void			set_handlers(t_global_state *state);
-void			set_handlers2(t_global_state *state);
-void			set_handlers3(t_global_state *state);
+void			set_initial_handlers(t_global_state *state);
+void			set_parent_handlers(t_global_state *state);
+void			set_child_handlers(t_global_state *state);
 
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
