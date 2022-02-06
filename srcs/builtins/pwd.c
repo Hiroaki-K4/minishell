@@ -8,8 +8,7 @@ int	ft_pwd(char **argv, t_envs *envs)
 
 	(void)argv;
 	(void)envs;
-	buf = NULL;
-	getcwd(buf, 0);
+	buf = getcwd(NULL, 0);
 	if (buf == NULL)
 		buf = get_env("PWD", envs);
 	else

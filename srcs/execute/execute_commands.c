@@ -111,7 +111,10 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	if (pipes == NULL
 		&& is_special_builtin_command(
 			argv, &(state->envs), &(state->last_command_exit_status)))
+	{
+		free_strings(argv);
 		return (SUCCESS);
+	}
 	pid = fork();
 	if (pid < 0)
 		exit_with_error("fork error");

@@ -56,6 +56,12 @@ static void	concat_cdpath(char **argv, char **curpath, char *cdpath)
 	free_strings(paths);
 }
 
+static int	is_relative_path(char **argv)
+{
+	return (!ft_strncmp(argv[1], ".", ft_strlen(argv[1]) + 1)
+		|| !ft_strncmp(argv[1], "..", ft_strlen(argv[1]) + 1));
+}
+
 void	set_curpath(char **argv, t_envs **envs, char **curpath)
 {
 	char	*tmp;
@@ -65,8 +71,7 @@ void	set_curpath(char **argv, t_envs **envs, char **curpath)
 		*curpath = ft_strdup(argv[1]);
 	else
 	{
-		if (*argv[1] != '.'
-			&& ft_strncmp(argv[1], "..", ft_strlen(argv[1]) + 1))
+		if (!is_relative_path(argv))
 		{
 			cdpath = get_env("CDPATH", *envs);
 			if (cdpath == NULL || !*cdpath)
@@ -74,6 +79,8 @@ void	set_curpath(char **argv, t_envs **envs, char **curpath)
 				tmp = ft_strjoin("./", argv[1]);
 				if (access(tmp, X_OK) == SUCCESS)
 					*curpath = tmp;
+				else
+					free(tmp);
 			}
 			else
 				concat_cdpath(argv, curpath, cdpath);
