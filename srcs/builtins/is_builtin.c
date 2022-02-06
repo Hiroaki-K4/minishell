@@ -4,7 +4,7 @@ int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
 {
 	int		ret;
 
-	if (argv[0] == NULL)
+	if (argv == NULL || argv[0] == NULL)
 		return (FALSE);
 	ret = 0;
 	if (!ft_strncmp(argv[0], "cd", ft_strlen("cd") + 1))
