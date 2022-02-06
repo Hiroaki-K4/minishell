@@ -22,9 +22,7 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 	char	*error_msg;
 	size_t	i;
 
-	i = 0;
-	while (i < state->redirect_num - 1)
-		i++;
+	i = state->redirect_num - 1;
 	state->redirects[i] = (t_redirect *)malloc(sizeof(t_redirect));
 	if (state->redirects[i] == NULL)
 		return (FAIL);

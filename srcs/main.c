@@ -38,12 +38,17 @@ void	refresh_global_state(t_global_state *state)
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
 	i = 0;
-	while (i < state->redirect_num)
+	while (i < 11)
 	{
-		free(state->redirects[i]->here_delimiter);
-		state->redirects[i]->here_delimiter = NULL;
-		free(state->redirects[i]->here_document);
-		state->redirects[i]->here_document = NULL;
+		if (state->redirects[i])
+		{
+			free(state->redirects[i]->here_delimiter);
+			state->redirects[i]->here_delimiter = NULL;
+			free(state->redirects[i]->here_document);
+			state->redirects[i]->here_document = NULL;
+			free(state->redirects[i]);
+			state->redirects[i] = NULL;
+		}
 		i++;
 	}
 	state->redirect_num = 0;
