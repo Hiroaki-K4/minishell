@@ -19,6 +19,7 @@
 # define FAIL -1
 
 # define BUFFER_SIZE 10000
+# define OPEN_MAX 1024
 # define REDIRECT_PROMPT "> "
 
 typedef enum e_token_kind
