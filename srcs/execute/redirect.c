@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	handle_pattern1(
+static int	handle_pattern1(
 	t_redirect *redirect,
 	char *content,
 	t_token_kind attr
@@ -27,7 +27,12 @@ static void	handle_pattern1(
 	else
 		exit_with_error("invaild redirect type");
 	if (redirect->file_fd < 0)
-		exit_with_error(content);
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(content);
+		return (FAIL);
+	}
+	return (SUCCESS);
 }
 
 static void	read_heredocument(t_redirect *redirect, char *content)
@@ -55,7 +60,7 @@ static void	read_heredocument(t_redirect *redirect, char *content)
 	redirect->here_document = tmp;
 }
 
-static void	handle_pattern2(
+static int	handle_pattern2(
 	t_redirect *redirect,
 	char *content,
 	t_envs *envs
@@ -70,6 +75,12 @@ static void	handle_pattern2(
 	tmp_fp = ft_strjoin(tmp, "/minishell_tmp");
 	free(tmp);
 	redirect->file_fd = open(tmp_fp, O_RDWR | O_CREAT, 0666);
+	if (redirect->file_fd < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(content);
+		return (FAIL);
+	}
 	len = ft_strlen(redirect->here_document);
 	write(redirect->file_fd, redirect->here_document, len);
 	close(redirect->file_fd);
@@ -78,13 +89,16 @@ static void	handle_pattern2(
 	free(tmp_fp);
 	if (redirect->redirect_fd == -1)
 		redirect->redirect_fd = 0;
+	return (SUCCESS);
 }
 
 int	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 {
+	int				ret;
 	char			*content;
 	t_token_kind	attr;
 
+	ret = SUCCESS;
 	content = NULL;
 	attr = ((t_token *)((*tokens)->content))->attr;
 	if (attr == TK_REDIRECT_OUT
@@ -95,7 +109,7 @@ int	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 		if (*tokens == NULL)
 			return (FAIL);
 		content = ((t_token *)((*tokens)->content))->content;
-		handle_pattern1(redirect, content, attr);
+		ret = handle_pattern1(redirect, content, attr);
 	}
 	else if (attr == TK_REDIRECT_DLESS)
 	{
@@ -103,8 +117,8 @@ int	set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs)
 		if (*tokens == NULL)
 			return (FAIL);
 		content = ((t_token *)((*tokens)->content))->content;
-		handle_pattern2(redirect, content, envs);
+		ret = handle_pattern2(redirect, content, envs);
 	}
 	*tokens = (*tokens)->next;
-	return (SUCCESS);
+	return (ret);
 }

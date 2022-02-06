@@ -5,9 +5,12 @@ void	free_strings(char **strings)
 	size_t	i;
 
 	i = 0;
+	if (strings == NULL)
+		return ;
 	while (strings[i])
 	{
 		free(strings[i]);
+		strings[i] = NULL;
 		i++;
 	}
 	free(strings);
