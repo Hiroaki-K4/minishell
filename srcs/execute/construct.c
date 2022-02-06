@@ -21,6 +21,7 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 {
 	size_t	i;
 
+	set_redirect_handlers(state);
 	i = state->redirect_num - 1;
 	state->redirects[i] = (t_redirect *)malloc(sizeof(t_redirect));
 	if (state->redirects[i] == NULL)
@@ -32,7 +33,7 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 			= ft_atoi(((t_token *)((*tokens)->content))->content);
 		*tokens = (*tokens)->next;
 	}
-	return (set_redirect(tokens, state->redirects[i], state->envs));
+	return (set_redirect(tokens, state->redirects[i]));
 }
 
 static size_t	consume_words(t_list **tokens, char **argv, size_t start)
