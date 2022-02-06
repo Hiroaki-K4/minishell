@@ -77,7 +77,7 @@ void	ft_lstadd_last(t_list **lst, t_list *new)
 	}
 	else
 		last_lst->next = NULL;
-	ft_lstclear_all(&new, free);
+	// ft_lstclear_all(&new, free);
 }
 
 void	ft_lstclear_all(t_list **lst, void (*del)(void*))

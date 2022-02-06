@@ -30,7 +30,7 @@ char	*update_state_with_quote(t_expand_state *e_state, t_token *token,
 	return (ft_strdup(progress));
 }
 
-t_token	*remove_quote_core(t_expand_state *e_state)
+t_token	*remove_quote(t_expand_state *e_state)
 {
 	char	*quote_removed;
 	char	*tmp;
@@ -69,30 +69,12 @@ t_token	*remove_quote_core(t_expand_state *e_state)
 	return (q_removed);
 }
 
-t_list	*remove_quote(t_expand_state *e_state)
-{
-	t_token			*q_removed;
-	t_list			*tmp_list;
-	t_list			*expanded_list;
-
-	expanded_list = NULL;
-	while (e_state->token_list != NULL)
-	{
-		q_removed = remove_quote_core(e_state);
-		ft_lstadd_node(&expanded_list, q_removed);
-		tmp_list = e_state->token_list->next;
-		// ft_lstdelone(e_state.token_list, free);
-		e_state->token_list = tmp_list;
-	}
-	return (expanded_list);
-}
-
 int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 	int exit_status)
 {
+	t_token			*q_removed;
 	t_expand_state	e_state;
-	t_token	*last_token;
-	t_list	*last_lst;
+	t_list			*tmp_list;
 
 	init_expand_state(&e_state);
 	e_state.token_list = NULL;
@@ -104,22 +86,21 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 			= ((t_token *)token_list->content)->content;
 		if (ft_strchr(e_state.original_token->content, '$') != NULL)
 		{
-			ft_lstadd_node(&(e_state.token_list), make_token(ft_strdup(""), 0, 0, TK_WORD));
 			if (expand_env_vals(&e_state, envs, exit_status) == FAIL)
 				return (FAIL);
 			free(e_state.original_token);
 		}
 		else
 			ft_lstadd_node(&(e_state.token_list), e_state.original_token);
+		while (e_state.token_list != NULL)
+		{
+			q_removed = remove_quote(&e_state);
+			ft_lstadd_node(expanded_list, q_removed);
+			tmp_list = e_state.token_list->next;
+			ft_lstdelone(e_state.token_list, free);
+			e_state.token_list = tmp_list;
+		}
 		token_list = token_list->next;
 	}
-	last_lst = ft_lstlast(e_state.token_list);
-	last_token = (t_token *)last_lst->content;
-	if (ft_strncmp(last_token->content, "", ft_strlen(last_token->content) + 1) == 0)
-	{
-		last_lst->prev->next = NULL;
-		ft_lstdelone(last_lst, free);
-	}
-	*expanded_list = remove_quote(&e_state);
 	return (SUCCESS);
 }
