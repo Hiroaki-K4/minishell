@@ -25,7 +25,7 @@ check_result "make fclean"
 # Test Tokenize
 rm -rf test/result/tokenize
 mkdir -p test/result/tokenize
-make debug > /dev/null
+make > /dev/null
 for fp in `ls test/case/tokenize`; do
 	if [ $fp = "simple_error.txt" ]; then
 		continue

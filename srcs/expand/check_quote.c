@@ -83,7 +83,6 @@ t_list	*check_quote(t_expand_state *e_state)
 {
 	t_token			*q_removed;
 	t_token			*token;
-	t_list			*tmp_list;
 	t_list			*expanded_list;
 	char			*quote_removed;
 
@@ -97,8 +96,7 @@ t_list	*check_quote(t_expand_state *e_state)
 				token->attr);
 		free(quote_removed);
 		ft_lstadd_node(&expanded_list, q_removed);
-		tmp_list = e_state->token_list->next;
-		e_state->token_list = tmp_list;
+		e_state->token_list = e_state->token_list->next;
 	}
 	return (expanded_list);
 }
