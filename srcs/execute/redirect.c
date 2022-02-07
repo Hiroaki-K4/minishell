@@ -44,25 +44,36 @@ static int	read_heredocument(t_redirect *redirect, char *content)
 
 	len = ft_strlen(content);
 	redirect->here_delimiter = ft_strdup(content);
-	ret = get_next_line(0, &input);
-	if (ret <= 0)
-		return (FAIL);
-	redirect->here_document = input;
-	while (ft_strncmp(input, redirect->here_delimiter, len + 1))
+	while (TRUE)
 	{
 		ret = get_next_line(0, &input);
 		if (ret <= 0)
+		{
+			free(input);
 			return (FAIL);
+		}
 		if (!ft_strncmp(input, redirect->here_delimiter, len + 1))
 			break ;
+		if (redirect->here_document == NULL)
+			redirect->here_document = input;
+		else
+		{
+			tmp = ft_strjoin(redirect->here_document, "\n");
+			free(redirect->here_document);
+			redirect->here_document = ft_strjoin(tmp, input);
+			free(tmp);
+			free(input);
+		}
+	}
+	free(input);
+	if (redirect->here_document == NULL)
+		redirect->here_document = ft_strdup("");
+	else
+	{
 		tmp = ft_strjoin(redirect->here_document, "\n");
 		free(redirect->here_document);
-		redirect->here_document = ft_strjoin(tmp, input);
-		free(tmp);
+		redirect->here_document = tmp;
 	}
-	tmp = ft_strjoin(redirect->here_document, "\n");
-	free(redirect->here_document);
-	redirect->here_document = tmp;
 	return (SUCCESS);
 }
 
