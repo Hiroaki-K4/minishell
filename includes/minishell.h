@@ -19,7 +19,9 @@
 # define FAIL -1
 
 # define BUFFER_SIZE 10000
-# define OPEN_MAX 1024
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
+# endif
 # define REDIRECT_PROMPT "> "
 
 typedef enum e_token_kind
@@ -136,7 +138,7 @@ void			ft_lstadd_last(t_list **lst, t_list *new);
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
-void			close_parent_pipe(int pipes[2], t_node *node, t_global_state *state);
+void			close_parent_pipe(int pipes[2], t_node *n, t_global_state *s);
 
 int				set_redirect(t_list **tokens, t_redirect *redirect);
 
@@ -180,7 +182,7 @@ char			**construct_argv(t_list *tokens, t_global_state *state);
 
 char			*search(char *path, t_envs *envs);
 
-int				is_special_builtin_command(char **argv, t_envs **envs, int *exit_status);
+int				is_special_builtin_command(char **argv, t_envs **envs, int *s);
 int				is_builtin_command(char **argv, t_envs *envs, int *exit_status);
 
 int				ft_echo(char **argv, t_envs *envs);
