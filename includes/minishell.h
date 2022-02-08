@@ -157,6 +157,7 @@ t_list			*check_quote(t_expand_state *e_state);
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);
 void			init_expand_state(t_expand_state *e_state);
+void			ft_lstdelone_all(t_list *lst, void (*del)(void*));
 
 t_node			*parse(t_list **token_list);
 int				is_command_token(t_list **token_list);

@@ -11,6 +11,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 	t_envs *envs, int exit_status)
 {
 	char	*empty;
+	t_token	*token;
 
 	while (token_list != NULL)
 	{
@@ -25,7 +26,13 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 				return (NULL);
 		}
 		else
-			ft_lstadd_node(&(e_state->token_list), e_state->original_token);
+		{
+			token = (t_token *)malloc(sizeof(t_token));
+			token->content = ft_strdup(e_state->original_token->content);
+			token->attr = e_state->original_token->attr;
+			// ft_lstadd_node(&(e_state->token_list), e_state->original_token);
+			ft_lstadd_node(&(e_state->token_list), token);
+		}
 		token_list = token_list->next;
 	}
 	return (e_state);
@@ -54,6 +61,19 @@ int	is_content_empty(t_list *list, char *word)
 	return (FALSE);
 }
 
+void	ft_lstdelone_all(t_list *lst, void (*del)(void*))
+{
+	t_token	*content;
+
+	if (lst)
+	{
+		content = (t_token *)lst->content;
+		(*del)(content->content);
+		(*del)(lst->content);
+		free(lst);
+	}
+}
+
 int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 	int exit_status)
 {
@@ -67,9 +87,13 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 	if (is_content_empty(last_lst, ""))
 	{
 		last_lst->prev->next = NULL;
-		ft_lstdelone(last_lst, free);
+		ft_lstdelone_all(last_lst, free);
 	}
+	// printf("debug1\n");
+	// ft_lstiter(e_state->token_list, output_result);
 	*expanded_list = check_quote(e_state);
+	// printf("debug2\n");
+	ft_lstiter(e_state->token_list, output_result);
 	free(e_state);
 	return (SUCCESS);
 }
