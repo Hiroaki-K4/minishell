@@ -30,7 +30,6 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 			token = (t_token *)malloc(sizeof(t_token));
 			token->content = ft_strdup(e_state->original_token->content);
 			token->attr = e_state->original_token->attr;
-			// ft_lstadd_node(&(e_state->token_list), e_state->original_token);
 			ft_lstadd_node(&(e_state->token_list), token);
 		}
 		token_list = token_list->next;
@@ -89,11 +88,7 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 		last_lst->prev->next = NULL;
 		ft_lstdelone_all(last_lst, free);
 	}
-	// printf("debug1\n");
-	// ft_lstiter(e_state->token_list, output_result);
 	*expanded_list = check_quote(e_state);
-	// printf("debug2\n");
-	ft_lstiter(e_state->token_list, output_result);
 	free(e_state);
 	return (SUCCESS);
 }
