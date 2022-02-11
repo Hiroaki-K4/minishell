@@ -34,6 +34,7 @@ SRC := main.c \
 	   expand/expand.c \
 	   expand/expand_env_vals.c \
 	   expand/check_quote.c \
+	   expand/remove_quote.c \
 	   signal/signal_handler.c \
 	   signal/set_handlers.c
 SRCS := $(notdir $(SRC))

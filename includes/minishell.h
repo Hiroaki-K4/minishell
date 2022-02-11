@@ -156,6 +156,8 @@ int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
 
 t_list			*check_quote(t_expand_state *e_state);
 
+char			*get_word_in_quote(t_token *token, t_expand_state *e_state, char *word);
+
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);
 void			init_expand_state(t_expand_state *e_state);
