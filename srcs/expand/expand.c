@@ -37,19 +37,6 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 	return (e_state);
 }
 
-t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status)
-{
-	t_expand_state	*e_state;
-
-	e_state = (t_expand_state *)malloc(sizeof(t_expand_state));
-	if (!e_state)
-		return (NULL);
-	init_expand_state(e_state);
-	e_state->token_list = NULL;
-	e_state = update_e_state(e_state, token_list, envs, exit_status);
-	return (e_state);
-}
-
 int	is_content_empty(t_list *list, char *word)
 {
 	t_token	*token;
@@ -60,21 +47,36 @@ int	is_content_empty(t_list *list, char *word)
 	return (FALSE);
 }
 
-int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
-	int exit_status)
+t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status)
 {
 	t_expand_state	*e_state;
 	t_list			*last_lst;
 
-	e_state = make_e_state(token_list, envs, exit_status);
+	e_state = (t_expand_state *)malloc(sizeof(t_expand_state));
 	if (!e_state)
-		return (FAIL);
+		return (NULL);
+	init_expand_state(e_state);
+	e_state->token_list = NULL;
+	e_state = update_e_state(e_state, token_list, envs, exit_status);
+	if (!e_state)
+		return (NULL);
 	last_lst = ft_lstlast(e_state->token_list);
 	if (is_content_empty(last_lst, ""))
 	{
 		last_lst->prev->next = NULL;
 		ft_lstdelone_all(last_lst, free);
 	}
+	return (e_state);
+}
+
+int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
+	int exit_status)
+{
+	t_expand_state	*e_state;
+
+	e_state = make_e_state(token_list, envs, exit_status);
+	if (!e_state)
+		return (FAIL);
 	*expanded_list = check_quote(e_state);
 	free(e_state);
 	return (SUCCESS);
