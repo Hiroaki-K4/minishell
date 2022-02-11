@@ -60,19 +60,6 @@ int	is_content_empty(t_list *list, char *word)
 	return (FALSE);
 }
 
-void	ft_lstdelone_all(t_list *lst, void (*del)(void*))
-{
-	t_token	*content;
-
-	if (lst)
-	{
-		content = (t_token *)lst->content;
-		(*del)(content->content);
-		(*del)(lst->content);
-		free(lst);
-	}
-}
-
 int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 	int exit_status)
 {
