@@ -12,35 +12,35 @@ t_token	*make_token(char *line, size_t pos, size_t len, t_token_kind attr)
 	return (new_token);
 }
 
-int	ft_lstadd_node(t_list **token_list, t_token *new_token)
+int	ft_lstadd_token(t_list **token_list, t_token *new_token)
 {
-	t_list	*new_node;
+	t_list	*new_list;
 
-	new_node = ft_lstnew(new_token);
-	if (new_node == NULL)
+	new_list = ft_lstnew(new_token);
+	if (new_list == NULL)
 		return (FAIL);
-	ft_lstadd_back(token_list, new_node);
+	ft_lstadd_back(token_list, new_list);
 	return (SUCCESS);
 }
 
 int	ft_lstadd_word(t_list **lst, char *new_word)
 {
 	char	*tmp;
-	t_list	*last_lst;
+	t_list	*last_list;
 	t_token	*new_token;
 	t_token	*last_token;
 
 	if (!*lst)
 	{
 		new_token = make_token(new_word, 0, ft_strlen(new_word), TK_WORD);
-		if (ft_lstadd_node(lst, new_token) == FAIL)
+		if (ft_lstadd_token(lst, new_token) == FAIL)
 			return (FAIL);
 		return (SUCCESS);
 	}
 	else
 	{
-		last_lst = ft_lstlast(*lst);
-		last_token = (t_token *)last_lst->content;
+		last_list = ft_lstlast(*lst);
+		last_token = (t_token *)last_list->content;
 		tmp = ft_strjoin(last_token->content, new_word);
 		free(last_token->content);
 		last_token->content = tmp;

@@ -19,7 +19,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 		if (ft_strchr(e_state->original_token->content, '$') != NULL)
 		{
 			empty = ft_strdup("");
-			ft_lstadd_node(&(e_state->token_list), make_token(empty,
+			ft_lstadd_token(&(e_state->token_list), make_token(empty,
 					0, 0, TK_WORD));
 			free(empty);
 			if (expand_env_vals(e_state, envs, exit_status) == FAIL)
@@ -30,7 +30,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 			token = (t_token *)malloc(sizeof(t_token));
 			token->content = ft_strdup(e_state->original_token->content);
 			token->attr = e_state->original_token->attr;
-			ft_lstadd_node(&(e_state->token_list), token);
+			ft_lstadd_token(&(e_state->token_list), token);
 		}
 		token_list = token_list->next;
 	}

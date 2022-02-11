@@ -121,7 +121,7 @@ int				is_separating_word(char *line, int pos);
 int				is_quote(char c);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
-int				ft_lstadd_node(t_list **token_list, t_token *new_token);
+int				ft_lstadd_token(t_list **token_list, t_token *new_token);
 int				ft_lstadd_word(t_list **lst, char *new_word);
 void			ft_lstadd_last(t_list **lst, t_list *new);
 void			ft_lstclear_all(t_list **lst, void (*del)(void*));

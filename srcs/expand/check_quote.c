@@ -96,7 +96,7 @@ t_list	*check_quote(t_expand_state *e_state)
 		q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed),
 				token->attr);
 		free(quote_removed);
-		ft_lstadd_node(&expanded_list, q_removed);
+		ft_lstadd_token(&expanded_list, q_removed);
 		tmp_list = e_state->token_list->next;
 		ft_lstdelone_all(e_state->token_list, free);
 		e_state->token_list = tmp_list;
