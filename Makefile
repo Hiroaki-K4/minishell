@@ -8,6 +8,7 @@ SRC := main.c \
 	   operate_list.c \
 	   operate_envs.c \
 	   error.c \
+	   ft_lstadd.c \
 	   builtins/is_builtin.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
@@ -32,6 +33,8 @@ SRC := main.c \
 	   tokenize/get_token_kind.c \
 	   expand/expand.c \
 	   expand/expand_env_vals.c \
+	   expand/check_quote.c \
+	   expand/remove_quote.c \
 	   signal/signal_handler.c \
 	   signal/set_handlers.c
 SRCS := $(notdir $(SRC))
@@ -47,7 +50,7 @@ LDFLAGS := libft/libft.a -L$(shell brew --prefix readline)/lib -lreadline -lhist
 NAME := minishell
 
 CC := gcc
-CFLAGS := -g  -Wall -Wextra -Werror -MMD -MP
+CFLAGS := -g -Wall -Wextra -Werror -MMD -MP
 
 LIBFT := libft
 

@@ -19,3 +19,13 @@ int	is_separating_word(char *line, int pos)
 		return (1);
 	return (0);
 }
+
+int	is_quote(char c)
+{
+	return (c == '\'' || c == '\"');
+}
+
+int	is_redirect_char(char c)
+{
+	return (c == '<' || c == '>');
+}

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
+char	*get_env_name(t_expand_state *e_state, size_t start)
 {
 	while (e_state->original_token->content[e_state->current_pos]
 		&& e_state->original_token->content[e_state->current_pos] != ' '
@@ -19,19 +19,21 @@ char	*get_name_after_dollar(t_expand_state *e_state, size_t start)
 			start, e_state->current_pos - start));
 }
 
-void	check_diff_between_start_and_curernt_pos(t_expand_state *e_state)
+t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state)
 {
 	char	*add_word;
 
 	if (e_state->start != e_state->current_pos)
 	{
-		add_word = ft_substr(e_state->original_token->content, e_state->start, e_state->current_pos - e_state->start); 
+		add_word = ft_substr(e_state->original_token->content, e_state->start,
+				e_state->current_pos - e_state->start);
 		ft_lstadd_word(&(e_state->token_list), add_word);
 		free(add_word);
 	}
+	return (e_state);
 }
 
-int	get_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
+int	get_env_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 {
 	char	*value;
 	t_list	*tmp_list;
@@ -74,7 +76,7 @@ int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
 	}
 	else
 	{
-		if (get_value_and_insert(name, envs, e_state) == FAIL)
+		if (get_env_value_and_insert(name, envs, e_state) == FAIL)
 			return (FAIL);
 	}
 	return (SUCCESS);
@@ -92,9 +94,9 @@ int	expand_env_vals(t_expand_state *e_state, t_envs *envs, int exit_status)
 		if (e_state->original_token->content[e_state->current_pos] == '$'
 			&& e_state->quote_state != IN_QUOTE)
 		{
-			check_diff_between_start_and_curernt_pos(e_state);
+			e_state = fill_diff_between_start_curernt_pos(e_state);
 			e_state->current_pos++;
-			name = get_name_after_dollar(e_state, e_state->current_pos);
+			name = get_env_name(e_state, e_state->current_pos);
 			if (check_name(name, envs, e_state, exit_status) == FAIL)
 				return (FAIL);
 			free(name);
@@ -103,6 +105,6 @@ int	expand_env_vals(t_expand_state *e_state, t_envs *envs, int exit_status)
 		}
 		e_state->current_pos++;
 	}
-	check_diff_between_start_and_curernt_pos(e_state);
+	e_state = fill_diff_between_start_curernt_pos(e_state);
 	return (SUCCESS);
 }

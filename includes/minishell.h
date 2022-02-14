@@ -118,12 +118,16 @@ void			set_handlers3(t_global_state *state);
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
 int				is_separating_word(char *line, int pos);
+int				is_quote(char c);
+int				is_redirect_char(char c);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
-int				ft_lstadd_node(t_list **token_list, t_token *new_token);
+void			ft_lstdelone_all(t_list *lst, void (*del)(void*));
+void			ft_lstclear_all(t_list **lst, void (*del)(void*));
+
+int				ft_lstadd_token(t_list **token_list, t_token *new_token);
 int				ft_lstadd_word(t_list **lst, char *new_word);
 void			ft_lstadd_last(t_list **lst, t_list *new);
-void			ft_lstclear_all(t_list **lst, void (*del)(void*));
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
@@ -150,6 +154,10 @@ int				check_syntax(t_list *token_list);
 
 int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
+
+t_list			*check_quote(t_expand_state *e_state);
+
+char			*get_word_in_quote(t_token *token, t_expand_state *e_state, char *word);
 
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);
