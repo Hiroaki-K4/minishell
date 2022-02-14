@@ -119,6 +119,7 @@ int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
 int				is_separating_word(char *line, int pos);
 int				is_quote(char c);
+int				is_redirect_char(char c);
 
 t_token			*make_token(char *line, size_t pos, size_t len, t_token_kind a);
 void			ft_lstdelone_all(t_list *lst, void (*del)(void*));
