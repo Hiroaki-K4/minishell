@@ -140,6 +140,7 @@ void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
 void			close_parent_pipe(int pipes[2], t_node *n, t_global_state *s);
 
+int				read_heredocument(t_redirect *redirect, char *content);
 int				set_redirect(t_list **tokens, t_redirect *redirect);
 
 t_node			*preprocess(char *input, t_global_state *state, int debug);
@@ -175,6 +176,7 @@ int				is_command_token(t_list **token_list);
 t_node			*new_node(t_node *lhs, t_node *rhs, t_node_kind attr);
 int				consume_token(t_list **token_list, t_token_kind kind);
 
+void			wait_all_processes(t_global_state *state);
 int				execute_commands(t_node *node, int pipes[2], t_global_state *s);
 int				execute_pipe(t_node *ast, t_global_state *state);
 int				execute(t_node *ast, t_global_state *state);

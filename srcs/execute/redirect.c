@@ -24,56 +24,11 @@ static int	handle_pattern1(
 		if (redirect->redirect_fd == -1)
 			redirect->redirect_fd = 0;
 	}
-	else
-		exit_with_error("invaild redirect type");
 	if (redirect->file_fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(content);
 		return (FAIL);
-	}
-	return (SUCCESS);
-}
-
-static int	read_heredocument(t_redirect *redirect, char *content)
-{
-	int		ret;
-	size_t	len;
-	char	*input;
-	char	*tmp;
-
-	len = ft_strlen(content);
-	redirect->here_delimiter = ft_strdup(content);
-	input = NULL;
-	while (TRUE)
-	{
-		ret = get_next_line(0, &input);
-		if (ret <= 0)
-		{
-			free(input);
-			return (FAIL);
-		}
-		if (!ft_strncmp(input, redirect->here_delimiter, len + 1))
-			break ;
-		if (redirect->here_document == NULL)
-			redirect->here_document = input;
-		else
-		{
-			tmp = ft_strjoin(redirect->here_document, "\n");
-			free(redirect->here_document);
-			redirect->here_document = ft_strjoin(tmp, input);
-			free(tmp);
-			free(input);
-		}
-	}
-	free(input);
-	if (redirect->here_document == NULL)
-		redirect->here_document = ft_strdup("");
-	else
-	{
-		tmp = ft_strjoin(redirect->here_document, "\n");
-		free(redirect->here_document);
-		redirect->here_document = tmp;
 	}
 	return (SUCCESS);
 }
@@ -121,7 +76,6 @@ int	set_redirect(t_list **tokens, t_redirect *redirect)
 	t_token_kind	attr;
 
 	ret = SUCCESS;
-	content = NULL;
 	attr = ((t_token *)((*tokens)->content))->attr;
 	if (attr == TK_REDIRECT_OUT || attr == TK_REDIRECT_DGREAT
 		|| attr == TK_REDIRECT_IN)

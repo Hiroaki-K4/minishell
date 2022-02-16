@@ -71,13 +71,7 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		state->redirect_num++;
 		if (construct_redirects(&tokens, state) == SUCCESS)
 			continue ;
-		idx = 0;
-		while (argv[idx])
-		{
-			free(argv[idx]);
-			idx++;
-		}
-		free(argv);
+		free_strings(argv);
 		return (NULL);
 	}
 	argv[idx] = NULL;

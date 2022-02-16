@@ -23,10 +23,12 @@ SRC := main.c \
 	   execute/execute.c \
 	   execute/execute_pipe.c \
 	   execute/execute_commands.c \
+	   execute/wait_all_processes.c \
 	   execute/construct.c \
 	   execute/search.c \
 	   execute/pipe.c \
 	   execute/redirect.c \
+	   execute/read_heredocument.c \
 	   parse/parse.c \
 	   parse/parse_utils.c \
 	   tokenize/tokenize.c \

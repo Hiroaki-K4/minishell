@@ -29,54 +29,6 @@ static void	execute_command(char **argv, t_global_state *state)
 	}
 }
 
-static int	wait_process(t_global_state *state)
-{
-	size_t	i;
-	int		status;
-	int		signal;
-	pid_t	finished_pid;
-
-	finished_pid = waitpid(-1, &status, 0);
-	if (WIFEXITED(status)
-		&& finished_pid == state->pids[state->process_count - 1])
-		state->last_command_exit_status = WEXITSTATUS(status);
-	if (finished_pid < 0)
-	{
-		i = 0;
-		while (state->pids[i])
-		{
-			kill(state->pids[i], SIGINT);
-			i++;
-		}
-		return (FAIL);
-	}
-	else
-	{
-		if (WIFSIGNALED(status))
-		{
-			signal = WTERMSIG(status);
-			if (signal == SIGINT)
-				ft_putstr_fd("\n", 1);
-			if (signal == SIGQUIT)
-				ft_putendl_fd("Quit: 3", 1);
-		}
-		return (SUCCESS);
-	}
-}
-
-static void	wait_all_processes(t_global_state *state)
-{
-	int	i;
-
-	i = 0;
-	while (i < state->process_count)
-	{
-		if (wait_process(state) == FAIL)
-			continue ;
-		i++;
-	}
-}
-
 static void	execute_commands_parent(
 	t_node *node,
 	int pipes[2],
@@ -101,9 +53,35 @@ static void	execute_commands_parent(
 		wait_all_processes(state);
 }
 
-int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
+static int	execute_commands_with_argv(
+	t_node *node,
+	int pipes[2],
+	t_global_state *state,
+	char **argv
+)
 {
 	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		exit_with_error("fork error");
+	else if (pid == 0)
+	{
+		set_child_handlers(state);
+		do_piping(pipes, node, state);
+		execute_command(argv, state);
+	}
+	else
+	{
+		set_parent_handlers(state);
+		execute_commands_parent(node, pipes, state, pid);
+	}
+	free_strings(argv);
+	return (SUCCESS);
+}
+
+int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
+{
 	char	**argv;
 
 	argv = construct_argv(node->tokens, state);
@@ -124,20 +102,5 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 		free_strings(argv);
 		return (SUCCESS);
 	}
-	pid = fork();
-	if (pid < 0)
-		exit_with_error("fork error");
-	else if (pid == 0)
-	{
-		set_child_handlers(state);
-		do_piping(pipes, node, state);
-		execute_command(argv, state);
-	}
-	else
-	{
-		set_parent_handlers(state);
-		execute_commands_parent(node, pipes, state, pid);
-	}
-	free_strings(argv);
-	return (SUCCESS);
+	return (execute_commands_with_argv(node, pipes, state, argv));
 }
