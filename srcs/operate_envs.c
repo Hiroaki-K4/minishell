@@ -30,6 +30,8 @@ int	init_envs(t_envs **envs, char **envp)
 	size_t	i;
 
 	*envs = (t_envs *)malloc(sizeof(t_envs));
+	if (!*envs)
+		return (FAIL);
 	i = 0;
 	while (envp[i])
 		i++;
@@ -40,6 +42,8 @@ int	init_envs(t_envs **envs, char **envp)
 	while (envp[i])
 	{
 		(*envs)->content[i] = ft_strdup(envp[i]);
+		if (!(*envs)->content[i])
+			return (FAIL);
 		i++;
 	}
 	(*envs)->content[i] = NULL;
@@ -47,7 +51,7 @@ int	init_envs(t_envs **envs, char **envp)
 	return (SUCCESS);
 }
 
-void	get_env_name_and_value(char **name, char **value, char *env)
+int	get_env_name_and_value(char **name, char **value, char *env)
 {
 	int	pos;
 
@@ -58,7 +62,10 @@ void	get_env_name_and_value(char **name, char **value, char *env)
 	{
 		*name = ft_substr(env, 0, pos);
 		*value = ft_substr(env, pos + 1, ft_strlen(env) - pos - 1);
+		if (!*name || !*value)
+			return (FAIL);
 	}
+	return (SUCCESS);
 }
 
 char	*get_env(char *name, t_envs *envs)
@@ -70,7 +77,8 @@ char	*get_env(char *name, t_envs *envs)
 	i = 0;
 	while (envs->content[i])
 	{
-		get_env_name_and_value(&env_name, &env_value, envs->content[i]);
+		if (get_env_name_and_value(&env_name, &env_value, envs->content[i]) == FAIL)
+			return (NULL);
 		if (!ft_strncmp(env_name, name, ft_strlen(env_name) + 1))
 		{
 			free(env_name);

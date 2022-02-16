@@ -197,7 +197,7 @@ int				get_first_char_pos(char *word, char c);
 
 int				init_envs(t_envs **envs, char **envp);
 char			**sort_envs(char **dup_env);
-void			get_env_name_and_value(char **name, char **value, char *env);
+int				get_env_name_and_value(char **name, char **value, char *env);
 char			*get_env(char *name, t_envs *envs);
 int				set_env(char *name, char *value, t_envs **envs);
 
