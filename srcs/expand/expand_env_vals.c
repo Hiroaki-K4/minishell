@@ -29,7 +29,8 @@ t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state)
 				e_state->current_pos - e_state->start);
 		if (!add_word)
 			return (NULL);
-		ft_lstadd_word(&(e_state->token_list), add_word);
+		if (ft_lstadd_word(&(e_state->token_list), add_word) == FAIL)
+			return (NULL);
 		free(add_word);
 	}
 	return (e_state);
@@ -48,7 +49,8 @@ int	get_env_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 			tmp_list = NULL;
 			if (tokenize(value, &tmp_list) == FAIL)
 				return (FAIL);
-			ft_lstadd_last(&(e_state->token_list), tmp_list);
+			if (ft_lstadd_last(&(e_state->token_list), tmp_list) == FAIL)
+				return (FAIL);
 		}
 		else
 		{

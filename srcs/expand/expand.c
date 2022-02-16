@@ -12,6 +12,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 {
 	char	*empty;
 	t_token	*token;
+	t_token	*new_token;
 
 	while (token_list != NULL)
 	{
@@ -21,8 +22,11 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 			empty = ft_strdup("");
 			if (!empty)
 				return (NULL);
-			ft_lstadd_token(&(e_state->token_list), make_token(empty,
-					0, 0, TK_WORD));
+			new_token = make_token(empty, 0, 0, TK_WORD);
+			if (!new_token)
+				return (NULL);
+			if (ft_lstadd_token(&(e_state->token_list), new_token) == FAIL)
+				return (NULL);
 			free(empty);
 			if (expand_env_vals(e_state, envs, exit_status) == FAIL)
 				return (NULL);
@@ -36,7 +40,8 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 			if (!token->content)
 				return (NULL);
 			token->attr = e_state->original_token->attr;
-			ft_lstadd_token(&(e_state->token_list), token);
+			if (ft_lstadd_token(&(e_state->token_list), token) == FAIL)
+				return (NULL);
 		}
 		token_list = token_list->next;
 	}

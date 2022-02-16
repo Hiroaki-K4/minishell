@@ -127,7 +127,7 @@ void			ft_lstclear_all(t_list **lst, void (*del)(void*));
 
 int				ft_lstadd_token(t_list **token_list, t_token *new_token);
 int				ft_lstadd_word(t_list **lst, char *new_word);
-void			ft_lstadd_last(t_list **lst, t_list *new);
+int				ft_lstadd_last(t_list **lst, t_list *new);
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);

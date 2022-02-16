@@ -8,6 +8,8 @@ t_token	*make_token(char *line, size_t pos, size_t len, t_token_kind attr)
 	if (new_token == NULL)
 		return (NULL);
 	new_token->content = ft_substr(line, pos, len);
+	if (!new_token->content)
+		return (NULL);
 	new_token->attr = attr;
 	return (new_token);
 }
