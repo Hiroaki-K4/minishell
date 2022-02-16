@@ -44,6 +44,7 @@ static int	read_heredocument(t_redirect *redirect, char *content)
 
 	len = ft_strlen(content);
 	redirect->here_delimiter = ft_strdup(content);
+	input = NULL;
 	while (TRUE)
 	{
 		ret = get_next_line(0, &input);
