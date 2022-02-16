@@ -5,7 +5,7 @@ int	ft_lstadd_token(t_list **token_list, t_token *new_token)
 	t_list	*new_list;
 
 	new_list = ft_lstnew(new_token);
-	if (new_list == NULL)
+	if (!new_list)
 		return (FAIL);
 	ft_lstadd_back(token_list, new_list);
 	return (SUCCESS);

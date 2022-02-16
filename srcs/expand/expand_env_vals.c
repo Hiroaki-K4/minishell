@@ -62,12 +62,12 @@ int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
 {
 	char	*status;
 
-	if (ft_strncmp(name, "$", ft_strlen(name) + 1) == 0)
+	if (!ft_strncmp(name, "$", ft_strlen(name) + 1))
 	{
 		if (ft_lstadd_word(&(e_state->token_list), name) == FAIL)
 			return (FAIL);
 	}
-	else if (ft_strncmp(name, "$?", ft_strlen(name) + 1) == 0)
+	else if (!ft_strncmp(name, "$?", ft_strlen(name) + 1))
 	{
 		status = ft_itoa(exit_status);
 		if (ft_lstadd_word(&(e_state->token_list), status) == FAIL)

@@ -88,7 +88,7 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc == 1)
 		minishell(envp, FALSE);
 	// We must delete this if-sentence when submitting the code.
-	if (argc == 2 && ft_strncmp(argv[1], "tokenize", ft_strlen(argv[1]) + 1) == 0)
+	if (argc == 2 && !ft_strncmp(argv[1], "tokenize", ft_strlen(argv[1]) + 1))
 		minishell(envp, TRUE);
 	return (EXIT_SUCCESS);
 }

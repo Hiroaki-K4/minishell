@@ -29,8 +29,9 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 		ft_lstiter(token_list, output_result);
 	}
 	expanded_list = NULL;
-	expand(token_list, &expanded_list, state->envs,
-		state->last_command_exit_status);
+	if (expand(token_list, &expanded_list, state->envs,
+		state->last_command_exit_status) == FAIL)
+		return (NULL);
 	ft_lstclear_all(&token_list, free);
 	if (is_debug_mode)
 	{
