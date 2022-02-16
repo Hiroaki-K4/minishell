@@ -16,7 +16,11 @@ char	*read_current_char(char *content, size_t current_pos, char *q_removed)
 	char	*str;
 
 	current_char = ft_substr(content, current_pos, 1);
+	if (!current_char)
+		return (NULL);
 	str = ft_strjoin(q_removed, current_char);
+	if (!str)
+		return (NULL);
 	free(current_char);
 	return (str);
 }
@@ -44,6 +48,8 @@ char	*get_q_removed(t_expand_state *e_state, t_token *token,
 			}
 			tmp = get_word_in_quote(token, e_state, word);
 		}
+		if (!tmp)
+			return (NULL);
 		free(word);
 		word = tmp;
 		e_state->current_pos++;
@@ -69,6 +75,8 @@ t_list	*check_quote(t_expand_state *e_state)
 		if (!empty)
 			return (NULL);
 		quote_removed = get_q_removed(e_state, token, empty, NULL);
+		if (!quote_removed)
+			return (NULL);
 		q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed),
 				token->attr);
 		free(quote_removed);

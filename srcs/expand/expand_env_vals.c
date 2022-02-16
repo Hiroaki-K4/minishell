@@ -27,6 +27,8 @@ t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state)
 	{
 		add_word = ft_substr(e_state->original_token->content, e_state->start,
 				e_state->current_pos - e_state->start);
+		if (!add_word)
+			return (NULL);
 		ft_lstadd_word(&(e_state->token_list), add_word);
 		free(add_word);
 	}
@@ -44,7 +46,8 @@ int	get_env_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 		if (e_state->quote_state == NORMAL)
 		{
 			tmp_list = NULL;
-			tokenize(value, &tmp_list);
+			if (tokenize(value, &tmp_list) == FAIL)
+				return (FAIL);
 			ft_lstadd_last(&(e_state->token_list), tmp_list);
 		}
 		else
@@ -70,6 +73,8 @@ int	check_name(char *name, t_envs *envs, t_expand_state *e_state,
 	else if (!ft_strncmp(name, "$?", ft_strlen(name) + 1))
 	{
 		status = ft_itoa(exit_status);
+		if (!status)
+			return (FAIL);
 		if (ft_lstadd_word(&(e_state->token_list), status) == FAIL)
 			return (FAIL);
 		free(status);
@@ -95,8 +100,12 @@ int	expand_env_vals(t_expand_state *e_state, t_envs *envs, int exit_status)
 			&& e_state->quote_state != IN_QUOTE)
 		{
 			e_state = fill_diff_between_start_curernt_pos(e_state);
+			if (!e_state)
+				return (FAIL);
 			e_state->current_pos++;
 			name = get_env_name(e_state, e_state->current_pos);
+			if (!name)
+				return (FAIL);
 			if (check_name(name, envs, e_state, exit_status) == FAIL)
 				return (FAIL);
 			free(name);
@@ -106,5 +115,7 @@ int	expand_env_vals(t_expand_state *e_state, t_envs *envs, int exit_status)
 		e_state->current_pos++;
 	}
 	e_state = fill_diff_between_start_curernt_pos(e_state);
+	if (!e_state)
+		return (FAIL);
 	return (SUCCESS);
 }

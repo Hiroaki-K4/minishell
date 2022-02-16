@@ -1,9 +1,7 @@
 #include "minishell.h"
 
-t_token_kind	get_token_kind_about_redirect(char *line, int pos, size_t *i)
+t_token_kind	get_token_kind_about_redirect(char *line, int pos, size_t *i, t_token_kind token_kind)
 {
-	t_token_kind	token_kind;
-
 	if ((line[pos] == '<' && line[pos + 1] == '<'))
 	{
 		*i += 2;
@@ -31,6 +29,7 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
+	token_kind = TK_WORD;
 	if (line[pos] == '|')
 	{
 		*i += 1;
@@ -43,7 +42,7 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 		token_kind = TK_IO_NUMBER;
 	}
 	else if (is_redirect_char(line[pos]))
-		token_kind = get_token_kind_about_redirect(line, pos, i);
+		token_kind = get_token_kind_about_redirect(line, pos, i, token_kind);
 	else if (line[pos] == ' ' || line[pos] == '\t' || line[pos] == '\n')
 	{
 		while (line[pos + *i] && (line[pos + *i] == ' '
@@ -51,7 +50,5 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 			*i += 1;
 		token_kind = TK_WORD;
 	}
-	else
-		token_kind = TK_WORD;
 	return (token_kind);
 }
