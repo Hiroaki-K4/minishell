@@ -16,6 +16,8 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 
 	token_list = NULL;
 	trimed = ft_strtrim(line, " \t");
+	if (!trimed)
+		return (NULL);
 	if (tokenize(trimed, &token_list) == FAIL)
 		return (NULL);
 	free(trimed);

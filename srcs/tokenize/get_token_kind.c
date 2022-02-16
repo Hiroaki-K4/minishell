@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-t_token_kind	get_token_kind_about_redirect(char *line, int pos, size_t *i, t_token_kind token_kind)
+t_token_kind	get_token_kind_about_redirect(char *line, int pos, size_t *i,
+	t_token_kind token_kind)
 {
 	if ((line[pos] == '<' && line[pos + 1] == '<'))
 	{
