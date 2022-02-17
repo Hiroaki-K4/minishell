@@ -43,12 +43,9 @@ int	read_heredocument(t_redirect *redirect, char *content)
 	while (TRUE)
 	{
 		ret = get_next_line(0, &input);
-		if (ret <= 0)
-		{
-			free(input);
+		if (ret < 0)
 			return (FAIL);
-		}
-		if (!ft_strncmp(input, redirect->here_delimiter, len + 1))
+		if (ret == 0 || !ft_strncmp(input, redirect->here_delimiter, len + 1))
 			break ;
 		concat_heredocument(redirect, &input);
 	}
