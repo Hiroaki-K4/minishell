@@ -2,7 +2,7 @@
 
 void	exit_with_error(char *msg)
 {
-	ft_putstr_fd("minishell: ", 1);
+	ft_putstr_fd("minishell: ", 2);
 	perror(msg);
 	exit(errno);
 }

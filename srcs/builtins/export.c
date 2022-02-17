@@ -2,11 +2,13 @@
 
 int	get_env_pos(char *env_name, t_envs *envs)
 {
+	int		ret;
 	size_t	i;
 	size_t	j;
 	char	*name;
 
 	i = 0;
+	ret = -1;
 	while (envs->content[i])
 	{
 		j = 0;
@@ -14,16 +16,22 @@ int	get_env_pos(char *env_name, t_envs *envs)
 			j++;
 		name = ft_substr(envs->content[i], 0, j);
 		if (!ft_strncmp(env_name, name, ft_strlen(env_name) + 1))
-			return (i);
+		{
+			free(name);
+			ret = i;
+			break ;
+		}
+		free(name);
 		i++;
 	}
-	return (-1);
+	return (ret);
 }
 
 int	set_env(char *name, char *val, t_envs **envs)
 {
 	int		env_pos;
 	size_t	i;
+	char	*tmp;
 	char	**new_envs;
 
 	env_pos = get_env_pos(name, *envs);
@@ -32,7 +40,9 @@ int	set_env(char *name, char *val, t_envs **envs)
 		if (val != NULL)
 		{
 			free((*envs)->content[env_pos]);
-			(*envs)->content[env_pos] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
+			tmp = ft_strjoin(name, "=");
+			(*envs)->content[env_pos] = ft_strjoin(tmp, val);
+			free(tmp);
 		}
 	}
 	else
@@ -49,7 +59,11 @@ int	set_env(char *name, char *val, t_envs **envs)
 		if (val == NULL)
 			new_envs[i] = ft_strdup(name);
 		else
-			new_envs[i] = ft_strdup(ft_strjoin(ft_strjoin(name, "="), val));
+		{
+			tmp = ft_strjoin(name, "=");
+			new_envs[i] = ft_strjoin(tmp, val);
+			free(tmp);
+		}
 		new_envs[i + 1] = NULL;
 		free((*envs)->content);
 		(*envs)->content = new_envs;

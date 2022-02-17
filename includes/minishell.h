@@ -3,6 +3,7 @@
 
 # include <errno.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -16,6 +17,12 @@
 # define FALSE 0
 # define SUCCESS 0
 # define FAIL -1
+
+# define BUFFER_SIZE 10000
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
+# endif
+# define REDIRECT_PROMPT "> "
 
 typedef enum e_token_kind
 {
@@ -105,15 +112,15 @@ typedef struct s_global_state
 }	t_global_state;
 
 void			output_result(void *content);
+int				get_next_line(int fd, char **line);
 
 void			set_sigaction(struct sigaction *sa, void (*handler)(int));
 void			sigint_handler(int sig);
 void			sigint_handler2(int sig);
-void			sigquit_handler2(int sig);
-void			nop_handler(int sig);
-void			set_handlers(t_global_state *state);
-void			set_handlers2(t_global_state *state);
-void			set_handlers3(t_global_state *state);
+void			set_initial_handlers(t_global_state *state);
+void			set_parent_handlers(t_global_state *state);
+void			set_child_handlers(t_global_state *state);
+void			set_redirect_handlers(t_global_state *state);
 
 int				is_metacharacter_with_token_kind(char c);
 int				is_metacharacter_without_token_kind(char c);
@@ -131,9 +138,10 @@ int				ft_lstadd_last(t_list **lst, t_list *new);
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
-void			close_parent_pipe(int pipes[2], t_node *node, t_global_state *state);
+void			close_parent_pipe(int pipes[2], t_node *n, t_global_state *s);
 
-int				set_redirect(t_list **tokens, t_redirect *rd, t_envs *envs);
+int				read_heredocument(t_redirect *redirect, char *content);
+int				set_redirect(t_list **tokens, t_redirect *redirect);
 
 t_node			*preprocess(char *input, t_global_state *state, int debug);
 
@@ -172,6 +180,7 @@ int				is_command_token(t_list **token_list);
 t_node			*new_node(t_node *lhs, t_node *rhs, t_node_kind attr);
 int				consume_token(t_list **token_list, t_token_kind kind);
 
+void			wait_all_processes(t_global_state *state);
 int				execute_commands(t_node *node, int pipes[2], t_global_state *s);
 int				execute_pipe(t_node *ast, t_global_state *state);
 int				execute(t_node *ast, t_global_state *state);
@@ -179,7 +188,7 @@ char			**construct_argv(t_list *tokens, t_global_state *state);
 
 char			*search(char *path, t_envs *envs);
 
-int				is_special_builtin_command(char **argv, t_envs **envs, int *exit_status);
+int				is_special_builtin_command(char **argv, t_envs **envs, int *s);
 int				is_builtin_command(char **argv, t_envs *envs, int *exit_status);
 
 int				ft_echo(char **argv, t_envs *envs);

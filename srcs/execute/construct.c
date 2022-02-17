@@ -19,9 +19,9 @@ static void	init_redirect(t_redirect *redirect)
 
 static int	construct_redirects(t_list **tokens, t_global_state *state)
 {
-	char	*error_msg;
 	size_t	i;
 
+	set_redirect_handlers(state);
 	i = state->redirect_num - 1;
 	state->redirects[i] = (t_redirect *)malloc(sizeof(t_redirect));
 	if (state->redirects[i] == NULL)
@@ -33,13 +33,7 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 			= ft_atoi(((t_token *)((*tokens)->content))->content);
 		*tokens = (*tokens)->next;
 	}
-	if (set_redirect(tokens, state->redirects[i], state->envs) == FAIL)
-	{
-		error_msg = "minishell: syntax error near unexpected token `newline`";
-		ft_putstr_fd(error_msg, 2);
-		return (FAIL);
-	}
-	return (SUCCESS);
+	return (set_redirect(tokens, state->redirects[i]));
 }
 
 static size_t	consume_words(t_list **tokens, char **argv, size_t start)
@@ -68,6 +62,7 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 	argv = (char **)malloc(sizeof(char *) * (ft_lstsize(tokens) + 1));
 	if (argv == NULL)
 		return (NULL);
+	ft_bzero(argv, sizeof(char *) * (ft_lstsize(tokens) + 1));
 	while (TRUE)
 	{
 		idx += consume_words(&tokens, argv, idx);
@@ -76,12 +71,7 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		state->redirect_num++;
 		if (construct_redirects(&tokens, state) == SUCCESS)
 			continue ;
-		while (*argv)
-		{
-			free(*argv);
-			argv++;
-		}
-		free(argv);
+		free_strings(argv);
 		return (NULL);
 	}
 	argv[idx] = NULL;

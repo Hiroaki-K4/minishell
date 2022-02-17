@@ -52,6 +52,7 @@ static void	concat_pwd(t_envs **envs, char **curpath)
 			tmp = ft_strjoin(tmp2, *curpath);
 			free(tmp2);
 		}
+		free(pwd);
 		free(*curpath);
 		*curpath = tmp;
 	}
@@ -65,6 +66,7 @@ static void	convert_curpath_to_canonical_form(char **curpath)
 
 int	ft_cd(char **argv, t_envs **envs)
 {
+	char	*tmp;
 	char	*curpath;
 
 	curpath = NULL;
@@ -82,8 +84,10 @@ int	ft_cd(char **argv, t_envs **envs)
 		free(curpath);
 		return (EXIT_FAILURE);
 	}
-	set_env("OLDPWD", get_env("PWD", *envs), envs);
+	tmp = get_env("PWD", *envs);
+	set_env("OLDPWD", tmp, envs);
 	set_env("PWD", curpath, envs);
+	free(tmp);
 	free(curpath);
 	return (EXIT_SUCCESS);
 }
