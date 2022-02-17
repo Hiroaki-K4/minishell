@@ -20,16 +20,5 @@ void	sigint_handler(int sig)
 void	sigint_handler2(int sig)
 {
 	(void)sig;
-	write(1, "\n", 1);
-}
-
-void	sigquit_handler2(int sig)
-{
-	(void)sig;
-	write(1, "Quit: 3\n", ft_strlen("Quit: 3\n"));
-}
-
-void	nop_handler(int sig)
-{
-	(void)sig;
+	write(1, "\b\b  \n", 5);
 }

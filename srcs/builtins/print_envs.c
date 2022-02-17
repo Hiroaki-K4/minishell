@@ -17,6 +17,8 @@ int	get_first_char_pos(char *word, char c)
 int	print_envs(t_envs *envs)
 {
 	size_t	i;
+	char	*tmp;
+	char	*tmp2;
 	char	*env_name;
 	char	*env_value;
 	char	**envs_for_print;
@@ -32,7 +34,13 @@ int	print_envs(t_envs *envs)
 		else
 		{
 			get_env_name_and_value(&env_name, &env_value, envs->content[i]);
-			envs_for_print[i] = ft_strjoin(env_name, ft_strjoin(ft_strjoin("=\"", env_value), "\""));
+			tmp = ft_strjoin("=\"", env_value);
+			tmp2 = ft_strjoin(tmp, "\"");
+			envs_for_print[i] = ft_strjoin(env_name, tmp2);
+			free(tmp);
+			free(tmp2);
+			free(env_name);
+			free(env_value);
 		}
 		if (!envs_for_print[i])
 			return (FAIL);
@@ -46,5 +54,6 @@ int	print_envs(t_envs *envs)
 		printf("declare -x %s\n", envs_for_print[i]);
 		i++;
 	}
+	free_strings(envs_for_print);
 	return (SUCCESS);
 }
