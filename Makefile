@@ -33,6 +33,7 @@ SRC := main.c \
 	   tokenize/get_token_kind.c \
 	   expand/expand.c \
 	   expand/expand_env_vals.c \
+	   expand/expand_env_vals_core.c \
 	   expand/check_quote.c \
 	   expand/remove_quote.c \
 	   signal/signal_handler.c \

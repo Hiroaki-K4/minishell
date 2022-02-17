@@ -48,8 +48,6 @@ char	*get_q_removed(t_expand_state *e_state, t_token *token,
 			}
 			tmp = get_word_in_quote(token, e_state, word);
 		}
-		if (!tmp)
-			return (NULL);
 		free(word);
 		word = tmp;
 		e_state->current_pos++;
