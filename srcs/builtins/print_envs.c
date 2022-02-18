@@ -1,10 +1,8 @@
 #include "minishell.h"
 
-// TODO: Add error handling
-
 int	get_first_char_pos(char *word, char c)
 {
-	int pos;
+	int	pos;
 
 	pos = 0;
 	while (word[pos])
@@ -16,13 +14,33 @@ int	get_first_char_pos(char *word, char c)
 	return (-1);
 }
 
-int	print_envs(t_envs *envs)
+char	*make_envs_for_print(char *content)
 {
-	size_t	i;
 	char	*tmp;
 	char	*tmp2;
 	char	*env_name;
 	char	*env_value;
+	char	*envs_for_print;
+
+	if (ft_strchr(content, '=') == NULL)
+		envs_for_print = content;
+	else
+	{
+		get_env_name_and_value(&env_name, &env_value, content);
+		tmp = ft_strjoin("=\"", env_value);
+		tmp2 = ft_strjoin(tmp, "\"");
+		envs_for_print = ft_strjoin(env_name, tmp2);
+		free(tmp);
+		free(tmp2);
+		free(env_name);
+		free(env_value);
+	}
+	return (envs_for_print);
+}
+
+int	print_envs(t_envs *envs)
+{
+	size_t	i;
 	char	**envs_for_print;
 
 	envs_for_print = (char **)malloc(sizeof(char *) * (envs->envs_num + 1));
@@ -31,19 +49,7 @@ int	print_envs(t_envs *envs)
 	i = 0;
 	while (envs->content[i])
 	{
-		if (ft_strchr(envs->content[i], '=') == NULL)
-			envs_for_print[i] = envs->content[i];
-		else
-		{
-			get_env_name_and_value(&env_name, &env_value, envs->content[i]);
-			tmp = ft_strjoin("=\"", env_value);
-			tmp2 = ft_strjoin(tmp, "\"");
-			envs_for_print[i] = ft_strjoin(env_name, tmp2);
-			free(tmp);
-			free(tmp2);
-			free(env_name);
-			free(env_value);
-		}
+		envs_for_print[i] = make_envs_for_print(envs->content[i]);
 		if (!envs_for_print[i])
 			return (FAIL);
 		i++;

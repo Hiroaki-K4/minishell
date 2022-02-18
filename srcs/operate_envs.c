@@ -77,7 +77,8 @@ char	*get_env(char *name, t_envs *envs)
 	i = 0;
 	while (envs->content[i])
 	{
-		if (get_env_name_and_value(&env_name, &env_value, envs->content[i]) == FAIL)
+		if (get_env_name_and_value(&env_name, &env_value, envs->content[i])
+			== FAIL)
 			return (NULL);
 		if (!ft_strncmp(env_name, name, ft_strlen(env_name) + 1))
 		{

@@ -17,6 +17,7 @@ SRC := main.c \
 	   builtins/pwd.c \
 	   builtins/export.c \
 	   builtins/print_envs.c \
+	   builtins/set_env.c \
 	   builtins/unset.c \
 	   builtins/env.c \
 	   builtins/exit.c \
@@ -39,6 +40,7 @@ SRC := main.c \
 	   expand/expand_env_vals_core.c \
 	   expand/check_quote.c \
 	   expand/remove_quote.c \
+	   expand/make_e_state.c \
 	   signal/signal_handler.c \
 	   signal/set_handlers.c
 SRCS := $(notdir $(SRC))

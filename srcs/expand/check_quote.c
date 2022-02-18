@@ -55,31 +55,39 @@ char	*get_q_removed(t_expand_state *e_state, t_token *token,
 	return (word);
 }
 
+t_token	*make_quote_removed_token(t_expand_state *e_state, t_token *token)
+{
+	t_token			*q_removed;
+	char			*quote_removed;
+	char			*empty;
+
+	empty = ft_strdup("");
+	quote_removed = get_q_removed(e_state, token, empty, NULL);
+	if (!quote_removed)
+		return (NULL);
+	q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed),
+			token->attr);
+	if (!q_removed)
+		return (NULL);
+	free(quote_removed);
+	return (q_removed);
+}
+
 t_list	*check_quote(t_expand_state *e_state)
 {
 	t_token			*q_removed;
 	t_token			*token;
 	t_list			*expanded_list;
 	t_list			*tmp_list;
-	char			*quote_removed;
-	char			*empty;
 
 	expanded_list = NULL;
 	while (e_state->token_list != NULL)
 	{
 		token = (t_token *)e_state->token_list->content;
 		init_expand_state(e_state);
-		empty = ft_strdup("");
-		if (!empty)
-			return (NULL);
-		quote_removed = get_q_removed(e_state, token, empty, NULL);
-		if (!quote_removed)
-			return (NULL);
-		q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed),
-				token->attr);
+		q_removed = make_quote_removed_token(e_state, token);
 		if (!q_removed)
 			return (NULL);
-		free(quote_removed);
 		if (ft_lstadd_token(&expanded_list, q_removed) == FAIL)
 			return (NULL);
 		tmp_list = e_state->token_list->next;
