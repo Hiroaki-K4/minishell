@@ -169,9 +169,11 @@ t_expand_state	*expand_env_vals_core(t_expand_state *e_state, t_envs *envs,
 
 t_list			*check_quote(t_expand_state *e_state);
 
-char			*get_word_in_quote(t_token *token, t_expand_state *e_state, char *word);
+char			*get_word_in_quote(t_token *token, t_expand_state *e_state,
+					char *word);
 
-t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status);
+t_expand_state	*make_e_state(t_list *token_list, t_envs *envs,
+					int exit_status);
 
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);

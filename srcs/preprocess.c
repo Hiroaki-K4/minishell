@@ -8,6 +8,14 @@ void	output_result(void *content)
 	printf("content: %s attr: %d\n", (char *)token->content, token->attr);
 }
 
+void	print_debug(t_list *token_list, t_list *expanded_list)
+{
+	printf("~~~~~After tokenize~~~~~\n");
+	ft_lstiter(token_list, output_result);
+	printf("~~~~~After expand~~~~~\n");
+	ft_lstiter(expanded_list, output_result);
+}
+
 t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 {
 	char		*trimed;
@@ -25,20 +33,12 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 		return (NULL);
 	if (check_syntax(token_list) == FAIL)
 		return (NULL);
-	if (is_debug_mode)
-	{
-		printf("~~~~~After tokenize~~~~~\n");
-		ft_lstiter(token_list, output_result);
-	}
 	expanded_list = NULL;
 	if (expand(token_list, &expanded_list, state->envs,
-		state->last_command_exit_status) == FAIL)
+			state->last_command_exit_status) == FAIL)
 		return (NULL);
-	ft_lstclear_all(&token_list, free);
 	if (is_debug_mode)
-	{
-		printf("~~~~~After expand~~~~~\n");
-		ft_lstiter(expanded_list, output_result);
-	}
+		print_debug(token_list, expanded_list);
+	ft_lstclear_all(&token_list, free);
 	return (parse(&expanded_list));
 }

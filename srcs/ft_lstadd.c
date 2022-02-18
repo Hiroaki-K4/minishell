@@ -40,10 +40,23 @@ int	ft_lstadd_word(t_list **lst, char *new_word)
 	return (SUCCESS);
 }
 
-int	ft_lstadd_last(t_list **lst, t_list *new)
+char	*make_last_token_content(t_token *last_token, t_list *new)
 {
 	char	*tmp;
 	t_token	*new_token;
+	char	*last_token_content;
+
+	new_token = (t_token *)new->content;
+	tmp = ft_strjoin(last_token->content, new_token->content);
+	if (!tmp)
+		return (NULL);
+	free(last_token->content);
+	last_token_content = tmp;
+	return (last_token_content);
+}
+
+int	ft_lstadd_last(t_list **lst, t_list *new)
+{
 	t_token	*last_token;
 	t_list	*last_lst;
 
@@ -53,13 +66,8 @@ int	ft_lstadd_last(t_list **lst, t_list *new)
 		return (SUCCESS);
 	}
 	last_lst = ft_lstlast(*lst);
-	new_token = (t_token *)new->content;
 	last_token = (t_token *)last_lst->content;
-	tmp = ft_strjoin(last_token->content, new_token->content);
-	if (!tmp)
-		return (FAIL);
-	free(last_token->content);
-	last_token->content = tmp;
+	last_token->content = make_last_token_content(last_token, new);
 	if (new->next)
 	{
 		last_lst->next = new->next;

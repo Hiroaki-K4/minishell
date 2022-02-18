@@ -2,6 +2,8 @@
 
 void	init_global_state(t_global_state *state, char **envp)
 {
+	int	i;
+
 	set_initial_handlers(state);
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
@@ -13,7 +15,7 @@ void	init_global_state(t_global_state *state, char **envp)
 	state->redirects = (t_redirect **)malloc(sizeof(t_redirect *) * (10 + 1));  // TODO: hard coded!!!
 	if (state->redirects == NULL)
 		exit_with_error("initialize state error");
-	int i = 0;
+	i = 0;
 	while (i < 11)
 	{
 		state->redirects[i] = NULL;
@@ -37,8 +39,8 @@ void	refresh_global_state(t_global_state *state)
 	ft_bzero(state->pids, 10);
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
-	i = 0;
-	while (i < 11)
+	i = -1;
+	while (++i < 11)
 	{
 		if (state->redirects[i])
 		{
@@ -49,7 +51,6 @@ void	refresh_global_state(t_global_state *state)
 			free(state->redirects[i]);
 			state->redirects[i] = NULL;
 		}
-		i++;
 	}
 	state->redirect_num = 0;
 }
@@ -87,7 +88,6 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	if (argc == 1)
 		minishell(envp, FALSE);
-	// We must delete this if-sentence when submitting the code.
 	if (argc == 2 && !ft_strncmp(argv[1], "tokenize", ft_strlen(argv[1]) + 1))
 		minishell(envp, TRUE);
 	return (EXIT_SUCCESS);
