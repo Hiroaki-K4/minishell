@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+// TODO: Add error handling
+
 int	get_first_char_pos(char *word, char c)
 {
 	int pos;

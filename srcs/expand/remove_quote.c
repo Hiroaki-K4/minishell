@@ -7,7 +7,11 @@ char	*remove_quote(t_expand_state *e_state, t_token *token, char *progress)
 
 	extracted = ft_substr(token->content, e_state->start + 1,
 			e_state->current_pos - e_state->start - 1);
+	if (!extracted)
+		return (NULL);
 	quote_removed = ft_strjoin(progress, extracted);
+	if (!quote_removed)
+		return (NULL);
 	free(extracted);
 	e_state->quote_state = NORMAL;
 	return (quote_removed);
@@ -25,5 +29,7 @@ char	*get_word_in_quote(t_token *token, t_expand_state *e_state, char *word)
 		tmp = remove_quote(e_state, token, word);
 	else
 		tmp = ft_strdup(word);
+	if (!tmp)
+		return (NULL);
 	return (tmp);
 }

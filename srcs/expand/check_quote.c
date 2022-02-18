@@ -16,7 +16,11 @@ char	*read_current_char(char *content, size_t current_pos, char *q_removed)
 	char	*str;
 
 	current_char = ft_substr(content, current_pos, 1);
+	if (!current_char)
+		return (NULL);
 	str = ft_strjoin(q_removed, current_char);
+	if (!str)
+		return (NULL);
 	free(current_char);
 	return (str);
 }
@@ -58,17 +62,26 @@ t_list	*check_quote(t_expand_state *e_state)
 	t_list			*expanded_list;
 	t_list			*tmp_list;
 	char			*quote_removed;
+	char			*empty;
 
 	expanded_list = NULL;
 	while (e_state->token_list != NULL)
 	{
 		token = (t_token *)e_state->token_list->content;
 		init_expand_state(e_state);
-		quote_removed = get_q_removed(e_state, token, ft_strdup(""), NULL);
+		empty = ft_strdup("");
+		if (!empty)
+			return (NULL);
+		quote_removed = get_q_removed(e_state, token, empty, NULL);
+		if (!quote_removed)
+			return (NULL);
 		q_removed = make_token(quote_removed, 0, ft_strlen(quote_removed),
 				token->attr);
+		if (!q_removed)
+			return (NULL);
 		free(quote_removed);
-		ft_lstadd_token(&expanded_list, q_removed);
+		if (ft_lstadd_token(&expanded_list, q_removed) == FAIL)
+			return (NULL);
 		tmp_list = e_state->token_list->next;
 		ft_lstdelone_all(e_state->token_list, free);
 		e_state->token_list = tmp_list;

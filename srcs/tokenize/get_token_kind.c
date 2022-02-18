@@ -4,11 +4,9 @@ t_token_kind	get_token_kind_about_redirect(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
+	token_kind = TK_REDIRECT_DLESS;
 	if ((line[pos] == '<' && line[pos + 1] == '<'))
-	{
 		*i += 2;
-		token_kind = TK_REDIRECT_DLESS;
-	}
 	else if (line[pos] == '>' && line[pos + 1] == '>')
 	{
 		*i += 2;
@@ -31,6 +29,7 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 {
 	t_token_kind	token_kind;
 
+	token_kind = TK_WORD;
 	if (line[pos] == '|')
 	{
 		*i += 1;
@@ -49,9 +48,6 @@ t_token_kind	get_token_kind(char *line, int pos, size_t *i)
 		while (line[pos + *i] && (line[pos + *i] == ' '
 				|| line[pos + *i] == '\t' || line[pos + *i] == '\n'))
 			*i += 1;
-		token_kind = TK_WORD;
 	}
-	else
-		token_kind = TK_WORD;
 	return (token_kind);
 }

@@ -134,7 +134,7 @@ void			ft_lstclear_all(t_list **lst, void (*del)(void*));
 
 int				ft_lstadd_token(t_list **token_list, t_token *new_token);
 int				ft_lstadd_word(t_list **lst, char *new_word);
-void			ft_lstadd_last(t_list **lst, t_list *new);
+int				ft_lstadd_last(t_list **lst, t_list *new);
 
 void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
@@ -161,6 +161,10 @@ int				separate_by_null_char(char *line, t_list **token_list,
 int				check_syntax(t_list *token_list);
 
 int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
+					int exit_status);
+
+t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state);
+t_expand_state	*expand_env_vals_core(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
 
 t_list			*check_quote(t_expand_state *e_state);
@@ -206,7 +210,7 @@ int				get_first_char_pos(char *word, char c);
 
 int				init_envs(t_envs **envs, char **envp);
 char			**sort_envs(char **dup_env);
-void			get_env_name_and_value(char **name, char **value, char *env);
+int				get_env_name_and_value(char **name, char **value, char *env);
 char			*get_env(char *name, t_envs *envs);
 int				set_env(char *name, char *value, t_envs **envs);
 

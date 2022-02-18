@@ -15,7 +15,7 @@ int	get_env_pos(char *env_name, t_envs *envs)
 		while (envs->content[i][j] && envs->content[i][j] != '=')
 			j++;
 		name = ft_substr(envs->content[i], 0, j);
-		if (ft_strncmp(env_name, name, ft_strlen(env_name) + 1) == 0)
+		if (!ft_strncmp(env_name, name, ft_strlen(env_name) + 1))
 		{
 			free(name);
 			ret = i;

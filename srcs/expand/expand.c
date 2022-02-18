@@ -12,6 +12,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 {
 	char	*empty;
 	t_token	*token;
+	t_token	*new_token;
 
 	while (token_list != NULL)
 	{
@@ -19,8 +20,13 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 		if (ft_strchr(e_state->original_token->content, '$') != NULL)
 		{
 			empty = ft_strdup("");
-			ft_lstadd_token(&(e_state->token_list), make_token(empty,
-					0, 0, TK_WORD));
+			if (!empty)
+				return (NULL);
+			new_token = make_token(empty, 0, 0, TK_WORD);
+			if (!new_token)
+				return (NULL);
+			if (ft_lstadd_token(&(e_state->token_list), new_token) == FAIL)
+				return (NULL);
 			free(empty);
 			if (expand_env_vals(e_state, envs, exit_status) == FAIL)
 				return (NULL);
@@ -28,9 +34,14 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 		else
 		{
 			token = (t_token *)malloc(sizeof(t_token));
+			if (!token)
+				return (NULL);
 			token->content = ft_strdup(e_state->original_token->content);
+			if (!token->content)
+				return (NULL);
 			token->attr = e_state->original_token->attr;
-			ft_lstadd_token(&(e_state->token_list), token);
+			if (ft_lstadd_token(&(e_state->token_list), token) == FAIL)
+				return (NULL);
 		}
 		token_list = token_list->next;
 	}
@@ -42,7 +53,7 @@ int	is_content_empty(t_list *list, char *word)
 	t_token	*token;
 
 	token = (t_token *)list->content;
-	if (ft_strncmp(token->content, word, ft_strlen(token->content) + 1) == 0)
+	if (!ft_strncmp(token->content, word, ft_strlen(token->content) + 1))
 		return (TRUE);
 	return (FALSE);
 }
@@ -78,6 +89,8 @@ int	expand(t_list *token_list, t_list **expanded_list, t_envs *envs,
 	if (!e_state)
 		return (FAIL);
 	*expanded_list = check_quote(e_state);
+	if (!*expanded_list)
+		return (FAIL);
 	free(e_state);
 	return (SUCCESS);
 }
