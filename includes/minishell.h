@@ -171,6 +171,8 @@ t_list			*check_quote(t_expand_state *e_state);
 
 char			*get_word_in_quote(t_token *token, t_expand_state *e_state, char *word);
 
+t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status);
+
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);
 void			init_expand_state(t_expand_state *e_state);
@@ -207,6 +209,8 @@ void			print_command_error(char *command, char *msg);
 int				print_envs(t_envs *envs);
 int				get_env_pos(char *env_name, t_envs *envs);
 int				get_first_char_pos(char *word, char c);
+
+int				set_env(char *name, char *val, t_envs **envs);
 
 int				init_envs(t_envs **envs, char **envp);
 char			**sort_envs(char **dup_env);
