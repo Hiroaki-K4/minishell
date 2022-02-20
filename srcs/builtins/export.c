@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+void	free_double_word(char *word1, char *word2)
+{
+	free(word1);
+	free(word2);
+}
+
 int	handle_word_after_equal(char **argv, size_t i, t_envs **envs)
 {
 	size_t	j;
@@ -13,15 +19,16 @@ int	handle_word_after_equal(char **argv, size_t i, t_envs **envs)
 		{
 			if (j == 0)
 				return (FAIL);
-			else
+			name = ft_substr(argv[i], 0, j);
+			val = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
+			if (val == NULL)
+				val = ft_strdup("");
+			if (set_env(name, val, envs) == FAIL)
 			{
-				name = ft_substr(argv[i], 0, j);
-				val = ft_substr(argv[i], j + 1, ft_strlen(argv[i]) - j);
-				if (val == NULL)
-					val = ft_strdup("");
-				if (set_env(name, val, envs) == FAIL)
-					return (FAIL);
+				free_double_word(name, val);
+				return (FAIL);
 			}
+			free_double_word(name, val);
 		}
 		j++;
 	}
