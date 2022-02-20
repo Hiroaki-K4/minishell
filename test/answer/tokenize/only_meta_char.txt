@@ -1,0 +1,16 @@
+minishell> |
+minishell> exit
+minishell> >
+minishell> exit
+minishell> >>
+minishell> exit
+minishell> <
+minishell> exit
+minishell> <
+minishell> exit
+minishell> '
+minishell: syntax error: unexpected end of file
+minishell> exit
+minishell> "
+minishell: syntax error: unexpected end of file
+minishell> exit
