@@ -1,0 +1,8 @@
+# simple pattern without space
+echo "|" | ./minishell tokenize
+echo ">" | ./minishell tokenize
+echo ">>" | ./minishell tokenize
+echo "<" | ./minishell tokenize
+echo "<" | ./minishell tokenize
+echo "'" | ./minishell tokenize
+echo '"' | ./minishell tokenize
