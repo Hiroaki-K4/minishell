@@ -33,10 +33,7 @@ t_list	*get_tokenized_list(char *line)
 	}
 	free(trimed);
 	if (token_list == NULL)
-	{
-		free(trimed);
 		return (NULL);
-	}
 	return (token_list);
 }
 
