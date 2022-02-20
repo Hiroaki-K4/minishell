@@ -32,8 +32,6 @@ t_list	*get_tokenized_list(char *line)
 		return (NULL);
 	}
 	free(trimed);
-	if (token_list == NULL)
-		return (NULL);
 	return (token_list);
 }
 
@@ -43,7 +41,7 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 	t_list		*expanded_list;
 
 	token_list = get_tokenized_list(line);
-	if (!token_list)
+	if (token_list == NULL)
 		return (NULL);
 	if (check_syntax(token_list) == FAIL)
 	{
