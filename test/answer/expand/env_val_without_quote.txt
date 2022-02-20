@@ -5,14 +5,16 @@ content: $OUR_MINISHELL attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: Beatiful attr: 0
-minishell> minishell> echo $OUR_MINISHELL$OUR_MINISHELL
+minishell> exit
+minishell> echo $OUR_MINISHELL$OUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $OUR_MINISHELL$OUR_MINISHELL attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: BeatifulBeatiful attr: 0
-minishell> minishell> echo $OUR_MINISHELL $OUR_MINISHELL
+minishell> exit
+minishell> echo $OUR_MINISHELL $OUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $OUR_MINISHELL attr: 0
@@ -21,37 +23,42 @@ content: $OUR_MINISHELL attr: 0
 content: echo attr: 0
 content: Beatiful attr: 0
 content: Beatiful attr: 0
-minishell> minishell> echo $OUR_MINISHELLa
+minishell> exit
+minishell> echo $OUR_MINISHELLa
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $OUR_MINISHELLa attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
-minishell> minishell> echo $aOUR_MINISHELL
+minishell> exit
+minishell> echo $aOUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $aOUR_MINISHELL attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
-minishell> minishell> echo a$OUR_MINISHELL
+minishell> exit
+minishell> echo a$OUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: a$OUR_MINISHELL attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: aBeatiful attr: 0
-minishell> minishell> echo a$OUR_MINISHELLa
+minishell> exit
+minishell> echo a$OUR_MINISHELLa
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: a$OUR_MINISHELLa attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: a attr: 0
-minishell> minishell> echo $OUR_MINISHELL$?$OUR_MINISHELL
+minishell> exit
+minishell> echo $OUR_MINISHELL$?$OUR_MINISHELL
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $OUR_MINISHELL$?$OUR_MINISHELL attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: Beatiful0Beatiful attr: 0
-minishell> 
+minishell> exit

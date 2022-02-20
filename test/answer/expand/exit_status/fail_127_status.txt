@@ -1,4 +1,4 @@
 minishell> aaaa
 minishell> echo $?
 127
-minishell> 
+minishell> exit
