@@ -62,6 +62,7 @@ static void	process_input(char *input, t_global_state *state, int is_debug_mode)
 		return ;
 	if (!is_debug_mode)
 		execute(ast, state);
+	free_ast(ast);
 	add_history(input);
 }
 
