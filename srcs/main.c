@@ -34,8 +34,6 @@ static void	refresh_global_state(t_global_state *state)
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
-	free(state->pids);
-	state->pids = (int *)malloc(sizeof(int) * (100 + 1));
 	ft_bzero(state->pids, (100 + 1) * sizeof(int));
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
@@ -65,8 +63,6 @@ static void	process_input(char *input, t_global_state *state, int is_debug_mode)
 	if (!is_debug_mode)
 		execute(ast, state);
 	add_history(input);
-	free(input);
-	refresh_global_state(state);
 }
 
 static void	minishell(char *envp[], int is_debug_mode)
@@ -86,6 +82,8 @@ static void	minishell(char *envp[], int is_debug_mode)
 		}
 		else if (ft_strlen(input) > 0)
 			process_input(input, &state, is_debug_mode);
+		free(input);
+		refresh_global_state(&state);
 	}
 }
 
