@@ -6,28 +6,32 @@ content: $? attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: 0 attr: 0
-minishell> minishell> echo $?
+minishell> exit
+minishell> echo $?
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $? attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: 1 attr: 0
-minishell> minishell> echo $?
+minishell> exit
+minishell> echo $?
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $? attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: 127 attr: 0
-minishell> minishell> echo $?
+minishell> exit
+minishell> echo $?
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: $? attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: 127 attr: 0
-minishell> minishell> ls aaaa | echo $?
+minishell> exit
+minishell> ls aaaa | echo $?
 ~~~~~After tokenize~~~~~
 content: ls attr: 0
 content: aaaa attr: 0
@@ -40,4 +44,4 @@ content: aaaa attr: 0
 content: | attr: 2
 content: echo attr: 0
 content: 0 attr: 0
-minishell> 
+minishell> exit

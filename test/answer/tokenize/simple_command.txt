@@ -5,11 +5,12 @@ content: "abc" attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: abc attr: 0
-minishell> minishell> echo 'abc'
+minishell> exit
+minishell> echo 'abc'
 ~~~~~After tokenize~~~~~
 content: echo attr: 0
 content: 'abc' attr: 0
 ~~~~~After expand~~~~~
 content: echo attr: 0
 content: abc attr: 0
-minishell> 
+minishell> exit

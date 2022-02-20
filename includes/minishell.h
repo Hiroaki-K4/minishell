@@ -188,6 +188,7 @@ void			wait_all_processes(t_global_state *state);
 int				execute_commands(t_node *node, int pipes[2], t_global_state *s);
 int				execute_pipe(t_node *ast, t_global_state *state);
 int				execute(t_node *ast, t_global_state *state);
+void			free_ast(t_node *ast);
 char			**construct_argv(t_list *tokens, t_global_state *state);
 
 char			*search(char *path, t_envs *envs);

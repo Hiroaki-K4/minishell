@@ -7,7 +7,8 @@ content: b attr: 0
 content: a attr: 0
 content: | attr: 2
 content: b attr: 0
-minishell> minishell> a>b
+minishell> exit
+minishell> a>b
 ~~~~~After tokenize~~~~~
 content: a attr: 0
 content: > attr: 4
@@ -16,7 +17,8 @@ content: b attr: 0
 content: a attr: 0
 content: > attr: 4
 content: b attr: 0
-minishell> minishell> a<b
+minishell> exit
+minishell> a<b
 ~~~~~After tokenize~~~~~
 content: a attr: 0
 content: < attr: 3
@@ -25,7 +27,8 @@ content: b attr: 0
 content: a attr: 0
 content: < attr: 3
 content: b attr: 0
-minishell> minishell> a>>b
+minishell> exit
+minishell> a>>b
 ~~~~~After tokenize~~~~~
 content: a attr: 0
 content: >> attr: 6
@@ -34,7 +37,8 @@ content: b attr: 0
 content: a attr: 0
 content: >> attr: 6
 content: b attr: 0
-minishell> minishell> a<<b
+minishell> exit
+minishell> a<<b
 ~~~~~After tokenize~~~~~
 content: a attr: 0
 content: << attr: 5
@@ -43,4 +47,4 @@ content: b attr: 0
 content: a attr: 0
 content: << attr: 5
 content: b attr: 0
-minishell> 
+minishell> exit

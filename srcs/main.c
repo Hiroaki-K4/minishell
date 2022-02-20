@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	init_global_state(t_global_state *state, char **envp)
+static void	init_global_state(t_global_state *state, char **envp)
 {
 	int	i;
 
@@ -8,15 +8,15 @@ void	init_global_state(t_global_state *state, char **envp)
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
-	state->pids = (int *)malloc(sizeof(int) * 10);  // TODO: hard coded!!!
+	state->pids = (int *)malloc(sizeof(int) * (100 + 1));
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
 	state->last_command_exit_status = 0;
-	state->redirects = (t_redirect **)malloc(sizeof(t_redirect *) * (10 + 1));  // TODO: hard coded!!!
+	state->redirects = (t_redirect **)malloc(sizeof(t_redirect *) * (100 + 1));
 	if (state->redirects == NULL)
 		exit_with_error("initialize state error");
 	i = 0;
-	while (i < 11)
+	while (i < 101)
 	{
 		state->redirects[i] = NULL;
 		i++;
@@ -26,7 +26,7 @@ void	init_global_state(t_global_state *state, char **envp)
 		printf("init_env error\n");
 }
 
-void	refresh_global_state(t_global_state *state)
+static void	refresh_global_state(t_global_state *state)
 {
 	size_t	i;
 
@@ -34,13 +34,11 @@ void	refresh_global_state(t_global_state *state)
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
 	state->process_count = 0;
-	free(state->pids);
-	state->pids = (int *)malloc(sizeof(int) * 10);
-	ft_bzero(state->pids, 10);
+	ft_bzero(state->pids, (100 + 1) * sizeof(int));
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
 	i = -1;
-	while (++i < 11)
+	while (++i < 101)
 	{
 		if (state->redirects[i])
 		{
@@ -55,10 +53,22 @@ void	refresh_global_state(t_global_state *state)
 	state->redirect_num = 0;
 }
 
-void	minishell(char *envp[], int is_debug_mode)
+static void	process_input(char *input, t_global_state *state, int is_debug_mode)
+{
+	t_node	*ast;
+
+	ast = preprocess(input, state, is_debug_mode);
+	if (ast == NULL)
+		return ;
+	if (!is_debug_mode)
+		execute(ast, state);
+	free_ast(ast);
+	add_history(input);
+}
+
+static void	minishell(char *envp[], int is_debug_mode)
 {
 	char				*input;
-	t_node				*ast;
 	t_global_state		state;
 
 	input = NULL;
@@ -67,17 +77,12 @@ void	minishell(char *envp[], int is_debug_mode)
 	{
 		input = readline("minishell> ");
 		if (input == NULL)
-			exit(SUCCESS);  // TODO: when exitting, echo "exit"
-		else if (ft_strlen(input) > 0)
 		{
-			ast = preprocess(input, &state, is_debug_mode);
-			if (ast == NULL)
-				continue ;
-			(void)envp;
-			if (!is_debug_mode)
-				execute(ast, &state);
-			add_history(input);
+			ft_putstr_fd("exit\n", 1);
+			exit(SUCCESS);
 		}
+		else if (ft_strlen(input) > 0)
+			process_input(input, &state, is_debug_mode);
 		free(input);
 		refresh_global_state(&state);
 	}

@@ -2,4 +2,4 @@ minishell> ls aaaa | ls Makefile
 Makefile
 minishell> echo $?
 0
-minishell> 
+minishell> exit

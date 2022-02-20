@@ -1,5 +1,6 @@
 minishell> exit 1 | echo $?
 0
-minishell> minishell> cd aaaa | echo $?
+minishell> exit
+minishell> cd aaaa | echo $?
 0
-minishell> 
+minishell> exit
