@@ -27,12 +27,12 @@ int	remove_env(int index, t_envs **envs)
 	{
 		if (i != (size_t)index)
 		{
-			tmp[pos] = (*envs)->content[i];
+			tmp[pos] = ft_strdup((*envs)->content[i]);
 			pos++;
 		}
 		i++;
 	}
-	tmp[i] = NULL;
+	tmp[pos] = NULL;
 	free_strings((*envs)->content);
 	(*envs)->content = tmp;
 	(*envs)->envs_num--;
@@ -53,9 +53,7 @@ int	ft_unset(char **argv, t_envs **envs)
 			if (index != -1)
 			{
 				if (remove_env(index, envs) == FAIL)
-				{
 					return (EXIT_FAILURE);
-				}
 			}
 			i++;
 		}
