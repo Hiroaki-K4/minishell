@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:26:15 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:26:16 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/21 23:23:18 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*make_envs_for_print(char *content)
 	char	*envs_for_print;
 
 	if (ft_strchr(content, '=') == NULL)
-		envs_for_print = content;
+		envs_for_print = ft_strdup(content);
 	else
 	{
 		get_env_name_and_value(&env_name, &env_value, content);
