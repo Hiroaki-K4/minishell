@@ -1,0 +1,8 @@
+echo 'exit aaa' | ./minishell
+echo 'exit aaa bbb' | ./minishell
+echo 'exit 1 bbb' | ./minishell
+echo 'exit 4a' | ./minishell
+echo 'exit 9223372036854775807' | ./minishell
+echo 'exit 9223372036854775808' | ./minishell
+echo 'exit -9223372036854775808' | ./minishell
+echo 'exit -9223372036854775809' | ./minishell

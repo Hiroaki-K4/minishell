@@ -79,6 +79,18 @@ for fp in `ls test/case/expand/exit_status`; do
 	check_result "exit_status" $fp
 done
 
+# Test Execute command
+rm -rf test/result/execute
+mkdir -p test/result/execute
+for fp in `ls test/case/execute`; do
+	while read line
+	do
+		eval ${line} >> test/result/execute/$fp 2>&1
+	done < test/case/execute/$fp
+	diff test/result/execute/$fp test/answer/execute/$fp
+	check_result "execute" $fp
+done
+
 # Test Syntax checker
 # rm -f test/result/test_syntax_checker.txt
 # while read line
