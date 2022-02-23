@@ -1,0 +1,23 @@
+minishell> exit aaa
+exit
+minishell: exit: aaa: numeric argument required
+minishell> exit aaa bbb
+exit
+minishell: exit: aaa: numeric argument required
+minishell> exit 1 bbb
+exit
+minishell: exit: too many arguments
+minishell> exit
+minishell> exit 4a
+exit
+minishell: exit: 4a: numeric argument required
+minishell> exit 9223372036854775807
+exit
+minishell> exit 9223372036854775808
+exit
+minishell: exit: 9223372036854775808: numeric argument required
+minishell> exit -9223372036854775808
+exit
+minishell> exit -9223372036854775809
+exit
+minishell: exit: -9223372036854775809: numeric argument required
