@@ -85,7 +85,7 @@ mkdir -p test/result/execute
 for fp in `ls test/case/execute`; do
 	while read line
 	do
-		eval ${line} >> test/result/execute/$fp
+		eval ${line} >> test/result/execute/$fp 2>&1
 	done < test/case/execute/$fp
 	diff test/result/execute/$fp test/answer/execute/$fp
 	check_result "execute" $fp

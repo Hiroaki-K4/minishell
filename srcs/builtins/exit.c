@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:02 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/23 14:41:22 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/23 21:22:30 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_all_digit(char *str)
 	return (TRUE);
 }
 
-static	long	calc(const char *str, long cutoff, long cutlim, int is_minus)
+static	int	calc(const char *str, long cutoff, long cutlim, int is_minus)
 {
 	long	res;
 
@@ -57,7 +57,7 @@ static	long	calc(const char *str, long cutoff, long cutlim, int is_minus)
 	return (FALSE);
 }
 
-static	long	check_over_long(const char *str, int is_minus)
+static	int	check_over_long(const char *str, int is_minus)
 {
 	long	cutoff;
 	long	cutlim;
@@ -109,14 +109,14 @@ int	ft_exit(char **argv, t_envs **envs)
 		exit(EXIT_SUCCESS);
 	else if (is_all_digit(argv[1]) == FALSE || is_over_long(argv[1]))
 	{
-		ft_putstr_fd("minishell: exit: ", 1);
-		ft_putstr_fd(argv[1], 1);
-		ft_putendl_fd(": numeric argument required", 1);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
 	}
 	else if (argv[2] != NULL)
 	{
-		ft_putendl_fd("minishell: exit: too many arguments", 1);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		return (EXIT_FAILURE);
 	}
 	exit(ft_atoi(argv[1]));
