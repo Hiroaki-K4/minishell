@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:48:27 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/21 22:48:28 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/24 23:16:58 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static char	*get_executable_path(char *path, char **paths)
 		{
 			free(executable_path);
 			executable_path = tmp;
+			break ;
 		}
 		else
 			free(tmp);
