@@ -41,6 +41,7 @@ SRC := main.c \
 	   expand/check_quote.c \
 	   expand/remove_quote.c \
 	   expand/make_e_state.c \
+	   expand/free_and_return_status.c \
 	   signal/signal_handler.c \
 	   signal/set_handlers.c
 SRCS := $(notdir $(SRC))

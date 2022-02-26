@@ -1,0 +1,15 @@
+builtins
+check_char.c
+check_syntax.c
+error.c
+execute
+expand
+ft_lstadd.c
+get_next_line.c
+main.c
+operate_envs.c
+operate_list.c
+parse
+preprocess.c
+signal
+tokenize
