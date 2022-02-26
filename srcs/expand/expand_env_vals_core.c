@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:25:11 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:25:12 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/26 16:24:36 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*get_env_name(t_expand_state *e_state, size_t start)
 		&& e_state->original_token->content[e_state->current_pos] != '$'
 		&& e_state->original_token->content[e_state->current_pos] != '\''
 		&& e_state->original_token->content[e_state->current_pos] != '\"'
+		&& e_state->original_token->content[e_state->current_pos] != ':'
 	)
 	{
 		e_state->current_pos++;
@@ -37,7 +38,7 @@ int	get_env_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 	t_list	*tmp_list;
 
 	value = get_env(name, envs);
-	if (value != NULL)
+	if (value != NULL && ft_strlen(value) != 0)
 	{
 		if (e_state->quote_state == NORMAL)
 		{
