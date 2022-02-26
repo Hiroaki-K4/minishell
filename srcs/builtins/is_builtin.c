@@ -3,21 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:34 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/21 22:47:35 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/26 18:00:09 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
+int	is_special_builtin_command(char **argv, t_global_state *state)
 {
+	size_t	i;
 	int		ret;
+	t_envs	**envs;
+	int		special_fds[3];
 
+	i = 0;
+	envs = &state->envs;
 	if (argv == NULL || argv[0] == NULL)
 		return (FALSE);
+	special_fds[0] = dup(0);
+	special_fds[1] = dup(1);
+	special_fds[2] = dup(2);
+	while (i < state->redirect_num)
+	{
+		dup2(state->redirects[i]->file_fd, state->redirects[i]->redirect_fd);
+		i++;
+	}
 	ret = 0;
 	if (!ft_strncmp(argv[0], "cd", ft_strlen("cd") + 1))
 		ret = ft_cd(argv, envs);
@@ -29,7 +42,16 @@ int	is_special_builtin_command(char **argv, t_envs **envs, int *exit_status)
 		ret = ft_exit(argv, envs);
 	else
 		return (FALSE);
-	*exit_status = ret;
+	state->last_command_exit_status = ret;
+	i = 0;
+	while (i < state->redirect_num)
+	{
+		close(state->redirects[i]->redirect_fd);
+		i++;
+	}
+	dup2(special_fds[0], 0);
+	dup2(special_fds[1], 1);
+	dup2(special_fds[2], 2);
 	return (TRUE);
 }
 
