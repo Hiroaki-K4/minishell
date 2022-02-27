@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:34 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/27 20:54:25 by ychida           ###   ########.fr       */
+/*   Updated: 2022/02/27 21:09:28 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ static void	postlude(t_global_state *state, int special_fds[3])
 
 int	is_special_builtin_command(char **argv, t_global_state *state)
 {
-	size_t	i;
 	int		ret;
 	t_envs	**envs;
 	int		special_fds[3];
 
-	i = 0;
 	envs = &state->envs;
 	if (argv == NULL || argv[0] == NULL)
 		return (FALSE);
@@ -64,7 +62,10 @@ int	is_special_builtin_command(char **argv, t_global_state *state)
 	else if (!ft_strncmp(argv[0], "exit", ft_strlen("exit") + 1))
 		ret = ft_exit(argv, envs);
 	else
+	{
+		postlude(state, special_fds);
 		return (FALSE);
+	}
 	state->last_command_exit_status = ret;
 	postlude(state, special_fds);
 	return (TRUE);
