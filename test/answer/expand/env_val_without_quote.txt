@@ -62,3 +62,11 @@ content: $OUR_MINISHELL$?$OUR_MINISHELL attr: 0
 content: echo attr: 0
 content: Beatiful0Beatiful attr: 0
 minishell> exit
+minishell> echo $OUR_MINISHELL:minishell
+~~~~~After tokenize~~~~~
+content: echo attr: 0
+content: $OUR_MINISHELL:minishell attr: 0
+~~~~~After expand~~~~~
+content: echo attr: 0
+content: Beatiful:minishell attr: 0
+minishell> exit

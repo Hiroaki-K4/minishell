@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:27:04 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:27:05 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/26 20:18:51 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	get_env_name_and_value(char **name, char **value, char *env)
 		if (!*name || !*value)
 			return (FAIL);
 	}
+	else
+		return (FAIL);
 	return (SUCCESS);
 }
 
