@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:55 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/21 22:47:56 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/26 17:57:29 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	execute_command(char **argv, t_global_state *state)
 	}
 	i = state->last_command_exit_status;
 	if (is_builtin_command(argv, state->envs, &i)
-		|| is_special_builtin_command(argv, &(state->envs), &i))
+		|| is_special_builtin_command(argv, state))
 		exit(i);
 	else
 	{
@@ -108,8 +108,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 	}
 	close_pipes(pipes, node, state);
 	if (pipes == NULL
-		&& is_special_builtin_command(
-			argv, &(state->envs), &(state->last_command_exit_status)))
+		&& is_special_builtin_command(argv, state))
 	{
 		free_strings(argv);
 		return (SUCCESS);

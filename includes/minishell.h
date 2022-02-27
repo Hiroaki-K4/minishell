@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
+/*   Updated: 2022/02/26 17:52:56 by ychida           ###   ########.fr       */
 /*   Updated: 2022/02/26 19:40:01 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -207,7 +208,7 @@ char			**construct_argv(t_list *tokens, t_global_state *state);
 
 char			*search(char *path, t_envs *envs);
 
-int				is_special_builtin_command(char **argv, t_envs **envs, int *s);
+int				is_special_builtin_command(char **argv, t_global_state *state);
 int				is_builtin_command(char **argv, t_envs *envs, int *exit_status);
 
 int				ft_echo(char **argv, t_envs *envs);
