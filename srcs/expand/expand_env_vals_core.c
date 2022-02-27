@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:25:11 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:25:12 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/02/26 20:21:18 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*get_env_name(t_expand_state *e_state, size_t start)
 		&& e_state->original_token->content[e_state->current_pos] != '$'
 		&& e_state->original_token->content[e_state->current_pos] != '\''
 		&& e_state->original_token->content[e_state->current_pos] != '\"'
+		&& e_state->original_token->content[e_state->current_pos] != ':'
 	)
 	{
 		e_state->current_pos++;
@@ -43,18 +44,19 @@ int	get_env_value_and_insert(char *name, t_envs *envs, t_expand_state *e_state)
 		{
 			tmp_list = NULL;
 			if (tokenize(value, &tmp_list) == FAIL)
-				return (FAIL);
+				return (free_and_return_status(value, FAIL));
+			if (tmp_list == NULL)
+				return (free_and_return_status(value, SUCCESS));
 			if (ft_lstadd_last(&(e_state->token_list), tmp_list) == FAIL)
-				return (FAIL);
+				return (free_and_return_status(value, FAIL));
 		}
 		else
 		{
 			if (ft_lstadd_word(&(e_state->token_list), value) == FAIL)
-				return (FAIL);
+				return (free_and_return_status(value, FAIL));
 		}
 	}
-	free(value);
-	return (SUCCESS);
+	return (free_and_return_status(value, SUCCESS));
 }
 
 t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state)

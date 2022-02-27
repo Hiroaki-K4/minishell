@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
 /*   Updated: 2022/02/26 17:52:56 by ychida           ###   ########.fr       */
+/*   Updated: 2022/02/26 19:40:01 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +187,8 @@ char			*get_word_in_quote(t_token *token, t_expand_state *e_state,
 
 t_expand_state	*make_e_state(t_list *token_list, t_envs *envs,
 					int exit_status);
+
+int				free_and_return_status(char *str, int status);
 
 int				expand(t_list *token_lst, t_list **expanded_lst, t_envs *envs,
 					int exit_status);
