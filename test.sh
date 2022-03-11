@@ -73,7 +73,11 @@ for fp in `ls test/case/expand/exit_status`; do
 		done < test/case/expand/exit_status/$fp
 	else
 		content=`cat test/case/expand/exit_status/$fp`
-		eval "${content}" >> test/result/expand/exit_status/$fp 2>&1
+		if [ $fp = "success_status_with_pipe.txt" ]; then
+			eval "${content}" >> test/result/expand/exit_status/$fp
+		else
+			eval "${content}" >> test/result/expand/exit_status/$fp 2>&1
+		fi
 	fi
 	diff test/result/expand/exit_status/$fp test/answer/expand/exit_status/$fp
 	check_result "exit_status" $fp

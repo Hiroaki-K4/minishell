@@ -1,5 +1,4 @@
 minishell> ls aaaa | ls Makefile
-ls: cannot access 'aaaa': No such file or directory
 Makefile
 minishell> echo $?
 0
