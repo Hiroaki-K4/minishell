@@ -37,7 +37,7 @@ for fp in `ls test/case/tokenize`; do
 
 	while read line
 	do
-		eval ${line} >> test/result/tokenize/$fp
+		eval ${line} >> test/result/tokenize/$fp 2>&1
 	done < test/case/tokenize/$fp
 	diff test/result/tokenize/$fp test/answer/tokenize/$fp
 	check_result "tokenize" $fp
@@ -73,7 +73,7 @@ for fp in `ls test/case/expand/exit_status`; do
 		done < test/case/expand/exit_status/$fp
 	else
 		content=`cat test/case/expand/exit_status/$fp`
-		eval "${content}" >> test/result/expand/exit_status/$fp
+		eval "${content}" >> test/result/expand/exit_status/$fp 2>&1
 	fi
 	diff test/result/expand/exit_status/$fp test/answer/expand/exit_status/$fp
 	check_result "exit_status" $fp

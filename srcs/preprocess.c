@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:27:18 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:27:19 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/11 22:18:01 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ t_node	*preprocess(char *line, t_global_state *state, int is_debug_mode)
 	if (check_syntax(token_list) == FAIL)
 	{
 		ft_lstclear_all(&token_list, free);
+		print_error("syntax error");
+		state->last_command_exit_status = 258;
 		return (NULL);
 	}
 	expanded_list = NULL;
