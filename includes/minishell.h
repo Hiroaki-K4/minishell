@@ -6,10 +6,9 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/11 21:54:26 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/11 22:39:24 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
