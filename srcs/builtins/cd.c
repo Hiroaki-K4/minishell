@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:26 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/11 21:55:29 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/16 00:02:06 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,6 @@ static void	concat_pwd(t_envs **envs, char **curpath)
 		free(*curpath);
 		*curpath = tmp;
 	}
-}
-
-static void	convert_curpath_to_canonical_form(char **curpath)
-{
-	(void)curpath;
-	return ;
 }
 
 int	ft_cd(char **argv, t_envs **envs)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/11 22:39:24 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/15 23:38:22 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ int				ft_env(char **argv, t_envs *envs);
 int				ft_cd(char **argv, t_envs **envs);
 void			free_strings(char **argv);
 void			set_curpath(char **argv, t_envs **envs, char **curpath);
+void			convert_curpath_to_canonical_form(char **curpath);
 int				ft_export(char **argv, t_envs **envs);
 int				ft_unset(char **argv, t_envs **envs);
 int				ft_exit(char **argv, t_envs **envs);
