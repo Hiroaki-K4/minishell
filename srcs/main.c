@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:49:08 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/21 22:49:09 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/14 21:27:35 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ static void	process_input(char *input, t_global_state *state, int is_debug_mode)
 {
 	t_node	*ast;
 
+	add_history(input);
 	ast = preprocess(input, state, is_debug_mode);
 	if (ast == NULL)
 		return ;
 	if (!is_debug_mode)
 		execute(ast, state);
 	free_ast(ast);
-	add_history(input);
 }
 
 static void	minishell(char *envp[], int is_debug_mode)
