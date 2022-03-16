@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:25:51 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:25:52 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/11 22:21:19 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	tokenize(char *line, t_list **token_list)
 	}
 	if (t_state.quote_state != NORMAL)
 	{
-		printf("minishell: syntax error: unexpected end of file\n");
+		print_error("syntax error: unexpected end of file");
 		return (FAIL);
 	}
 	return (SUCCESS);

@@ -1,12 +1,17 @@
 minishell> |
+minishell: syntax error
 minishell> exit
 minishell> >
+minishell: syntax error
 minishell> exit
 minishell> >>
+minishell: syntax error
 minishell> exit
 minishell> <
+minishell: syntax error
 minishell> exit
 minishell> <
+minishell: syntax error
 minishell> exit
 minishell> '
 minishell: syntax error: unexpected end of file

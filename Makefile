@@ -14,6 +14,7 @@ SRC := main.c \
 	   builtins/echo.c \
 	   builtins/cd.c \
 	   builtins/cd_utils.c \
+	   builtins/cd_utils2.c \
 	   builtins/pwd.c \
 	   builtins/export.c \
 	   builtins/print_envs.c \

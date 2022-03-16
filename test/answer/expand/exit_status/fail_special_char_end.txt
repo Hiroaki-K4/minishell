@@ -1,0 +1,5 @@
+minishell> |
+minishell: syntax error
+minishell> echo $?
+258
+minishell> exit

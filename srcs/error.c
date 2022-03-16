@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:49:01 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/21 22:49:02 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/11 21:53:56 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,10 @@ void	print_command_error(char *command, char *msg)
 		ft_putendl_fd(strerror(errno), 2);
 	else
 		ft_putendl_fd(msg, 2);
+}
+
+void	print_error(char *msg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putendl_fd(msg, 2);
 }
