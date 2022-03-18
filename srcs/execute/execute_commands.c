@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:55 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/26 17:57:29 by ychida           ###   ########.fr       */
+/*   Updated: 2022/03/18 00:06:38 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,7 @@ int	execute_commands(t_node *node, int pipes[2], t_global_state *state)
 
 	argv = construct_argv(node->tokens, state);
 	if (argv == NULL)
-	{
-		if (errno && errno != EINTR)
-		{
-			ft_putstr_fd(strerror(errno), 2);
-			errno = 0;
-		}
 		return (FAIL);
-	}
 	close_pipes(pipes, node, state);
 	if (pipes == NULL
 		&& is_special_builtin_command(argv, state))
