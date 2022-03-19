@@ -1,0 +1,4 @@
+echo 'lsof | wc -l > fd1.txt
+echo minishell
+lsof | wc -l > fd2.txt
+diff fd1.txt fd2.txt' | ./minishell

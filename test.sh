@@ -87,10 +87,15 @@ done
 rm -rf test/result/execute
 mkdir -p test/result/execute
 for fp in `ls test/case/execute`; do
-	while read line
-	do
-		eval ${line} >> test/result/execute/$fp 2>&1
-	done < test/case/execute/$fp
+	if [ $fp = "check_fd_number.txt" ]; then
+		content=`cat test/case/execute/$fp`
+		eval "${content}" >> test/result/execute/$fp 2>&1
+	else
+		while read line
+		do
+			eval ${line} >> test/result/execute/$fp 2>&1
+		done < test/case/execute/$fp
+	fi
 	diff test/result/execute/$fp test/answer/execute/$fp
 	check_result "execute" $fp
 done
