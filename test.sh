@@ -90,6 +90,7 @@ for fp in `ls test/case/execute`; do
 	if [ $fp = "check_fd_number.txt" ]; then
 		content=`cat test/case/execute/$fp`
 		eval "${content}" >> test/result/execute/$fp 2>&1
+		rm fd1.txt fd2.txt fd3.txt
 	else
 		while read line
 		do

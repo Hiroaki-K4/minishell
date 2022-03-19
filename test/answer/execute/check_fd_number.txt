@@ -1,6 +1,8 @@
 minishell> lsof | wc -l > fd1.txt
 minishell> echo minishell
 minishell
+minishell> export aaa
+minishell> ls > fd3.txt
 minishell> lsof | wc -l > fd2.txt
 minishell> diff fd1.txt fd2.txt
 minishell> exit
