@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
+/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:34 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/27 21:09:28 by ychida           ###   ########.fr       */
+/*   Updated: 2022/03/19 13:43:34 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,39 @@ static void	postlude(t_global_state *state, int special_fds[3])
 	dup2(special_fds[2], 2);
 }
 
+void	close_special_fds(int special_fds[3])
+{
+	close(special_fds[0]);
+	close(special_fds[1]);
+	close(special_fds[2]);
+}
+
 int	is_special_builtin_command(char **argv, t_global_state *state)
 {
 	int		ret;
-	t_envs	**envs;
 	int		special_fds[3];
 
-	envs = &state->envs;
 	if (argv == NULL || argv[0] == NULL)
 		return (FALSE);
 	prelude(state, special_fds);
 	ret = 0;
 	if (!ft_strncmp(argv[0], "cd", ft_strlen("cd") + 1))
-		ret = ft_cd(argv, envs);
+		ret = ft_cd(argv, &state->envs);
 	else if (!ft_strncmp(argv[0], "export", ft_strlen("export") + 1))
-		ret = ft_export(argv, envs);
+		ret = ft_export(argv, &state->envs);
 	else if (!ft_strncmp(argv[0], "unset", ft_strlen("unset") + 1))
-		ret = ft_unset(argv, envs);
+		ret = ft_unset(argv, &state->envs);
 	else if (!ft_strncmp(argv[0], "exit", ft_strlen("exit") + 1))
-		ret = ft_exit(argv, envs);
+		ret = ft_exit(argv, &state->envs);
 	else
 	{
 		postlude(state, special_fds);
+		close_special_fds(special_fds);
 		return (FALSE);
 	}
 	state->last_command_exit_status = ret;
 	postlude(state, special_fds);
+	close_special_fds(special_fds);
 	return (TRUE);
 }
 

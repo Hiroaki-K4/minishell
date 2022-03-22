@@ -1,0 +1,6 @@
+echo 'lsof | wc -l > fd1.txt
+echo minishell
+export aaa
+ls > fd3.txt
+lsof | wc -l > fd2.txt
+diff fd1.txt fd2.txt' | ./minishell
