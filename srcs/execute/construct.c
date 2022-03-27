@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:50 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 20:33:37 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 20:34:59 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int	construct_redirects(t_list **tokens, t_global_state *state)
 			= ft_atoi(((t_token *)((*tokens)->content))->content);
 		*tokens = (*tokens)->next;
 	}
-	return (set_redirect(tokens, state->redirects[i], state->envs, state->last_command_exit_status));
+	return (set_redirect(tokens, state->redirects[i], state->envs,
+			state->last_command_exit_status));
 }
 
 static size_t	consume_words(t_list **tokens, char **argv, size_t start)

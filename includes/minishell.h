@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 20:33:17 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 21:22:18 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,10 @@ void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
 void			close_parent_pipe(int pipes[2], t_node *n, t_global_state *s);
 
-int				read_heredocument(t_redirect *redirect, char *content, t_envs *envs, int exit_status);
-int				set_redirect(t_list **tokens, t_redirect *redirect, t_envs *envs, int exit_status);
+int				read_heredocument(t_redirect *redirect, char *content,
+					t_envs *envs, int exit_status);
+int				set_redirect(t_list **tokens, t_redirect *redirect,
+					t_envs *envs, int exit_status);
 
 t_node			*preprocess(char *input, t_global_state *state, int debug);
 
@@ -179,7 +181,10 @@ int				check_syntax(t_list *token_list);
 int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
 
-char    		*expand_word_in_heredocument(char *input, t_envs *envs, int exit_status);
+char			*get_env_name_here_ver(char *input, size_t *current_pos);
+
+char			*expand_word_in_heredocument(char *input, t_envs *envs,
+					int exit_status);
 
 t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state);
 t_expand_state	*expand_env_vals_core(t_expand_state *e_state, t_envs *envs,
@@ -224,6 +229,7 @@ void			free_strings(char **argv);
 void			set_curpath(char **argv, t_envs **envs, char **curpath);
 void			convert_curpath_to_canonical_form(char **curpath);
 int				ft_export(char **argv, t_envs **envs);
+void			free_double_word(char *word1, char *word2);
 int				ft_unset(char **argv, t_envs **envs);
 int				ft_exit(char **argv, t_envs **envs, int last_exit_status);
 

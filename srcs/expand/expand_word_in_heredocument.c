@@ -6,35 +6,35 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:00:30 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 19:22:38 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 21:20:40 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_env_name_here_ver(char *input, size_t *current_pos)
-{
-    size_t  start;
+// char	*get_env_name_here_ver(char *input, size_t *current_pos)
+// {
+// 	size_t	start;
 
-    start = *current_pos;
-	while (input[*current_pos]
-		&& input[*current_pos] != ' '
-		&& input[*current_pos] != '$'
-		&& input[*current_pos] != '\''
-		&& input[*current_pos] != '\"'
-		&& input[*current_pos] != ':'
-	)
-	{
-		(*current_pos)++;
-		if (input[*current_pos - 1] == '?')
-			return (ft_strdup("$?"));
-	}
-	if (*current_pos == start)
-		return (ft_strdup("$"));
-    return (ft_substr(input, start, *current_pos - start));
-}
+// 	start = *current_pos;
+// 	while (input[*current_pos]
+// 		&& input[*current_pos] != ' '
+// 		&& input[*current_pos] != '$'
+// 		&& input[*current_pos] != '\''
+// 		&& input[*current_pos] != '\"'
+// 		&& input[*current_pos] != ':'
+// 	)
+// 	{
+// 		(*current_pos)++;
+// 		if (input[*current_pos - 1] == '?')
+// 			return (ft_strdup("$?"));
+// 	}
+// 	if (*current_pos == start)
+// 		return (ft_strdup("$"));
+// 	return (ft_substr(input, start, *current_pos - start));
+// }
 
-char    *check_name_here_ver(char *name, t_envs *envs, int exit_status)
+char	*check_name_here_ver(char *name, t_envs *envs, int exit_status)
 {
 	char	*value;
 
@@ -45,76 +45,76 @@ char    *check_name_here_ver(char *name, t_envs *envs, int exit_status)
 	else
 	{
 		value = get_env(name, envs);
-        return (value);
-    }
+		return (value);
+	}
 }
 
-char    *expand_env_vals_core_here_ver(char *input, size_t *current_pos, t_envs *envs, int exit_status)
+char	*expand_core_here_ver(char *input, size_t *current_pos,
+	t_envs *envs, int exit_status)
 {
-    char    *name;
-    char    *expanded;
+	char	*name;
+	char	*expanded;
 
-    (*current_pos)++;
-    name = get_env_name_here_ver(input, current_pos);
+	(*current_pos)++;
+	name = get_env_name_here_ver(input, current_pos);
 	if (!name)
 		return (NULL);
 	expanded = check_name_here_ver(name, envs, exit_status);
 	free(name);
-    return (expanded);
+	return (expanded);
 }
 
-char    *expand_env_vals_here_ver(char *input, t_envs *envs, int exit_status)
+char	*fill_diff_here_ver(char *input,
+	char *result, size_t start, size_t current_pos)
 {
-    size_t  current_pos;
-    size_t  start;
-    char    *expanded;
-    char    *tmp;
-    char    *result;
-    char    *add_word;
+	char	*add_word;
+	char	*tmp;
 
-    result = ft_strdup("");
-    current_pos = 0;
-    start = 0;
-	while (input[current_pos])
-	{
-		if (input[current_pos] == '$')
-		{
-            if (start != current_pos)
-            {
-                add_word = ft_substr(input, start, current_pos - start);
-                tmp = ft_strjoin(result, add_word);
-                free(result);
-                free(add_word);
-                result = tmp;
-            }
-			expanded = expand_env_vals_core_here_ver(input, &current_pos, envs, exit_status);
-            start = current_pos;
-            tmp = ft_strjoin(result, expanded);
-            free(result);
-            free(expanded);
-            result = tmp;
-            continue ;
-		}
-		current_pos++;
-	}
-    if (start != current_pos)
-    {
-        add_word = ft_substr(input, start, current_pos - start);
-        tmp = ft_strjoin(result, add_word);
-        free(result);
-        free(add_word);
-        result = tmp;
-    }
+	add_word = ft_substr(input, start, current_pos - start);
+	tmp = ft_strjoin(result, add_word);
+	free(result);
+	free(add_word);
+	result = tmp;
 	return (result);
 }
 
-char    *expand_word_in_heredocument(char *input, t_envs *envs, int exit_status)
+char	*expand_here_ver(char *input, t_envs *envs, int status, size_t start)
 {
-    char    *expanded;
-    if (ft_strchr(input, '$') != NULL)
-    {
-        expanded = expand_env_vals_here_ver(input, envs, exit_status);
-        return (expanded);
-    }
-    return (ft_strdup(input));
+	size_t	c_pos;
+	char	*tmp;
+	char	*result;
+	char	*add_word;
+
+	result = ft_strdup("");
+	c_pos = 0;
+	while (input[c_pos])
+	{
+		if (input[c_pos] == '$')
+		{
+			if (start != c_pos)
+				result = fill_diff_here_ver(input, result, start, c_pos);
+			add_word = expand_core_here_ver(input, &c_pos, envs, status);
+			start = c_pos;
+			tmp = ft_strjoin(result, add_word);
+			free_double_word(result, add_word);
+			result = tmp;
+			continue ;
+		}
+		c_pos++;
+	}
+	if (start != c_pos)
+		result = fill_diff_here_ver(input, result, start, c_pos);
+	return (result);
+}
+
+char	*expand_word_in_heredocument(char *input, t_envs *envs, int exit_status)
+{
+	char	*expanded;
+
+	if (ft_strchr(input, '$') != NULL)
+	{
+		expanded = expand_here_ver(input, envs, exit_status, 0);
+		return (expanded);
+	}
+	return (ft_strdup(input));
 }
