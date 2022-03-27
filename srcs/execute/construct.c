@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:50 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 20:18:46 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 20:33:37 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ char	**construct_argv(t_list *tokens, t_global_state *state)
 		if (tokens == NULL)
 			break ;
 		state->redirect_num++;
+		if (state->redirect_num == state->max_redirect_num)
+			realloc_redirects(state);
 		if (construct_redirects(&tokens, state) == SUCCESS)
 			continue ;
 		free_strings(argv);
