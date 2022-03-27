@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:02 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/23 21:22:30 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 14:31:05 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,12 @@ int	is_over_long(const char *str)
 	return (res);
 }
 
-int	ft_exit(char **argv, t_envs **envs)
+int	ft_exit(char **argv, t_envs **envs, int last_exit_status)
 {
 	(void)envs;
 	ft_putendl_fd("exit", 1);
 	if (argv[1] == NULL)
-		exit(EXIT_SUCCESS);
+		exit(last_exit_status);
 	else if (is_all_digit(argv[1]) == FALSE || is_over_long(argv[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
