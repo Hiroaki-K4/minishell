@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:34 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/19 13:43:34 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 14:30:21 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	is_special_builtin_command(char **argv, t_global_state *state)
 	else if (!ft_strncmp(argv[0], "unset", ft_strlen("unset") + 1))
 		ret = ft_unset(argv, &state->envs);
 	else if (!ft_strncmp(argv[0], "exit", ft_strlen("exit") + 1))
-		ret = ft_exit(argv, &state->envs);
+		ret = ft_exit(argv, &state->envs, state->last_command_exit_status);
 	else
 	{
 		postlude(state, special_fds);

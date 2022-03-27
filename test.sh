@@ -84,22 +84,22 @@ for fp in `ls test/case/expand/exit_status`; do
 done
 
 # Test Execute command
-rm -rf test/result/execute
-mkdir -p test/result/execute
-for fp in `ls test/case/execute`; do
-	if [ $fp = "check_fd_number.txt" ]; then
-		content=`cat test/case/execute/$fp`
-		eval "${content}" >> test/result/execute/$fp 2>&1
-		rm fd1.txt fd2.txt fd3.txt
-	else
-		while read line
-		do
-			eval ${line} >> test/result/execute/$fp 2>&1
-		done < test/case/execute/$fp
-	fi
-	diff test/result/execute/$fp test/answer/execute/$fp
-	check_result "execute" $fp
-done
+# rm -rf test/result/execute
+# mkdir -p test/result/execute
+# for fp in `ls test/case/execute`; do
+# 	if [ $fp = "check_fd_number.txt" ]; then
+# 		content=`cat test/case/execute/$fp`
+# 		eval "${content}" >> test/result/execute/$fp 2>&1
+# 		rm fd1.txt fd2.txt fd3.txt
+# 	else
+# 		while read line
+# 		do
+# 			eval ${line} >> test/result/execute/$fp 2>&1
+# 		done < test/case/execute/$fp
+# 	fi
+# 	diff test/result/execute/$fp test/answer/execute/$fp
+# 	check_result "execute" $fp
+# done
 
 # Test Syntax checker
 # rm -f test/result/test_syntax_checker.txt
