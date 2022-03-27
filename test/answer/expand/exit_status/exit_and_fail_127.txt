@@ -1,0 +1,5 @@
+minishell> aaaa
+minishell: aaaa: command not found
+minishell> exit
+exit
+127
