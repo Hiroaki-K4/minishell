@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait_all_processes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:48:32 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 14:32:00 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 21:52:02 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	kill_all_processes(t_global_state *state)
 	}
 }
 
-static void	handle_killed_by_signal(int status)
+static void	handle_killed_by_signal(int status, t_global_state *state, pid_t id)
 {
 	int		signal;
 
@@ -33,6 +33,8 @@ static void	handle_killed_by_signal(int status)
 		ft_putstr_fd("\n", 1);
 	if (signal == SIGQUIT)
 		ft_putendl_fd("Quit: 3", 1);
+	if (id == state->pids[state->process_count - 1])
+		state->last_command_exit_status = 128 + signal;
 }
 
 static int	wait_process(t_global_state *state)
@@ -52,7 +54,7 @@ static int	wait_process(t_global_state *state)
 	else
 	{
 		if (WIFSIGNALED(status))
-			handle_killed_by_signal(status);
+			handle_killed_by_signal(status, state, finished_pid);
 		return (SUCCESS);
 	}
 }
