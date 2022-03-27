@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:47:55 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/18 00:06:38 by ychida           ###   ########.fr       */
+/*   Updated: 2022/03/27 16:52:58 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ static void	execute_commands_parent(
 	close_parent_pipe(pipes, node, state);
 	state->process_count++;
 	state->pids[state->process_count - 1] = pid;
+	if (state->process_count == state->max_process_num)
+	{
+		state->max_process_num += 100;
+		state->pids = ft_realloc(state->pids,
+				sizeof(pid_t) * (state->max_process_num + 1));
+	}
 	i = 0;
 	while (i < state->redirect_num)
 	{
