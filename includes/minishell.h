@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 16:50:51 by ychida           ###   ########.fr       */
+/*   Updated: 2022/03/27 21:27:19 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef struct s_global_state
 	int					old_pipes[2];
 	int					process_count;
 	int					max_process_num;
+	size_t				max_redirect_num;
 	pid_t				*pids;
 	int					last_command_exit_status;
 	t_redirect			**redirects;
@@ -239,5 +240,7 @@ char			*get_env(char *name, t_envs *envs);
 int				set_env(char *name, char *value, t_envs **envs);
 
 void			*ft_realloc(void *ptr, size_t size);
+void			**ft_realloc_array(void **ptr, size_t num);
+void			realloc_redirects(t_global_state *state);
 
 #endif

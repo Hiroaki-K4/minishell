@@ -6,7 +6,7 @@
 /*   By: ychida <ychida@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:49:08 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 16:54:13 by ychida           ###   ########.fr       */
+/*   Updated: 2022/03/27 17:08:27 by ychida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,24 @@
 
 static void	init_global_state(t_global_state *state, char **envp)
 {
-	int	i;
+	size_t	i;
 
 	set_initial_handlers(state);
 	state->old_pipes[0] = 0;
 	state->old_pipes[1] = 0;
-	state->process_count = 0;
 	state->max_process_num = 100;
+	state->max_redirect_num = 100;
+	state->process_count = 0;
 	state->pids = (pid_t *)malloc(sizeof(pid_t) * (state->max_process_num + 1));
 	if (state->pids == NULL)
 		exit_with_error("initialize state error");
 	state->last_command_exit_status = 0;
-	state->redirects = (t_redirect **)malloc(sizeof(t_redirect *) * (100 + 1));
+	state->redirects = (t_redirect **)malloc(sizeof(t_redirect *)
+			* (state->max_redirect_num + 1));
 	if (state->redirects == NULL)
 		exit_with_error("initialize state error");
 	i = 0;
-	while (i < 101)
+	while (i < state->max_redirect_num + 1)
 	{
 		state->redirects[i] = NULL;
 		i++;
@@ -49,7 +51,7 @@ static void	refresh_global_state(t_global_state *state)
 	state->process_count = 0;
 	ft_bzero(state->pids, sizeof(pid_t) * (state->max_process_num + 1));
 	i = -1;
-	while (++i < 101)
+	while (++i < state->max_redirect_num + 1)
 	{
 		if (state->redirects[i])
 		{
