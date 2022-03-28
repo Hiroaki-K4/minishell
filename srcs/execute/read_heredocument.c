@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:48:15 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/28 09:41:12 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/28 21:26:33 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static void	concat_heredocument(t_redirect *redirect, char **input,
 	{
 		tmp = ft_strjoin(redirect->here_document, "\n");
 		free(redirect->here_document);
-		if (res == NULL)
-			res = ft_strdup("");
 		redirect->here_document = ft_strjoin(tmp, res);
 		free(tmp);
 		free(res);

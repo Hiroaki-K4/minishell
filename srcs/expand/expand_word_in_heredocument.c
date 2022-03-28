@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:00:30 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/28 09:43:20 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/28 21:26:02 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char	*expand_here_ver(char *input, t_envs *envs, int status, size_t start)
 			if (start != c_pos)
 				result = fill_diff_here_ver(input, result, start, c_pos);
 			add_word = expand_core_here_ver(input, &c_pos, envs, status);
+			if (add_word == NULL)
+				add_word = ft_strdup("");
 			start = c_pos;
 			tmp = ft_strjoin(result, add_word);
 			free_double_word(result, add_word);
