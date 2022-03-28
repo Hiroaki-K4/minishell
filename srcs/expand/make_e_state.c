@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:25:30 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:25:31 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/28 21:51:46 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,9 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 	return (e_state);
 }
 
-int	is_content_empty(t_list *list, char *word)
-{
-	t_token	*token;
-
-	token = (t_token *)list->content;
-	if (!ft_strncmp(token->content, word, ft_strlen(token->content) + 1))
-		return (TRUE);
-	return (FALSE);
-}
-
 t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status)
 {
 	t_expand_state	*e_state;
-	t_list			*last_lst;
 
 	e_state = (t_expand_state *)malloc(sizeof(t_expand_state));
 	if (!e_state)
@@ -85,11 +74,5 @@ t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status)
 	e_state = update_e_state(e_state, token_list, envs, exit_status);
 	if (!e_state)
 		return (NULL);
-	last_lst = ft_lstlast(e_state->token_list);
-	if (is_content_empty(last_lst, ""))
-	{
-		last_lst->prev->next = NULL;
-		ft_lstdelone_all(last_lst, free);
-	}
 	return (e_state);
 }
