@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 21:22:18 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/29 00:21:52 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
 
 char			*get_env_name_here_ver(char *input, size_t *current_pos);
+char			*check_name_here_ver(char *name, t_envs *envs, int exit_status);
 
 char			*expand_word_in_heredocument(char *input, t_envs *envs,
 					int exit_status);

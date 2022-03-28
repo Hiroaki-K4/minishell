@@ -6,26 +6,11 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 17:00:30 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/28 21:26:02 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/29 00:22:33 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*check_name_here_ver(char *name, t_envs *envs, int exit_status)
-{
-	char	*value;
-
-	if (!ft_strncmp(name, "$", ft_strlen(name) + 1))
-		return (ft_strdup(name));
-	else if (!ft_strncmp(name, "$?", ft_strlen(name) + 1))
-		return (ft_itoa(exit_status));
-	else
-	{
-		value = get_env(name, envs);
-		return (value);
-	}
-}
 
 char	*expand_core_here_ver(char *input, size_t *current_pos,
 	t_envs *envs, int exit_status)
@@ -56,6 +41,16 @@ char	*fill_diff_here_ver(char *input,
 	return (result);
 }
 
+char	*make_add_word(char *input, size_t *c_pos, t_envs *envs, int status)
+{
+	char	*add_word;
+
+	add_word = expand_core_here_ver(input, c_pos, envs, status);
+	if (add_word == NULL)
+		add_word = ft_strdup("");
+	return (add_word);
+}
+
 char	*expand_here_ver(char *input, t_envs *envs, int status, size_t start)
 {
 	size_t	c_pos;
@@ -71,9 +66,7 @@ char	*expand_here_ver(char *input, t_envs *envs, int status, size_t start)
 		{
 			if (start != c_pos)
 				result = fill_diff_here_ver(input, result, start, c_pos);
-			add_word = expand_core_here_ver(input, &c_pos, envs, status);
-			if (add_word == NULL)
-				add_word = ft_strdup("");
+			add_word = make_add_word(input, &c_pos, envs, status);
 			start = c_pos;
 			tmp = ft_strjoin(result, add_word);
 			free_double_word(result, add_word);
