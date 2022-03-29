@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:25:00 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:25:01 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 20:19:06 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_q_removed(t_expand_state *e_state, t_token *token,
 				e_state->current_pos++;
 				continue ;
 			}
-			tmp = get_word_in_quote(token, e_state, word);
+			tmp = get_word_in_quote(token, e_state, word, &(token->q_removed));
 		}
 		free(word);
 		word = tmp;
@@ -81,6 +81,7 @@ t_token	*make_quote_removed_token(t_expand_state *e_state, t_token *token)
 			token->attr);
 	if (!q_removed)
 		return (NULL);
+	q_removed->q_removed = token->q_removed;
 	free(quote_removed);
 	return (q_removed);
 }

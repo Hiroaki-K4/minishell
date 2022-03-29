@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 22:46:05 by hkubo             #+#    #+#             */
-/*   Updated: 2022/03/27 21:27:19 by ychida           ###   ########.fr       */
+/*   Updated: 2022/03/29 00:21:52 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_token
 {
 	char			*content;
 	t_token_kind	attr;
+	int				q_removed;
 }	t_token;
 
 typedef struct s_expand_state
@@ -100,6 +101,7 @@ typedef struct s_redirect
 {
 	int		redirect_fd;
 	int		file_fd;
+	int		q_removed;
 	char	*here_delimiter;
 	char	*here_document;
 }	t_redirect;
@@ -154,8 +156,10 @@ void			do_piping(int pipes[2], t_node *node, t_global_state *state);
 void			close_pipes(int pipes[2], t_node *node, t_global_state *state);
 void			close_parent_pipe(int pipes[2], t_node *n, t_global_state *s);
 
-int				read_heredocument(t_redirect *redirect, char *content);
-int				set_redirect(t_list **tokens, t_redirect *redirect);
+int				read_heredocument(t_redirect *redirect, char *content,
+					t_envs *envs, int exit_status);
+int				set_redirect(t_list **tokens, t_redirect *redirect,
+					t_envs *envs, int exit_status);
 
 t_node			*preprocess(char *input, t_global_state *state, int debug);
 
@@ -177,6 +181,12 @@ int				check_syntax(t_list *token_list);
 int				expand_env_vals(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
 
+char			*get_env_name_here_ver(char *input, size_t *current_pos);
+char			*check_name_here_ver(char *name, t_envs *envs, int exit_status);
+
+char			*expand_word_in_heredocument(char *input, t_envs *envs,
+					int exit_status);
+
 t_expand_state	*fill_diff_between_start_curernt_pos(t_expand_state *e_state);
 t_expand_state	*expand_env_vals_core(t_expand_state *e_state, t_envs *envs,
 					int exit_status);
@@ -184,7 +194,7 @@ t_expand_state	*expand_env_vals_core(t_expand_state *e_state, t_envs *envs,
 t_list			*check_quote(t_expand_state *e_state);
 
 char			*get_word_in_quote(t_token *token, t_expand_state *e_state,
-					char *word);
+					char *word, int *q_removed);
 
 t_expand_state	*make_e_state(t_list *token_list, t_envs *envs,
 					int exit_status);
@@ -220,6 +230,7 @@ void			free_strings(char **argv);
 void			set_curpath(char **argv, t_envs **envs, char **curpath);
 void			convert_curpath_to_canonical_form(char **curpath);
 int				ft_export(char **argv, t_envs **envs);
+void			free_double_word(char *word1, char *word2);
 int				ft_unset(char **argv, t_envs **envs);
 int				ft_exit(char **argv, t_envs **envs, int last_exit_status);
 

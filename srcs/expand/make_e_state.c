@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:25:30 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:25:31 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/29 00:25:19 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,25 @@ int	not_expand_env(t_expand_state *e_state)
 	return (SUCCESS);
 }
 
+void	check_null_token(t_expand_state *e_state)
+{
+	t_token	*token;
+	t_list	*last_lst;
+	int		is_last_prev_null;
+
+	last_lst = ft_lstlast(e_state->token_list);
+	token = (t_token *)last_lst->content;
+	if (!ft_strncmp(token->content, "", ft_strlen(token->content) + 1))
+	{
+		is_last_prev_null = last_lst->prev == NULL;
+		if (!is_last_prev_null)
+			last_lst->prev->next = NULL;
+		ft_lstdelone_all(last_lst, free);
+		if (is_last_prev_null)
+			e_state->token_list = NULL;
+	}
+}
+
 t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 	t_envs *envs, int exit_status)
 {
@@ -51,6 +70,7 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 			free(empty);
 			if (expand_env_vals(e_state, envs, exit_status) == FAIL)
 				return (NULL);
+			check_null_token(e_state);
 		}
 		else
 		{
@@ -62,20 +82,9 @@ t_expand_state	*update_e_state(t_expand_state *e_state, t_list *token_list,
 	return (e_state);
 }
 
-int	is_content_empty(t_list *list, char *word)
-{
-	t_token	*token;
-
-	token = (t_token *)list->content;
-	if (!ft_strncmp(token->content, word, ft_strlen(token->content) + 1))
-		return (TRUE);
-	return (FALSE);
-}
-
 t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status)
 {
 	t_expand_state	*e_state;
-	t_list			*last_lst;
 
 	e_state = (t_expand_state *)malloc(sizeof(t_expand_state));
 	if (!e_state)
@@ -85,11 +94,5 @@ t_expand_state	*make_e_state(t_list *token_list, t_envs *envs, int exit_status)
 	e_state = update_e_state(e_state, token_list, envs, exit_status);
 	if (!e_state)
 		return (NULL);
-	last_lst = ft_lstlast(e_state->token_list);
-	if (is_content_empty(last_lst, ""))
-	{
-		last_lst->prev->next = NULL;
-		ft_lstdelone_all(last_lst, free);
-	}
 	return (e_state);
 }

@@ -6,7 +6,7 @@
 /*   By: hkubo <hkubo@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 21:27:10 by hkubo             #+#    #+#             */
-/*   Updated: 2022/02/20 21:27:11 by hkubo            ###   ########.fr       */
+/*   Updated: 2022/03/27 20:18:42 by hkubo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_token	*make_token(char *line, size_t pos, size_t len, t_token_kind attr)
 	if (!new_token->content)
 		return (NULL);
 	new_token->attr = attr;
+	new_token->q_removed = FALSE;
 	return (new_token);
 }
 

@@ -8,3 +8,7 @@ echo 'echo a$OUR_MINISHELL' | ./minishell tokenize
 echo 'echo a$OUR_MINISHELLa' | ./minishell tokenize
 echo 'echo $OUR_MINISHELL$?$OUR_MINISHELL' | ./minishell tokenize
 echo 'echo $OUR_MINISHELL:minishell' | ./minishell tokenize
+echo '$HOGE' | ./minishell
+echo 'aa$HOGE' | ./minishell
+echo '$OUR_MINISHELL' | ./minishell
+echo '$OUR_MINISHELLaa' | ./minishell
